@@ -8,7 +8,7 @@ documentclass: book
 bibliography: [book.bib, packages.bib]
 biblio-style: apalike
 url: https://iancero.github.io/musc_r_course_2021
-favicon: images/dice.ico
+favicon: images/favicon.ico
 description: |
   This is the organic textbook accompanying Cero's 2021 course on statistical programming with R
 link-citations: yes
