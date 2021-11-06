@@ -1,8 +1,7 @@
 bookdown::gitbook:
   css: style.css
   config:
-    toc:
-      collapse: section
+    toc: true
     edit: 
       link: https://github.com/iancero/musc_r_course_2021/edit/main/%s
       text: "Find a typo? Please suggest an edit"
