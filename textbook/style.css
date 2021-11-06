@@ -12,3 +12,13 @@ pre {
 pre code {
   white-space: inherit;
 }
+
+/*------------ TOC/Sidebar --------------*/
+
+/*----doesn't work when you have a theme active
+.book .book-summary {
+  background: yellow;
+  border-right: none;
+}
+-----------------*/
+

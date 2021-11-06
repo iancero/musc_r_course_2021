@@ -5,6 +5,8 @@ bookdown::gitbook:
       link: https://github.com/iancero/musc_r_course_2021/edit/main/%s
       text: "Find a typo? Please suggest an edit"
     download: ["pdf", "epub"]
+    fontsettings:
+      theme: sepia
 
 bookdown::pdf_book:
   includes:
