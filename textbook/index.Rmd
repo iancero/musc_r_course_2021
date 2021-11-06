@@ -1,6 +1,6 @@
 --- 
-title: "Organic R Textbook"
-subtitle: "Squeglia Research Group, MUSC"
+title: "Squeglia Research Group, MUSC"
+subtitle: "Organic R Textbook"
 author: "Ian Cero, PhD MStat"
 date: "`r Sys.Date()`"
 site: bookdown::bookdown_site
