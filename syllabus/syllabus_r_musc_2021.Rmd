@@ -10,4 +10,4 @@ output: pdf_document
 ```
 
 
-This is example syllabus material 2
+Note - fill in

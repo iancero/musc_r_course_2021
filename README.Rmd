@@ -3,7 +3,7 @@ output: github_document
 ---
 
 
-```{r, include = FALSE}
+```{r, boilerplate_chunk, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
@@ -12,13 +12,13 @@ knitr::opts_chunk$set(
 
 # Ian Cero's R programming course at MUSC
 
-This is just the code that runs the online course textbook. 
+This is just the code that runs the online course textbook (also see the course syllabus. 
 
 The actual textbook is available here [https://iancero.github.io/musc_r_course_2021/index.html](https://iancero.github.io/musc_r_course_2021/index.html)
 
 # Course Syllabus
 
-```{r, echo=FALSE}
+```{r, rendering_chunk, echo=FALSE}
 output_holder <- rmarkdown::render(
   input = 'syllabus/syllabus_r_musc_2021.Rmd',
   output_format = 'pdf_document',
