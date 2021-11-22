@@ -10,9 +10,22 @@ knitr::opts_chunk$set(
 )
 ```
 
-# An organic textbook for Ian Cero's R programming course at MUSC
+# Ian Cero's R programming course at MUSC
 
-This is just the code that runs the textbook. 
+This is just the code that runs the online course textbook. 
 
-The actual book is available here [https://iancero.github.io/musc_r_course_2021/index.html](https://iancero.github.io/musc_r_course_2021/index.html)
+The actual textbook is available here [https://iancero.github.io/musc_r_course_2021/index.html](https://iancero.github.io/musc_r_course_2021/index.html)
+
+# Course Syllabus
+
+```{r, echo=FALSE}
+output_holder <- rmarkdown::render(
+  input = 'syllabus/syllabus_r_musc_2021.Rmd',
+  output_format = 'pdf_document',
+  quiet = T)
+```
+
+
+```{r child = 'syllabus/syllabus_r_musc_2021.Rmd'}
+```
 

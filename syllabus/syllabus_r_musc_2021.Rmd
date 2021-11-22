@@ -1,0 +1,13 @@
+---
+title: "Syllabus"
+author: Ian Cero
+date: "`r Sys.Date()`"
+output: pdf_document
+---
+
+```{r, echo=FALSE}
+# Make sure when you update to go to README.Rmd and Ctrl+Shift+K, so that the github readme file will update too. Only after you do that should you push the updates to origin.
+```
+
+
+This is example syllabus material 2
