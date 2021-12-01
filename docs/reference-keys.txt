@@ -1,2 +1,10 @@
+fig:unnamed-chunk-2
+fig:unnamed-chunk-3
+fig:unnamed-chunk-4
 about
 getting-started
+overview-of-the-r-ecosystem
+installation
+step-1---download-and-install-the-r-language
+step-2---download-and-install-the-rstudio-ide
+step-3---install-the-tidyverse-package-optional
