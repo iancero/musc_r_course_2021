@@ -24,12 +24,12 @@ The first step to a functioning R ecosystem on your computer is to install the R
 
 To install R, go to [`https://cran.r-project.org/`](https://cran.r-project.org/). Then at the very top of the page, choose the installer that is right for your operating system (i.e., Windows, macOS, Linux).
 
-```{r, echo=FALSE, fig.align='center', fig.cap="https://cran.r-project.org/", out.width = '66%'}
+> **HINT**: Depending on your operating system, the downloads page can be kind of intimidating. What you are looking for is the most updated version of R, which as of today (2021-12-01) is R 4.1.2. If you find that you want something to take you through the process at a more step-by-step pace, this tutorial ([`https://www.datacamp.com/community/tutorials/installing-R-windows-mac-ubuntu`](https://www.datacamp.com/community/tutorials/installing-R-windows-mac-ubuntu)) should have an answer for each operating system.
+
+```{r, echo=FALSE, fig.align='center', fig.cap="https://cran.r-project.org/", out.width = '80%'}
 knitr::include_graphics('images/cran_download_instruction.png')
 ```
 
-
-**HINT**: Depending on your operating system, the downloads page can be kind of intimidating. What you are looking for is the most updated version of R, which as of today (2021-12-01) is R 4.1.2. If you find that you want something to take you through the process at a more step-by-step pace, this tutorial ([`https://www.datacamp.com/community/tutorials/installing-R-windows-mac-ubuntu`](https://www.datacamp.com/community/tutorials/installing-R-windows-mac-ubuntu)) should have an answer for each operating system
 
 ### Step 2 - Download and install the RStudio IDE
 
@@ -37,7 +37,7 @@ Several years ago, writing code in R was especially difficult because there was 
 
 **After you installed R**, installing the RStudio IDE should be fairly straightforward. Just go to their Downloads page ([`https://www.rstudio.com/products/rstudio/download/`](https://www.rstudio.com/products/rstudio/download/)) and choose the **Desktop Version**
 
-```{r, echo=FALSE, fig.align='center', fig.cap="https://www.rstudio.com/products/rstudio/download/", out.width = '66%'}
+```{r, echo=FALSE, fig.align='center', fig.cap="https://www.rstudio.com/products/rstudio/download/", out.width = '80%'}
 knitr::include_graphics('images/rstudio_download_instruction.png')
 ```
 
