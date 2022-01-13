@@ -8,8 +8,6 @@
 
 # Course Syllabus
 
-## Course Schedule
-
 1.  Data import and basic data wrangling
 2.  Data visualization and publication-ready figures
 3.  Basic hypothesis tests (e.g., chi-square, t-test, correlation)
