@@ -205,7 +205,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <blockquote>
 <p><strong>HINT</strong>: Depending on your operating system, the downloads page can be kind of intimidating. What you are looking for is the most updated version of R, which as of today (2021-12-01) is R 4.1.2. If you find that you want something to take you through the process at a more step-by-step pace, this tutorial (<a href="https://www.datacamp.com/community/tutorials/installing-R-windows-mac-ubuntu"><code>https://www.datacamp.com/community/tutorials/installing-R-windows-mac-ubuntu</code></a>) should have an answer for each operating system.</p>
 </blockquote>
-<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-1"></span>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-2"></span>
 <img src="images/cran_download_instruction.png" alt="https://cran.r-project.org/" width="80%" />
 <p class="caption">
 Figure 2.1: <a href="https://cran.r-project.org/" class="uri">https://cran.r-project.org/</a>
@@ -216,7 +216,7 @@ Figure 2.1: <a href="https://cran.r-project.org/" class="uri">https://cran.r-pro
 <h3><span class="header-section-number">2.2.2</span> Step 2 - Download and install the RStudio IDE</h3>
 <p>Several years ago, writing code in R was especially difficult because there was so much to keep track of and it was all hidden behind the code. The RStudio IDE fixed that for us by allowing us to continue coding in R, but this time with a collection of useful windows that keep track of what’s happening in our code (e.g., what datasets do we have loaded? what plots have we generated?).</p>
 <p><strong>After you installed R</strong>, installing the RStudio IDE should be fairly straightforward. Just go to their Downloads page (<a href="https://www.rstudio.com/products/rstudio/download/"><code>https://www.rstudio.com/products/rstudio/download/</code></a>) and choose the <strong>Desktop Version</strong></p>
-<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-2"></span>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-3"></span>
 <img src="images/rstudio_download_instruction.png" alt="https://www.rstudio.com/products/rstudio/download/" width="80%" />
 <p class="caption">
 Figure 2.2: <a href="https://www.rstudio.com/products/rstudio/download/" class="uri">https://www.rstudio.com/products/rstudio/download/</a>
@@ -236,7 +236,7 @@ Figure 2.2: <a href="https://www.rstudio.com/products/rstudio/download/" class="
 <li>If you get an error message while installing, don’t worry! That’s pretty common and you’ve probably still done everything right. Just remind me in class and we will make sure to troubleshoot it for you.</li>
 </ul></li>
 </ol>
-<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-3"></span>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-4"></span>
 <img src="images/package_install_instructions.png" alt="The RStudio IDE" width="80%" />
 <p class="caption">
 Figure 2.3: The RStudio IDE
@@ -259,7 +259,7 @@ Figure 2.3: The RStudio IDE
 <div id="the-lower-right-pane" class="section level3" number="2.3.3">
 <h3><span class="header-section-number">2.3.3</span> The lower right pane</h3>
 <p>There are many tabs in the lower right pane and you’ll use most of them on a daily basis. The files tab shows you all the files in your current working directory (the file that R is paying attention to right now). The plots pane shows your plots, assuming you haven’t told R to send them somewhere else. Lastly, the help pane will show you R’s (very useful) help documentation, anytime you put a <code>?</code> in front of a command (e.g., <code>?lm()</code> brings up the help file for the <code>lm()</code> command).</p>
-<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-4"></span>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-5"></span>
 <img src="images/rstudio.png" alt="The RStudio IDE" width="80%" />
 <p class="caption">
 Figure 2.4: The RStudio IDE
@@ -298,7 +298,7 @@ Figure 2.4: The RStudio IDE
 <p>The quickest way to get your data into your project folder, is simply to copy/paste the <code>winequality-red.csv</code> you downloaded in Step 1 into your Red Wine Practice folder.</p>
 <p>Where is that practice folder? Again, you can get the full path for your project folder simply by typing <code>getwd()</code> into the R console on the lower left and hitting ENTER.</p>
 <p>To check whether your copy/paste operation worked, your can type <code>list.files()</code> into the R console. If it worked, you should see it listed along with your <code>Red Wine Practice.Rproj</code></p>
-<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-5"></span>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-6"></span>
 <img src="images/rproj_data_import.png" alt="Checking the copy/paste operation worked with `list.files()`" width="100%" />
 <p class="caption">
 Figure 2.5: Checking the copy/paste operation worked with <code>list.files()</code>
@@ -317,7 +317,7 @@ Figure 2.5: Checking the copy/paste operation worked with <code>list.files()</co
 <li>Inside your newly saved file, change the title from “R Notebook” to something more descriptive like “My first wine analysis.”</li>
 <li>Lastly, RStudio gave us a bunch of boilerplate code. We won’t need that today, so delete everything below the second <code>---</code> at the top of the page, right under <code>output: html_notebook</code>. Your final document should then look something like the following.</li>
 </ol>
-<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-6"></span>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-7"></span>
 <img src="images/rmarkdown_setup.png" alt="What your Rmarkdown file should look like before we start coding" width="80%" />
 <p class="caption">
 Figure 2.6: What your Rmarkdown file should look like before we start coding
@@ -331,7 +331,7 @@ Figure 2.6: What your Rmarkdown file should look like before we start coding
 <li>Anywhere below line 4, type a note to yourself like “This is where I imported the data.”</li>
 <li>Move your curser to a line below that note you just wrote (e.g., line 8). Then, press CTRL+ALT+I. This will create a grey codeblock.</li>
 </ol>
-<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-7"></span>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-8"></span>
 <img src="images/code_block.png" alt="Adding a note to yourself and a grey code block" width="80%" />
 <p class="caption">
 Figure 2.7: Adding a note to yourself and a grey code block
@@ -349,7 +349,7 @@ Figure 2.7: Adding a note to yourself and a grey code block
 <div id="step-7---look-inside-the-data" class="section level3" number="2.4.7">
 <h3><span class="header-section-number">2.4.7</span> Step 7 - Look inside the data</h3>
 <p>Make a new code block a few lines down from the last one. Then type just the name of your imported data and run the block. You should see a preview of your dataset. To scroll through the other variables in the dataset, press the right-facing triangle on the right side of the preview.</p>
-<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-10"></span>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-11"></span>
 <img src="images/data_view.png" alt="Preview of the data" width="80%" />
 <p class="caption">
 Figure 2.8: Preview of the data
@@ -361,8 +361,8 @@ Figure 2.8: Preview of the data
 <p>I think I’m most interested in the final variable in the dataset, <code>quality</code>. In this case, that is the quality of the wine - rated by professionals on a scale of 1 to 10. Let’s see what the distribution looks like. For that we can use the <code>hist()</code> command (short for “histogram”).</p>
 <p>But what should we give our <code>hist()</code> command? We unfortunately can’t give it the whole dataset. After all, we only want a histogram of one variable. How do we specify that variable? We use the “selection operator,” which we write as a <code>$</code>-symbol, like below.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="getting-started.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(my_data<span class="sc">$</span>quality)</span></code></pre></div>
-<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-11"></span>
-<img src="_main_files/figure-html/unnamed-chunk-11-1.png" alt="Histogram of wine quality ratings" width="80%" />
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-12"></span>
+<img src="_main_files/figure-html/unnamed-chunk-12-1.png" alt="Histogram of wine quality ratings" width="80%" />
 <p class="caption">
 Figure 2.9: Histogram of wine quality ratings
 </p>

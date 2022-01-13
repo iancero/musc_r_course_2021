@@ -18,8 +18,7 @@ github-repo: iancero/musc_r_course_2021
 
 This is textbook created during live discussion with the Squeglia Research Group of the Medical University of South Carolina. 
 
-- Use the **index on the left** to navigate from topic to topic
-- Use the **pencil/paper icon above** to suggest any changes, including typos or anything unclear along the way
+Use the **index on the left** to navigate from topic to topic.
 
 
 
