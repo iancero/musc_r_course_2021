@@ -1,0 +1,51 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+# Outline
+
+- Introduction to RStudio
+
+- Introduction to R
+
+- "Show folder in new window" trick
+
+- Locating files with list.files()
+
+```{r}
+list.files('data')
+```
+
+- Importing the intake dataset
+
+```{r}
+library(tidyverse)
+
+my_data <- read_csv('data/YCResearchAssessment_DATA_2021-11-05_2124.csv')
+```
+```{r}
+my_results <- lm(yc_gpa ~ yc_age + yc_indp_finances, data = my_data)
+
+
+summary(my_results)
+```
+
+
+- Basic data analysis
+
+- Installing packages
+
+```{r}
+# install.packages('tidyverse')
+```
+
+
+SPSS
+
+```{r}
+spss_data <- haven::read_spss('data/cancer.sav')
+```
+
+
+
