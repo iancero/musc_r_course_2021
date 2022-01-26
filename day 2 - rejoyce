@@ -1,0 +1,20 @@
+
+Coding conventions for making things pretty
+  Spaces
+  Enter 
+  named arguments
+
+Importing many datasets
+  Especially non-csv's
+
+Rmarkdown docs
+
+Magrittr pipes
+
+First row looks like description of variables, don't use slice, use skip
+
+pasting files
+importing multiple files
+getting rod of second row which is descriptor
+
+

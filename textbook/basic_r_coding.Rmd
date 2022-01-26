@@ -1,0 +1,525 @@
+# Basic R
+
+## Writing in R and Rmarkdown
+
+### Chatting with R
+
+Using R is just a chat with the computer.
+
+"Hey, R. What is $1 + 2$?"
+
+```{r}
+1 + 2
+```
+
+### Rmarkdown tricks
+
+- To make text **bold**, we add two \*\*s around it.
+- To make text *italicized*, we add just one \* around it.
+- If we need special characters (like \* or \$), then we just add a forward "\\" in front of them (but not behind).
+- Math symbols in your text are process with Latex, just put an "\$" before and after your math. Like this, \$y = x\$ becomes $y = x$. 
+
+### Code blocks
+
+To make a code block, press CTRL+ALT+I.
+
+```{r}
+banana <- 5
+banana + 1
+```
+
+
+## Variables
+
+Variables are values that I want to give names to and save for later.
+
+### The assignment operator
+
+We make variables with the `<-` operator. This is called the *assignment operator* because it assigns values on the right to names on the left. If I want to know what the value of a variable is, I can run it alone on its own line.
+
+```{r}
+my_special_var <- 1 + 2
+my_special_var
+```
+
+You can TECHNICALLY use `=` for assignment too. Never do this.  
+
+```{r}
+my_other_var = 12
+my_other_var + my_special_var
+```
+
+The `=` symbol gets also used for a few other things in R. So, using it to assign variables will make your code more confusing to you, when you go back to read it over later.
+
+### Numerics
+
+**Doubles**
+
+Doubles are decimal numbers, like $1.1, 2.2, 3.0$. If I make a number variable without doing anything special, R defaults to a double.
+
+```{r}
+a <- 1.1
+b <- 2.0
+is.double(a)
+is.double(b)
+```
+
+**Integers**
+
+Integers must have an `L` after them. That is how R knows that you don't want a double, but instead want a "long-capable integer".
+
+```{r}
+c <- 1L
+d <- 1
+is.integer(c)
+is.integer(d)
+```
+
+Here is a useful cheatsheet for the different numeric operators and how they behave.
+  
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+library(tidyverse)
+data.frame(
+  a = rep(10, 7),
+  b = rep(3, 7),
+  operator = c('+', '-', '*', '/', '^', '%/%', '%%')
+  ) %>%
+  mutate(
+    ex = paste(a, operator, b),
+    result = ex %>%
+      map(rlang::parse_expr) %>%
+      map(eval) %>%
+      unlist() %>%
+      round(3) %>%
+      formatC(digits = 3, format = 'f', drop0trailing = T)
+  ) %>%
+  select(-a, -b) %>%
+  knitr::kable(
+    col.names = c('Operator', 'Expression', 'Result'),
+    align = 'c')
+```
+  
+**Why care about the difference?**
+
+Almost 99% of the time, this wont matter. But, with big data, integers take up must less memory.
+
+```{r}
+my_integers <- seq(from = 1L, to = 1e6L, by = 1L)
+my_doubles <- seq(from = 1.0, to = 1e6, by = 1.0)
+object.size(my_integers)
+object.size(my_doubles)
+```
+
+Note here that although we are using only whole numbers from 1 to 1 million, the first sequence (`my_integers`) is stored as an integer and the second sequence (`my_doubles`) is stored as a number that may include decimals. This second case needs more space (twice as much) to be allocated in advance, even if we never use those decimal places.
+
+Again, this will almost never matter for most people, most of the time. However, it is good to be aware of for when your datasets get large (i.e., several million cases or more).
+
+### Characters
+
+Characters are text symbols and they are made with either \"\" or \'\', either works.
+
+```{r}
+a <- 'here is someone\'s text'
+b <- "here is more text"
+a
+b
+```
+
+To combine two strings, I use `paste()`.
+
+```{r}
+paste(a, b)
+```
+
+If I dont want a space, then I used `paste0()`.
+
+```{r}
+paste0(a, b)
+```
+
+### Booleans
+
+These are True and False values. You make them with the symbols `T` or `TRUE` and `F` or `FALSE`.
+
+```{r}
+x <- T
+y <- F
+```
+
+To compare them, we can use three operators.
+
+- `&` is "and"
+- `|` is "or"
+- `!` is "not" (just give me the opposite of whatever is after me)
+
+```{r}
+x & y # false
+x | y # true
+x & !y # true
+```
+
+We can also have nested equations
+
+```{r}
+z <- F
+x & !(y | z) # true
+```
+
+We can also compare numbers.
+
+```{r}
+a <- 1
+b <- 2
+```
+
+```{r}
+a < 1
+a <= 1
+a == 1
+```
+
+If I want to compare multiple numbers, I need to do it seperately.
+
+```{r}
+(a > 1) | (b > 1)
+```
+
+Remember that booleans are ultimately numeric values underneath.
+
+```{r}
+d <- T
+k <- F
+u <- 5
+d*u
+d*k
+as.numeric(d)
+as.numeric(k)
+```
+
+
+### Special types
+
+`NA` - missing
+    
+```{r}
+is.na(NA)
+```
+
+`NaN` - you did math wrong
+
+```{r}
+0/0
+```
+
+`Inf` - infinity
+
+```{r}
+-5/0
+```
+
+
+## Vectors
+
+R is built is on vectors. Vectors are collections of a bunch of values of the same type.
+
+```{r}
+my_vec <- c(1, 5, 3, 7)
+my_vec
+```
+
+If I try to put different types together, they go to the most primitive type (usually a character string).
+
+```{r}
+my_other_vec <- c(22, 'orange', T)
+my_other_vec
+```
+
+```{r}
+my_third_vec <- c(T, F, 35)
+my_third_vec
+```
+
+We can also missing values.
+
+```{r}
+my_fourth_vec <- c(1, 4, 5, NA)
+my_fourth_vec
+is.na(my_fourth_vec)
+```
+
+If I want to combine two vectors...
+
+```{r}
+a <- c(1, 2, 3)
+b <- c(3, 5, 7)
+c(a, b)
+```
+
+A brief example of matrices
+
+```{r}
+matrix(
+  data = c(a, b),
+  nrow = 2,
+  byrow = T)
+```
+
+Sometimes I want special vectors, direct sequences of numbers. There are two ways to do this. If all I want is a integer sequence (made of doubles), then I use the "`<first number>:<last number>`".
+
+```{r}
+1:5
+5:1
+```
+
+Other times, I need to count by something other than one, so I use `seq(from = <start>, to = <end>, by = <number to count by>)`
+
+```{r}
+seq(from = 1, to = 7, by = 1.3)
+```
+
+Hint: for brevity, I can leave off function parameter names, **as long as I enter them in order**
+
+```{r}
+seq(1, 7, by = 1.3)
+```
+
+If I add a constant to a vector, then they all go up by that constant.
+
+```{r}
+1:5 / 3
+```
+
+I can do math with equal-length sequences too.
+
+```{r}
+1:5 - seq(1, 4, by = .7)
+```
+
+But they **must** be equal lengths.
+
+```{r, error=TRUE}
+1:5 / 1:4
+```
+
+To access the elements of a vector, I put a number OR booleans in brackets `[]`.
+
+```{r}
+my_vec <- c('apple', 'orange', 'banana', 'pair')
+my_vec[2]
+```
+
+```{r}
+my_vec[2:4]
+```
+
+```{r}
+my_vec[c(3, 2, 1, 4)]
+```
+
+
+I can also use bools.
+
+```{r}
+my_other_vec <- c(1, 4, 6, 7, 9, 3, 9)
+my_other_vec < 5
+my_other_vec[my_other_vec < 5]
+```
+
+I can also use functions that return values to access vectors, if I am creative...
+
+```{r}
+my_other_vec[max(my_other_vec) == my_other_vec]
+```
+
+R also has special vectors that are pre-loaded. The most commonly used are `letters` and `LETTERS`, which return the lower-case letters and uppercase letters of the English alphabet, respectively.
+
+
+```{r}
+vec <- c(1, 3, 4, 5, 3, 2, NA)
+mean(vec, na.rm = T)
+```
+
+## Lists
+
+<< More on lists to come >>
+
+Lists are special vectors that can hold multiple types of elements, even vectors
+
+```{r}
+my_vec <- c(4, 5, 6)
+my_list <- list(1, 'banana', 3, NA, my_vec)
+my_list
+```
+
+## Dataframes
+
+### Construction
+
+Dataframes are spreadsheets. Under the hood of R, they are just lists of vectors, where all the vectors are required to be the same length. To make one, you can call the `data.frame()` function and put your vectors inside.
+
+```{r}
+heights <- c(60, 65, 71, 72, 64)
+sexes <- c('female', 'female', 'male', 'male', 'female')
+shoes <- c('Adidas', 'Nike', 'Nike', 'Salvatore Ferragamo', 'Reebok')
+df <- data.frame(height = heights, sex = sexes, shoes = shoes)
+df
+```
+
+### Built-in dataframes
+
+R has numerous built-in datasets that are ideal for demonstration purposes. We can get access to them using the `data()` command. This will load the data into our session, so we can then look at it.
+
+```{r}
+data('mtcars')
+mtcars
+```
+
+Some datasets do not come in the form of a dataframe right away, but they can be converted into one using the `as.data.frame()` function.
+
+```{r}
+data(Seatbelts)
+is.data.frame(Seatbelts)
+```
+
+```{r}
+seatbelts_df <- as.data.frame(Seatbelts)
+is.data.frame(seatbelts_df)
+```
+
+
+## Functions
+
+A function is a piece of code that does work for you. It takes inputs and (usually) returns outputs. For example, the `sum()` function takes the sum of a numeric vector.
+
+```{r}
+my_vec <- c(3, 6, 2, 3)
+sum(my_vec)
+```
+
+### Getting help
+
+If I ever need to know something about a function, I can put a question mark in front of it (no `()`s) and run that line. That will bring up the help document for that function.
+
+```{r}
+?sum
+```
+
+### Function parameters
+
+In addition to the data they take as input, most functions have additional *parameters* (sometimes called "arguments", but they mean the same thing). Looking at its help file, the `sum()` function has two parameters:
+
++ `...`, the numbers you want to sum
++ `na.rm = FALSE`, which tells `sum()` whether you want to remove ('rm') missing values ('na') before summing. 
+
+Let's look at what happens when we try to `sum()` a vector with a missing value.
+
+```{r}
+my_vec <- c(5, NA, 2, 3) # should be 10
+sum(my_vec)
+```
+
+R tells us the answer is missing (`NA`) because at least one of the vector elements is missing. This is to be conservative and to force you never to ignore missing values by accident. But what do we do if we really do want to sum all available values, ignoring the missing values.
+
+Again, looking at the help file, we can see that the `na.rm` parameter of the function is followed by  `= FALSE`, under the **Usage** heading of that help document (look for `sum(..., na.rm = FALSE)`). This tells us that the parameter `na.rm`, which tells `sum()` whether to remove missing values from the calulation, defaults to `FALSE`. 
+
+To get `sum()` to ignore the missing values in our vector, we simply set `na.rm` to `TRUE` (or `T` for short).
+
+```{r}
+sum(my_vec, na.rm = T) # should be 10
+```
+
+## Packages
+
+Packages are collections of functions that someone else put together for you. You can install them using the `install.packages()` function, with the name of your package inside the `()` - don't forget to use either single (`' '`) or double quotes (`" "`) around the package name too.
+
+```{r, eval=FALSE}
+install.packages('ggplot2')
+```
+
+Once installed, use the `library()` function to load your package into your R session. Note, you don't need quotes here.
+
+```{r}
+library(ggplot2)
+```
+
+## Error messages
+
+Whenever R detects that something has gone wrong, it will send you an error message in the form of some scary-looking red text.
+
+```{r, error=TRUE}
+'100' / '2' # trying to divide two strings
+```
+Unfortunately, R is not especially smart and is usually bad at detecting exactly WHAT has gone wrong. In this case, all it knows is that `/` needs two numbers - one on either side - to work correctly. It detected something other than that, which is what it told us: there was a non-numeric argument (input) SOMEWHERE on either side of the `/` symbol.
+
+Stumbling on an error and getting stuck is especially common. It's also common to get frustrated when you are stuck with the same error for more than a few minutes. For that reason, if you can't solve an error after a few quick tries, it's best NOT to beat your head against the wall. Instead, go to a place like [**https://stackoverflow.com/**](https://stackoverflow.com/), which is a website devoted entirely to answering questions - most of which are about coding errors just like yours.
+
+Simply copy and paste your error into the search box and look for someone who asked your question already. You'll notice that many people have had your same problem and have even produced some code you can copy/paste to fix your current issue.
+
+
+## Coding Conventions
+
+R is a language, much like English or Spanish. It sometimes has rules for how you MUST say something in order for your computer to understand at all. For example, R won't let you add a number and a letter together because that wouldn't make sense mathematically.
+
+```{r, error=TRUE}
+1 + 'a'
+```
+Other times, R will let you do the same thing in more than one way. For example, I can name my variables with a mixture of capitals and lower-case letters.
+
+```{r}
+apple <- 123
+BANANANA <- 456
+ClEmEnTiNe <- 789
+```
+
+Some of these options might be more confusing than others, but R will technically let you do them.
+
+Other examples include using `<-` or `=` to assign values to variables. As discussed above, both with work.
+
+```{r}
+peas <- 'tasty'
+carrots = 'also tasty'
+```
+
+### What should my code look like?
+
+Whenever there are multiple options for how to code, it's worth thinking about whether one will be better for you than the others. If you come up with a consistent rule over time - like "never use capital letters in function names" - you've developed some **coding conventions**. These achieve a few things for you, but mostly we develop these informal language rules for clarity. 
+
+They make it easier for us to read our code, and for others to understand what we were doing when they look at our code later. Some common coding conventions most R users now employ are given below.
+
+#### Common coding conventions in R
+
+Never use `=` to assign variable values. Use the `<-` operator instead because it is more clear.
+
+```{r}
+a = 2 # bad
+
+a <- 2 # good
+```
+
+Avoid using `.` to seperate words in your variable and function names because this makes it hard for people who come from other coding langauages to understand us. Use `_` instead.
+
+```{r}
+my.favorite.number <- 3.14159 # bad
+
+my_favorite_number <- 3.14159 # good
+```
+
+Whenever possible, stick to lower-case variable names. It will make it easier for you to reference your variables later, without accidentally making a capitalization error. 
+
+```{r}
+apple <- 123 # good 
+BANANANA <- 456 # bad
+ClEmEnTiNe <- 789 # bad
+```
+
+Whenever possible, try to use single-quotes (`'`) for character strings, rather than double quotes (`"`). Single quotes are easier on your eyes when you are looking at a page full of code.
+
+```{r}
+peas <- "tasty" # bad
+carrots = 'also tasty' # good
+```
+
+### Official coding conventions
+
+Coding conventions are so important, that many people have tried to publish some. You can think of these like stlye guides that many people agreed to use. The one most relevant to our own work here is Hadley Wickham's guide at [**https://style.tidyverse.org/**](https://style.tidyverse.org/). 
+

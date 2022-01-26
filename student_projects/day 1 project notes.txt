@@ -1,0 +1,54 @@
+Random forest - Rejoyce - grad school cacoon - clinical psych intern
+
+	"Machine learning day - Random forests"
+	Latter end of things
+	Machine learning, random forest
+		Predict start using substance use across two year period
+
+
+LM/GLM - Brittney Bryant - Assistant proff on K12, working on K23
+	
+	Linear and generalized linear models
+	School discipline
+	Baseline data for school suspensions, racial disparities
+	Higher rates of suspensions among black and multiracial children
+	Want to redo that process for years one and two (not just baseline)
+	Are there subjective / objective reasons
+	Linear and generalized linear models
+
+SEM - Kathryn - less of a concrete idea, post doc fellow - graduated clinical psych
+	
+	Longitudinal data sets
+	Latent growth curves, latent profile analyses, latent transition analysis
+	Predicting transition into substance use initiation (first substance use)	
+
+
+Multilevel models, datavis -  Pam - epidemiologist, long time stats devotee, newest to the group. Graduate of UR
+
+	Air pollution associated with mental health
+	Mixed effects lienar regression (hopefully continuous outcome, but maybe binary)
+	Job is statistics
+	Really interested in visualization
+
+LM / Multilevel models - Britney Browning - nuero student - 
+	ABCD datset sleep disturbances at baseline associated with substance use at time 1
+
+
+Chi-squares and t-tests ,Anna Kirkland - post doc at MUSC in 2nd year, graduated from American in neuro
+	Data from substudy of ABCD and not available yet
+	Re-working ideas
+		Mainly looking at differences in grey matter volume, white matter integrity
+			among kids with substance use, eating disorders
+
+categorical regression predictors, pivoting - Alexis - phd in 2020 (clinical science) - NIAAA T32
+	Clinical assistant professor, 100% clinical
+	Self regulation and different diagnoses lead to substance use later
+	Most work is transdiagnostic
+	Multilevel models
+	How to work with categorical data in regression context
+
+
+Make sure to do dummy coding in LM/GLM, but also managing potentially hundreds of demographic categories
+	Sex, race, ethnicity in ABCD
+	Interactions
+	

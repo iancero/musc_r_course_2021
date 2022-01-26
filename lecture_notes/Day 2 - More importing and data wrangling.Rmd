@@ -1,0 +1,106 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+library(tidyverse)
+
+set.seed(1234567)
+
+df <- expand.grid(id = 1:50, race = c('asian', 'black', 'white', 'aian')) %>% 
+  group_by(id) %>% 
+  mutate(
+    race_true = sample(c(1, 0), size = n(), replace = T, prob = c(.30, .70))) %>% 
+  pivot_wider(
+    id_cols = 'id',
+    names_from = 'race',
+    values_from = 'race_true') %>% 
+  ungroup() %>% 
+  mutate(
+    sex = sample(
+      c('male', 'female', 'other'), size = n(), replace = T, prob = c(.48, .48, .2)),
+    anx_1 = round(runif(n(), 1, 5)),
+    anx_2 = round(runif(n(), 1, 5)),
+    anx_3 = round(runif(n(), 1, 5)),
+    anx_4 = round(runif(n(), 1, 5)),
+    anx_total = anx_1 + anx_2 + anx_3 + anx_4,
+    dep_1 = round(runif(n(), 1, 5)),
+    dep_2 = round(runif(n(), 1, 5)),
+    dep_3 = round(runif(n(), 1, 5)),
+    dep_4 = round(runif(n(), 1, 5)),
+    dep_total = dep_1 + dep_2 + dep_3 + dep_4,
+    age = .15*anx_total + .25*dep_total + rnorm(n()),
+    age = (age - mean(age)/sd(age)),
+    age = round(age*3 + 15),
+    age = ifelse(runif(n()) < .10, NA, age))
+
+df
+```
+
+```{r}
+write_csv(df, 'data/my_practice_data2.csv')
+write_delim(df, 'data/my_messy_practice_data2.txt', delim = ' ', na = '-999')
+```
+
+
+
+
+
+
+```{r}
+library(tidyverse)
+
+df <- read_csv('data/my_practice_data2.csv')
+
+hist(df$age)
+
+fit <- lm(dep_total ~ age + white, data = df)
+
+summary(fit)
+```
+
+Unusual delimeter
+
+2nd row header
+
+Missing data as -999
+
+Gender as factor, with cases to exclude
+
+Interaction gender with age
+
+```{r}
+temp_df <- read_delim('data/my_messy_practice_data2.txt')
+my_colnames <- names(temp_df)
+
+df <- read_delim(
+  file = 'data/my_messy_practice_data2.txt', 
+  skip = 2, 
+  col_names = my_colnames,
+  na = '-999')
+
+
+df %>% 
+  mutate(
+    anx_total = anx_1 + anx_2 + anx_3 + anx_4,
+    dep_total = dep_1 + dep_2 + dep_3 + dep_4,
+    multiracial = (asian + black + white + aian) > 1,
+    other_race = (asian + black + white + aian) == 0,
+    sex = factor(sex, levels = c('female', 'male', 'other'))) %>% 
+  filter(sex != 'other')
+
+df
+```
+
+
+```{r}
+df 
+```
+
+
+
+
+
+
+
