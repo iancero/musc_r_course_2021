@@ -1,0 +1,15 @@
+---
+title: "Day 3 Exercise"
+output: pdf_document
+---
+
+## Practice 1
+
+1. Import the white wine quality dataset
+2. Make a histogram of at least one variabe
+3. Run (and summarize) a regression with at least one outcome and two predictors
+
+
+## Practice 2
+
+1. Import an ABCD dataset into R, using `read_delim()`, `filter()`, and `type_convert()`.

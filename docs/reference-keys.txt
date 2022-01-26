@@ -50,9 +50,14 @@ functions
 getting-help
 function-parameters
 packages
+error-messages
 coding-conventions
-which-way-should-i-do-it
+what-should-my-code-look-like
 common-coding-conventions-in-r
 official-coding-conventions
-what-should-my-code-look-like
-error-messages
+working-with-abcd
+importing-abcd-datafiles
+whats-different-about-abcd
+so-then-how-do-i-import-abcd-data
+copypaste-able-code
+walking-through-abcd-data-importation

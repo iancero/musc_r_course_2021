@@ -3,4 +3,10 @@ title: "R Notebook"
 output: html_notebook
 ---
 
-Brief summary of coding and syntax, and common errors
+1 - Importing wine and running first analysis
+
+  Activity - import the white wine dataset and run another regression with a historgram
+  
+2 - Importing ABCD datasets
+
+  Activity - import one of your own ABCD datasets and see if it works

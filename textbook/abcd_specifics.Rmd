@@ -1,0 +1,61 @@
+# Working with ABCD
+
+In this section, we'll add specific content for the ABCD dataset issues as we uncover them over time.
+
+## Importing ABCD datafiles
+
+One of the trickiest parts of working with the ABCD dataset is just getting the data into R. Under most circumstances, getting a file into R is as simple as loading the `tidyverse` and telling the `read_csv()` function where to look for your data.
+
+```{r, warning=FALSE, message=FALSE}
+library(tidyverse)
+
+wine_df <- read_csv('data/winequality-red.csv')
+
+head(wine_df)
+```
+
+### What's different about ABCD?
+
+There are a few things that are unique about ABCD datasets that make them a little bit harder to import than normal:
+
+1. They are tab-delimited, rather than comma delimited. This means that when they were being saved, the variables in the file were seperated by a tab (specifically, they were separated by the symbol "\\t"), rather than a comma (","). In principle, there is nothing wrong with this. It is just a little unusual and so we need to use a special import function to deal with it (specifically, `read_delim()`.
+
+2. The more complex problem is that ABCD datasets have - in an effort to be helpful - have variable names in the first row of data and variable descriptions in the second row. This confuses R, which is expecting the variable names to be in the first row only, then the data to start in the second row.
+
+### Walking through ABCD data importation
+
+We'll do this in a few steps. If you're just looking to copy/paste the code, then skip to the end of this section. If you're looking for information about why we are doing what we are doing, then keep reading.
+
+First, notice that we need to use the `read_delim()` command, rather than the usual `read_csv()`. This tells R we are expecting a delimited file. We also tell that function we are expecting the delimeter to be a tab (`delim = '\t'`), which we could figure out by opening the raw data in a basic text editor, like Notepad, and looking at it. 
+
+```{r, message=FALSE, warning=FALSE}
+abcd_df <- read_delim('data/abcd_screen02.txt', delim = '\t')
+
+head(abcd_df)
+```
+We made some progress, but unfortunately, we've got these variable descriptors stuck in the top row of our data now. To get rid of them, we can re-assign the value of `abcd_df` to be a version of itself without it's first row.
+
+```{r}
+abcd_df <- abcd_df %>%
+  filter(row_number() != 1)
+  
+head(abcd_df)
+```
+That helped, but R still thinks that all of our variables are character strings. We need to tell R that some of our variables might be numbers and that we want it to guess which ones those are. We can do that with the very handy `type_convert()` function.
+
+```{r, message=FALSE, warning=FALSE}
+abcd_df <- type_convert(abcd_df)
+
+head(abcd_df)
+```
+### Copy/paste-able code
+
+Putting it all together, we can import an ABCD dataset like so.
+
+```{r, eval=FALSE, message=FALSE, warning=FALSE}
+abcd_df <- read_delim('data/abcd_screen02.txt', delim = '\t') %>% 
+  filter(row_number() != 1) %>% 
+  type_convert()
+```
+
+

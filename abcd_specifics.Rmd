@@ -1,6 +1,0 @@
-# Working with ABCD
-
-In this section, we'll add specific uncover for the ABCD dataset as we uncover them.
-
-## Importing ABCD datafiles
-

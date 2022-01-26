@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Page not found | An Organic R Textbook</title>
+  <title>4 Working with ABCD | An Organic R Textbook</title>
   <meta name="description" content="This is the organic textbook accompanying Cero’s 2021 course on statistical programming with R" />
   <meta name="generator" content="bookdown 0.24 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Page not found | An Organic R Textbook" />
+  <meta property="og:title" content="4 Working with ABCD | An Organic R Textbook" />
   <meta property="og:type" content="book" />
   <meta property="og:url" content="https://iancero.github.io/musc_r_course_2021" />
   
@@ -16,7 +16,7 @@
   <meta name="github-repo" content="iancero/musc_r_course_2021" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Page not found | An Organic R Textbook" />
+  <meta name="twitter:title" content="4 Working with ABCD | An Organic R Textbook" />
   
   <meta name="twitter:description" content="This is the organic textbook accompanying Cero’s 2021 course on statistical programming with R" />
   
@@ -31,7 +31,7 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon" />
-
+<link rel="prev" href="basic-r.html"/>
 
 <script src="libs/header-attrs-2.11/header-attrs.js"></script>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
@@ -227,18 +227,117 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="page-not-found" class="section level1">
-<h1>Page not found</h1>
-<p>The page you requested cannot be found (perhaps it was moved or renamed).</p>
-<p>You may want to try searching to find the page's new location, or use
-the table of contents to find the page you are looking for.</p>
+<div id="working-with-abcd" class="section level1" number="4">
+<h1><span class="header-section-number">4</span> Working with ABCD</h1>
+<p>In this section, we’ll add specific content for the ABCD dataset issues as we uncover them over time.</p>
+<div id="importing-abcd-datafiles" class="section level2" number="4.1">
+<h2><span class="header-section-number">4.1</span> Importing ABCD datafiles</h2>
+<p>One of the trickiest parts of working with the ABCD dataset is just getting the data into R. Under most circumstances, getting a file into R is as simple as loading the <code>tidyverse</code> and telling the <code>read_csv()</code> function where to look for your data.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="working-with-abcd.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-2"><a href="working-with-abcd.html#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="working-with-abcd.html#cb1-3" aria-hidden="true" tabindex="-1"></a>wine_df <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">&#39;data/winequality-red.csv&#39;</span>)</span>
+<span id="cb1-4"><a href="working-with-abcd.html#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="working-with-abcd.html#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(wine_df)</span></code></pre></div>
+<pre><code>## # A tibble: 6 x 12
+##   `fixed acidity` `volatile acidity` `citric acid` `residual sugar` chlorides `free sulfur dioxide`
+##             &lt;dbl&gt;              &lt;dbl&gt;         &lt;dbl&gt;            &lt;dbl&gt;     &lt;dbl&gt;                 &lt;dbl&gt;
+## 1             7.4               0.7           0                 1.9     0.076                    11
+## 2             7.8               0.88          0                 2.6     0.098                    25
+## 3             7.8               0.76          0.04              2.3     0.092                    15
+## 4            11.2               0.28          0.56              1.9     0.075                    17
+## 5             7.4               0.7           0                 1.9     0.076                    11
+## 6             7.4               0.66          0                 1.8     0.075                    13
+## # ... with 6 more variables: total sulfur dioxide &lt;dbl&gt;, density &lt;dbl&gt;, pH &lt;dbl&gt;, sulphates &lt;dbl&gt;,
+## #   alcohol &lt;dbl&gt;, quality &lt;dbl&gt;</code></pre>
+<div id="whats-different-about-abcd" class="section level3" number="4.1.1">
+<h3><span class="header-section-number">4.1.1</span> What’s different about ABCD?</h3>
+<p>There are a few things that are unique about ABCD datasets that make them a little bit harder to import than normal:</p>
+<ol style="list-style-type: decimal">
+<li><p>They are tab-delimited, rather than comma delimited. This means that when they were being saved, the variables in the file were seperated by a tab (specifically, they were separated by the symbol “\t”), rather than a comma (“,”). In principle, there is nothing wrong with this. It is just a little unusual and so we need to use a special import function to deal with it (specifically, <code>read_delim()</code>.</p></li>
+<li><p>The more complex problem is that ABCD datasets have - in an effort to be helpful - have variable names in the first row of data and variable descriptions in the second row. This confuses R, which is expecting the variable names to be in the first row only, then the data to start in the second row.</p></li>
+</ol>
+</div>
+<div id="walking-through-abcd-data-importation" class="section level3" number="4.1.2">
+<h3><span class="header-section-number">4.1.2</span> Walking through ABCD data importation</h3>
+<p>We’ll do this in a few steps. If you’re just looking to copy/paste the code, then skip to the end of this section. If you’re looking for information about why we are doing what we are doing, then keep reading.</p>
+<p>First, notice that we need to use the <code>read_delim()</code> command, rather than the usual <code>read_csv()</code>. This tells R we are expecting a delimited file. We also tell that function we are expecting the delimeter to be a tab (<code>delim = '\t'</code>), which we could figure out by opening the raw data in a basic text editor, like Notepad, and looking at it.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="working-with-abcd.html#cb3-1" aria-hidden="true" tabindex="-1"></a>abcd_df <span class="ot">&lt;-</span> <span class="fu">read_delim</span>(<span class="st">&#39;data/abcd_screen02.txt&#39;</span>, <span class="at">delim =</span> <span class="st">&#39;</span><span class="sc">\t</span><span class="st">&#39;</span>)</span>
+<span id="cb3-2"><a href="working-with-abcd.html#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="working-with-abcd.html#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(abcd_df)</span></code></pre></div>
+<pre><code>## # A tibble: 6 x 41
+##   collection_id abcd_screen02_id dataset_id subjectkey  src_subject_id  interview_date  interview_age
+##   &lt;chr&gt;         &lt;chr&gt;            &lt;chr&gt;      &lt;chr&gt;       &lt;chr&gt;           &lt;chr&gt;           &lt;chr&gt;        
+## 1 collection_id abcd_screen02_id dataset_id The NDAR G~ Subject ID how~ Date on which ~ Age in month~
+## 2 2573          6579             47156      NDAR_INV0C~ NDAR_INV0CZBUV~ 07/19/2019      136          
+## 3 2573          6581             47156      NDAR_INV0D~ NDAR_INV0D4C1R~ 03/10/2019      154          
+## 4 2573          6588             47156      NDAR_INV0D~ NDAR_INV0DKWEM~ 11/30/2019      152          
+## 5 2573          6594             47156      NDAR_INV0E~ NDAR_INV0E350J~ 12/16/2019      137          
+## 6 2573          6609             47156      NDAR_INV0F~ NDAR_INV0FM9MU~ 11/27/2019      140          
+## # ... with 34 more variables: sex &lt;chr&gt;, eventname &lt;chr&gt;, scrn2_select_language___1 &lt;chr&gt;,
+## #   scrn_braces_v2 &lt;chr&gt;, scrn_future_braces &lt;chr&gt;, scrn_bracesdate_v2 &lt;chr&gt;,
+## #   scrn_bracescallback_v2 &lt;chr&gt;, scrn_nr_hair_v2 &lt;chr&gt;, scrn_nr_hair_metal_v2 &lt;chr&gt;,
+## #   scrn_nr_hair_remove &lt;chr&gt;, scrn_nr_hair_date_v2 &lt;chr&gt;, scrn_nr_hair_callback_v2 &lt;chr&gt;,
+## #   scrn_eyeliner_v2 &lt;chr&gt;, scrn_nr_piercing_v2 &lt;chr&gt;, scrn_nr_piercing_remove &lt;chr&gt;,
+## #   scrn_nr_piercing_date &lt;chr&gt;, scrn_nr_piercing_callback &lt;chr&gt;, scrn_surgery_v2 &lt;chr&gt;,
+## #   scrn_height_v2 &lt;chr&gt;, scrn_weight_v2 &lt;chr&gt;, scrn_concerns &lt;chr&gt;, scrn_concerns_desc &lt;chr&gt;, ...</code></pre>
+<p>We made some progress, but unfortunately, we’ve got these variable descriptors stuck in the top row of our data now. To get rid of them, we can re-assign the value of <code>abcd_df</code> to be a version of itself without it’s first row.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="working-with-abcd.html#cb5-1" aria-hidden="true" tabindex="-1"></a>abcd_df <span class="ot">&lt;-</span> abcd_df <span class="sc">%&gt;%</span></span>
+<span id="cb5-2"><a href="working-with-abcd.html#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">row_number</span>() <span class="sc">!=</span> <span class="dv">1</span>)</span>
+<span id="cb5-3"><a href="working-with-abcd.html#cb5-3" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb5-4"><a href="working-with-abcd.html#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(abcd_df)</span></code></pre></div>
+<pre><code>## # A tibble: 6 x 41
+##   collection_id abcd_screen02_id dataset_id subjectkey    src_subject_id interview_date interview_age
+##   &lt;chr&gt;         &lt;chr&gt;            &lt;chr&gt;      &lt;chr&gt;         &lt;chr&gt;          &lt;chr&gt;          &lt;chr&gt;        
+## 1 2573          6579             47156      NDAR_INV0CZB~ NDAR_INV0CZBU~ 07/19/2019     136          
+## 2 2573          6581             47156      NDAR_INV0D4C~ NDAR_INV0D4C1~ 03/10/2019     154          
+## 3 2573          6588             47156      NDAR_INV0DKW~ NDAR_INV0DKWE~ 11/30/2019     152          
+## 4 2573          6594             47156      NDAR_INV0E35~ NDAR_INV0E350~ 12/16/2019     137          
+## 5 2573          6609             47156      NDAR_INV0FM9~ NDAR_INV0FM9M~ 11/27/2019     140          
+## 6 2573          6630             47156      NDAR_INV0HFH~ NDAR_INV0HFHM~ 11/12/2020     152          
+## # ... with 34 more variables: sex &lt;chr&gt;, eventname &lt;chr&gt;, scrn2_select_language___1 &lt;chr&gt;,
+## #   scrn_braces_v2 &lt;chr&gt;, scrn_future_braces &lt;chr&gt;, scrn_bracesdate_v2 &lt;chr&gt;,
+## #   scrn_bracescallback_v2 &lt;chr&gt;, scrn_nr_hair_v2 &lt;chr&gt;, scrn_nr_hair_metal_v2 &lt;chr&gt;,
+## #   scrn_nr_hair_remove &lt;chr&gt;, scrn_nr_hair_date_v2 &lt;chr&gt;, scrn_nr_hair_callback_v2 &lt;chr&gt;,
+## #   scrn_eyeliner_v2 &lt;chr&gt;, scrn_nr_piercing_v2 &lt;chr&gt;, scrn_nr_piercing_remove &lt;chr&gt;,
+## #   scrn_nr_piercing_date &lt;chr&gt;, scrn_nr_piercing_callback &lt;chr&gt;, scrn_surgery_v2 &lt;chr&gt;,
+## #   scrn_height_v2 &lt;chr&gt;, scrn_weight_v2 &lt;chr&gt;, scrn_concerns &lt;chr&gt;, scrn_concerns_desc &lt;chr&gt;, ...</code></pre>
+<p>That helped, but R still thinks that all of our variables are character strings. We need to tell R that some of our variables might be numbers and that we want it to guess which ones those are. We can do that with the very handy <code>type_convert()</code> function.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="working-with-abcd.html#cb7-1" aria-hidden="true" tabindex="-1"></a>abcd_df <span class="ot">&lt;-</span> <span class="fu">type_convert</span>(abcd_df)</span>
+<span id="cb7-2"><a href="working-with-abcd.html#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="working-with-abcd.html#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(abcd_df)</span></code></pre></div>
+<pre><code>## # A tibble: 6 x 41
+##   collection_id abcd_screen02_id dataset_id subjectkey    src_subject_id interview_date interview_age
+##           &lt;dbl&gt;            &lt;dbl&gt;      &lt;dbl&gt; &lt;chr&gt;         &lt;chr&gt;          &lt;chr&gt;                  &lt;dbl&gt;
+## 1          2573             6579      47156 NDAR_INV0CZB~ NDAR_INV0CZBU~ 07/19/2019               136
+## 2          2573             6581      47156 NDAR_INV0D4C~ NDAR_INV0D4C1~ 03/10/2019               154
+## 3          2573             6588      47156 NDAR_INV0DKW~ NDAR_INV0DKWE~ 11/30/2019               152
+## 4          2573             6594      47156 NDAR_INV0E35~ NDAR_INV0E350~ 12/16/2019               137
+## 5          2573             6609      47156 NDAR_INV0FM9~ NDAR_INV0FM9M~ 11/27/2019               140
+## 6          2573             6630      47156 NDAR_INV0HFH~ NDAR_INV0HFHM~ 11/12/2020               152
+## # ... with 34 more variables: sex &lt;chr&gt;, eventname &lt;chr&gt;, scrn2_select_language___1 &lt;dbl&gt;,
+## #   scrn_braces_v2 &lt;dbl&gt;, scrn_future_braces &lt;dbl&gt;, scrn_bracesdate_v2 &lt;chr&gt;,
+## #   scrn_bracescallback_v2 &lt;dbl&gt;, scrn_nr_hair_v2 &lt;dbl&gt;, scrn_nr_hair_metal_v2 &lt;dbl&gt;,
+## #   scrn_nr_hair_remove &lt;dbl&gt;, scrn_nr_hair_date_v2 &lt;lgl&gt;, scrn_nr_hair_callback_v2 &lt;lgl&gt;,
+## #   scrn_eyeliner_v2 &lt;dbl&gt;, scrn_nr_piercing_v2 &lt;dbl&gt;, scrn_nr_piercing_remove &lt;dbl&gt;,
+## #   scrn_nr_piercing_date &lt;lgl&gt;, scrn_nr_piercing_callback &lt;dbl&gt;, scrn_surgery_v2 &lt;dbl&gt;,
+## #   scrn_height_v2 &lt;dbl&gt;, scrn_weight_v2 &lt;dbl&gt;, scrn_concerns &lt;dbl&gt;, scrn_concerns_desc &lt;chr&gt;, ...</code></pre>
+</div>
+<div id="copypaste-able-code" class="section level3" number="4.1.3">
+<h3><span class="header-section-number">4.1.3</span> Copy/paste-able code</h3>
+<p>Putting it all together, we can import an ABCD dataset like so.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="working-with-abcd.html#cb9-1" aria-hidden="true" tabindex="-1"></a>abcd_df <span class="ot">&lt;-</span> <span class="fu">read_delim</span>(<span class="st">&#39;data/abcd_screen02.txt&#39;</span>, <span class="at">delim =</span> <span class="st">&#39;</span><span class="sc">\t</span><span class="st">&#39;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb9-2"><a href="working-with-abcd.html#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">row_number</span>() <span class="sc">!=</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb9-3"><a href="working-with-abcd.html#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">type_convert</span>()</span></code></pre></div>
+
+</div>
+</div>
 </div>
             </section>
 
           </div>
         </div>
       </div>
-
+<a href="basic-r.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
 
     </div>
   </div>
@@ -270,7 +369,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/iancero/musc_r_course_2021/edit/main/%s",
+"link": "https://github.com/iancero/musc_r_course_2021/edit/main/abcd_specifics.Rmd",
 "text": "Find a typo? Please suggest an edit"
 },
 "history": {
