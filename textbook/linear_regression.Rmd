@@ -1,0 +1,85 @@
+# Linear Regression
+
+Starter code!
+
+```{r}
+library(tidyverse)
+
+df <- read_delim('data/abcd_lpksad01.txt') %>% 
+  filter(row_number() != 1) %>% 
+  type_convert()
+
+
+
+df <- df %>% 
+  arrange(src_subject_id) %>% 
+  select(
+    id = src_subject_id, 
+    age = interview_age,
+    sex, 
+    is_bullied = kbi_p_c_bully_l,
+    grades = kbi_p_grades_in_school_l) %>% 
+  group_by(id) %>% 
+  arrange(age) %>% 
+  mutate(
+    time = row_number(),
+    n_timepoints = max(time),
+    is_bullied = ifelse(
+        test = is_bullied %in% c(1, 2),
+        yes = is_bullied,
+        no = NA) %>% 
+      factor(levels = c(1, 2), labels = c('yes', 'no'))) %>% 
+  ungroup() %>% 
+  filter(time == 1) %>%
+  filter(grades %in% 1:5) %>% 
+  select(id, age, sex, is_bullied, grades)
+```
+
+```{r}
+df <- df %>% 
+  mutate(
+    age = floor(age/12),
+    sex = factor(sex, levels = c('M', 'F'), ordered = F))
+```
+
+```{r}
+fit <- lm(
+  formula = grades ~ age*is_bullied + sex,
+  data = df)
+
+# fit$coefficients
+# 
+# fit$model
+# 
+# fit$fitted.values
+
+summary(fit)
+```
+
+
+```{r}
+broom::tidy(fit)
+broom::glance(fit)
+broom::augment(fit)
+
+my_results <- broom::tidy(fit)
+
+write_csv(my_results, 'my_results.csv')
+```
+
+
+```{r}
+df %>% 
+  group_by(age) %>% 
+  count()
+
+df %>% 
+  group_by(age) %>% 
+  nest() %>% 
+  mutate(
+    fit = map(data, ~ lm(grades ~ sex + is_bullied, data = .x)),
+    results = map(fit, broom::tidy)) %>% 
+  unnest(results) %>% 
+  select(-data, -fit)
+```
+

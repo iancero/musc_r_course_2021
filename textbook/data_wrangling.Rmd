@@ -1,0 +1,130 @@
+
+# Data Wrangling
+
+If rapid publication-ready figures is R's greatest advantage over other software packages, then rapid data manipulation is a close second. 
+
+
+## Base R
+
+As we already covered in an earlier chapter, R's base packages make quick work of performing the same operation for every item in a list of numbers. 
+
+```{r}
+my_vec <- c(5, 4, 3, 7)
+my_roots <- sqrt(my_vec)
+```
+
+To achieve the same thing in Python, you would need a much wordier list comprehension.
+
+```{python, eval = FALSE}
+my_vec = [5, 4, 3, 7]
+my_roots = [sqrt(num) for num in my_vec]
+```
+
+## The new way: `dplyr`
+
+Although the base R packages are effective on their own, they suffer from a few drawbacks. For one, they are not always consistent with one another. Moreover, data manipulation almost always involves several steps and the base R approach is not especially useful for making data manipulation pipelines.
+
+To solve these and many other problems, the `dplyr` (pronounced "DEE-ply-er") packages was developed with a consistent set of human-readable functions that always (a) take a dataframe as their first argument and (b) return a dataframe as their output. Together, this allows you to string them together in a convenient human-readable pipeline.
+
+Like `ggplot`, the `dplyr` package is "opinionated." It thinks that data manipulation should almost always be done a certain way. Specifically, if you are working with "rectangular" data - that is, data that can be cleanly expressed in the form of a spreadsheet - then you'll be able to accomplish almost all of your data manipulation with the following "verbs" (functions).
+
+## The only data verbs you'll ever need
+
+For simplicity, we'll again use the cancer dataset from the visualization chapter. We do this because, although an ABCD dataset would be more topical, they are often very large, which would make it hard to eye-ball whether our data manipulation went according to plan. 
+
+```{r}
+library(tidyverse)
+
+my_data <- haven::read_spss('data/cancer.sav')
+```
+
+### `rename()`
+
+The cancer dataset is great the way it is, simple and organized. But it has one feature we might want to change right away, which is its naming conventions.
+
+```{r}
+names(my_data)
+```
+
+To rename any one of these variables, simply call the `rename()` function, and tell it which old variable you want to give which new name. Don't forget to save your result into an object too, so that your changes don't disappear into nowhere.
+
+```{r}
+my_data <- my_data %>% 
+  rename(subject_id = ID, condition = TRT)
+
+names(my_data)
+```
+
+This is great if we just want to change a few variable names, but sometimes we want to change all of them in a particular way. For that, we can use `rename_with()`, which will apply a function to every variable name. For example, we might want to turn all of the variable names to lowercase. To achieve that, we just feed the `tolower()` function, which turns anything it comes across into lowercase, to the `rename_with()` function. Now all of our variable names are in the same case and we are less likely to make a mistake later.
+
+```{r}
+my_data <- my_data %>% 
+  rename_with(tolower)
+
+names(my_data)
+```
+
+### `select()`
+
+This verb allows you to retain only a subset of variables. You can do this by naming them explicitly...
+
+```{r}
+my_data %>% 
+  select(subject_id, condition, age)
+```
+
+... or by using one of `dplyr`'s "select helper" functions, like `starts_with()` and `ends_with()`.
+
+```{r}
+my_data %>% 
+  select(starts_with('total'))
+```
+
+### `mutate()`
+
+Assuming we have selected our major variables of interest, we can now use `mutate()` to change existing columns or make new ones. For example, if we wanted to compute the average of `totalcw2`, `totalcw4`, and `totalcw6`, we could do it like this. 
+
+
+```{r}
+my_data <- my_data %>% 
+  mutate(meanc = (totalcw2 + totalcw4 + totalcw6)/3)
+
+my_data %>% 
+  select(subject_id, meanc) %>% 
+  head()
+```
+
+### `group_by()` and `summarize()`
+
+These two verbs are technically distinct, but are almost always used in combination. To explain, `group_by()` tells R to do whatever comes NEXT separately for each group. In turn, `summarize()` is like `mutate()` in that it makes new columns; however, it makes new columns by **aggregating** information across rows in a given group. Thus, when using `summarize()` to make a new column, you will also end up with just one row per group, like so.
+
+```{r}
+my_data %>% 
+  group_by(condition, stage) %>% 
+  summarise(ave_weight = mean(weighin))
+```
+
+As you can see, we can group by multiple variables at the same time and quickly get the kind of information we would need for a demographics table - in this case, the average weight of subjects by both condition and cancer stage.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

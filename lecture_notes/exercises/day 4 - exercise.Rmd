@@ -1,0 +1,33 @@
+---
+title: "Day 4 Exercise"
+output: pdf_document
+---
+
+## Practice 1
+
+1. Import the `cancer.sav` dataset, using the `haven::read_spss()` command.
+2. With the `cancer.sav` dataset imported, reproduce this figure as precisely as possible.
+
+Hint: don't forget, you can consult Google and `vignette('ggplot2-specs')`
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+library(tidyverse)
+
+df <- haven::read_spss('data/cancer.sav')
+
+names(df) <- tolower(names(df))
+
+ggplot(df, aes(weighin, age)) +
+  geom_point(aes(size = stage), color = 'blue', shape = 1)
+```
+
+
+
+# Practice 2
+
+1. Make a scatterplot with some of your ABCD data.
+2. Make the figure publication ready by...
+    - Changing the theme to have a black background
+    - Making the whole figure greyscale
+    - Renaming the axes and legend
+3. Export your final product as a `.png` file.

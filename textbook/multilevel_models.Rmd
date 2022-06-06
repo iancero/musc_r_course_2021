@@ -1,0 +1,167 @@
+# Multilevel Models
+
+```{r}
+library(tidyverse)
+
+read_abcd <- function(abcd_path){
+  suppressMessages({
+    abcd_path %>% 
+      read_delim() %>% 
+      filter(row_number() != 1) %>% 
+      type_convert()  
+  })
+}
+
+df <- read_abcd('data/abcd_lpksad01.txt') %>% 
+  select(
+    id = src_subject_id, 
+    age = interview_age,
+    sex, 
+    grade_drop = kbi_p_c_drop_in_grades_l,
+    grades = kbi_p_grades_in_school_l) %>% 
+  group_by(id) %>% 
+  arrange(age) %>% 
+  mutate(
+    age = floor(age / 12),
+    sex = factor(sex, levels = c('M', 'F')),
+    time = row_number(),
+    n_timepoints = max(time),
+    grade_drop = factor(grade_drop, levels = c(1, 2), labels = c('yes', 'no'))) %>% 
+  ungroup() %>% 
+  filter(grades %in% 1:5) %>% 
+  select(id, age, sex, grades, grade_drop, time)
+
+
+df %>% 
+  group_by(grades) %>% 
+  count()
+```
+
+```{r}
+library(lme4)
+
+fit <- lmer(
+  formula = grades ~ age + sex + (1 | id),
+  data = df)
+
+summary(fit)
+```
+
+
+```{r, error=TRUE}
+broom::tidy(fit)
+broom.mixed::tidy(fit)
+```
+
+```{r}
+library(lmerTest)
+
+fit <- lmer(
+  formula = grades ~ age + sex + (1 | id),
+  data = df)
+
+summary(fit)
+broom.mixed::tidy(fit)
+```
+
+```{r}
+(0.649707040)^2 / ((0.649707040)^2 + (0.481237163)^2)
+
+performance::icc(fit)
+```
+
+```{r}
+df %>% 
+  filter(id %in% sample(id, size = 25)) %>% 
+  ggplot(aes(time, grades, group = id)) +
+  geom_jitter(alpha = .50) +
+  geom_smooth(method = 'lm', se = F, color = 'grey')
+```
+
+
+
+# Logistic mixed models
+
+```{r}
+fit <- glmer(
+  formula = grade_drop ~ age + sex + (1 | id),
+  data = df,
+  family = 'binomial')
+
+summary(fit)
+broom.mixed::tidy(fit)
+```
+
+# Bayesian models
+
+```{r, eval=FALSE}
+library(brms)
+
+sample_df <- df %>% 
+  filter(id %in% sample(id, 500))
+
+fit <- brm(
+  formula = grades ~ age + sex + (1 | id),
+  data = sample_df,
+  chains = 1,
+  prior = c(
+    set_prior('normal(0,5)', class = 'b'),
+    set_prior('cauchy(0,2)', class = 'sd')))
+```
+
+
+
+```{r, eval=FALSE}
+summary(fit)
+```
+
+
+
+
+```{r}
+broom::tidy(fit)
+```
+
+
+
+
+```{r, eval=FALSE}
+library(brms)
+
+sample_df <- df %>% 
+  filter(id %in% sample(id, 500))
+
+fit <- brm(
+  formula = grades ~ age + sex + age*sex + (1 | id),
+  data = sample_df,
+  chains = 1,
+  prior = c(
+    set_prior('normal(-3,1)', class = 'b'),
+    set_prior('cauchy(0,2)', class = 'sd')))
+
+broom::tidy(fit)
+```
+
+
+
+```{r, eval=FALSE}
+
+x <- as.data.frame(fit)
+
+
+x %>% 
+  select(starts_with('b_'), sd_id__Intercept, sigma) %>% 
+  summarise(across(.fns = mean))
+
+x %>% 
+  select(starts_with('b_'), sd_id__Intercept, sigma) %>% 
+  summarise(across(.fns = sd))
+
+x %>% 
+  select(starts_with('b_'), sd_id__Intercept, sigma) %>%
+  mutate(effect_of_sex = b_sexF*1 + `b_age:sexF`*1*9) %>% 
+  summarise(
+    effect_of_sex = mean(effect_of_sex),
+    p = sum(effect_of_sex < 0)/n())
+```
+

@@ -1,0 +1,123 @@
+# Logistic Regression
+
+Starter code!
+
+```{r}
+library(tidyverse)
+
+df <- read_delim('data/abcd_lpksad01.txt') %>% 
+  filter(row_number() != 1) %>% 
+  type_convert()
+
+
+df <- df %>% 
+  arrange(src_subject_id) %>% 
+  select(
+    id = src_subject_id, 
+    age = interview_age,
+    sex, 
+    num_hosp = kbi_ss_c_mental_health_p_l,
+    grades = kbi_p_grades_in_school_l) %>% 
+  group_by(id) %>% 
+  arrange(age) %>% 
+  mutate(
+    age = floor(age / 12),
+    sex = factor(sex, levels = c('M', 'F')),
+    time = row_number(),
+    n_timepoints = max(time)) %>% 
+  ungroup() %>% 
+  filter(time == 1) %>%
+  filter(grades %in% 1:5) %>% 
+  select(id, age, sex, grades, num_hosp)
+
+df
+```
+
+```{r}
+df <- df %>% 
+  mutate(ever_hosp = num_hosp > 0)
+```
+
+```{r}
+fit <- glm(
+  formula = ever_hosp ~ sex + age,
+  data = df,
+  family = 'binomial')
+
+summary(fit)
+
+results <- fit %>% 
+  broom::tidy() %>% 
+  mutate(or = exp(estimate)) %>% 
+  rename(b = estimate) %>% 
+  mutate(across(where(is.numeric), .fns = ~ round(.x, 3)))
+
+results
+
+write_csv(results, 'logistic_results')
+```
+
+```{r}
+predicted_vals <- fit %>%
+  broom::augment() %>% 
+  select(sex, age, log_odds = .fitted) %>% 
+  mutate(odds = exp(log_odds), p = odds/(1 + odds)) %>% 
+  unique() 
+ 
+ggplot(predicted_vals, aes(x = age, y = log_odds, color = sex)) +
+  geom_point() +
+  geom_line()
+
+ggplot(predicted_vals, aes(x = age, y = p, color = sex)) +
+  geom_point() +
+  geom_line()
+```
+
+
+```{r}
+df %>% 
+  group_by(sex, age, ever_hosp) %>% 
+  count()
+```
+
+
+
+
+```{r}
+read_abcd <- function(abcd_path){
+  suppressMessages({
+    abcd_path %>% 
+      read_delim() %>% 
+      filter(row_number() != 1) %>% 
+      type_convert()  
+  })
+}
+
+
+df <- list.files('data', pattern = 'abcd_', full.names = T) %>% 
+  map(read_abcd) %>% 
+  reduce(~ inner_join(.x, .y, by = c('subjectkey', 'interview_age')))
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

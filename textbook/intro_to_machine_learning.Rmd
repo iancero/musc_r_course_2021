@@ -1,0 +1,109 @@
+# Intro to machine learning
+
+```{r}
+library(tidyverse)
+library(tidymodels)
+
+read_abcd <- function(abcd_path){
+  suppressMessages({
+    abcd_path %>% 
+      read_delim() %>% 
+      filter(row_number() != 1) %>% 
+      type_convert()  
+  })
+}
+
+
+df <- read_abcd('data/abcd_lpksad01.txt') %>% 
+  rename(grade_drop = kbi_p_c_drop_in_grades_l) %>% 
+  filter(grade_drop %in% c(1, 2)) %>% 
+  mutate(grade_drop = factor(grade_drop, levels = c(1, 2), labels = c('yes', 'no'))) %>% 
+  group_by(subjectkey) %>% 
+  filter(interview_age == min(interview_age))
+
+
+df %>% 
+  group_by(grade_drop) %>% 
+  count()
+```
+
+```{r}
+names(df)
+```
+
+
+```{r}
+library(tidymodels)
+
+df_split <- initial_split(df, prop = .80)
+
+df_split
+
+df_split %>%
+  training()
+```
+
+
+
+```{r}
+df_recipe <- df_split %>% 
+  training() %>% 
+  recipe(grade_drop ~ .) %>% 
+  step_rm(ends_with('id') | matches('subjectkey')) %>% 
+  step_filter_missing(all_predictors(), threshold = 0) %>%
+  step_nzv(all_predictors()) %>% 
+  step_corr(all_numeric_predictors(), threshold = .50) %>%
+  prep()
+
+df_recipe
+```
+
+
+```{r}
+df_training <- df_recipe %>% 
+  juice()
+
+df_testing <- df_recipe %>% 
+  bake(testing(df_split)) %>% 
+  filter(complete.cases(.))
+
+df_testing
+```
+
+
+
+```{r}
+df_ranger <- rand_forest(trees = 100, mode = 'classification') %>%
+  set_engine('ranger') %>%
+  fit(grade_drop ~ ., data = df_training)
+
+df_ranger
+```
+
+
+
+
+```{r}
+df_ranger %>%
+  predict(df_testing) %>%
+  bind_cols(df_testing)
+```
+
+```{r}
+df_ranger %>%
+  predict(df_testing) %>%
+  bind_cols(df_testing) %>% 
+  metrics(truth = grade_drop, estimate = .pred_class)
+```
+
+
+```{r}
+df_ranger %>%
+  predict(df_testing, type = 'prob') %>%
+  bind_cols(df_testing) %>% 
+  roc_curve(truth = grade_drop, estimate = .pred_yes) %>% 
+  autoplot()
+```
+
+
+

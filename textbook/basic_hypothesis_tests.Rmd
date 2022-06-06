@@ -1,0 +1,110 @@
+# Basic hypthothesis tests
+
+Starter code!
+
+```{r}
+library(tidyverse)
+
+df <- read_delim('data/abcd_lpksad01.txt') %>% 
+  filter(row_number() != 1) %>% 
+  type_convert()
+
+
+df <- df %>% 
+  arrange(src_subject_id) %>% 
+  select(
+    id = src_subject_id, 
+    age = interview_age, 
+    is_bullied = kbi_p_c_bully_l,
+    num_hospitalizations = kbi_ss_c_mental_health_p_l,
+    grades = kbi_p_grades_in_school_l) %>% 
+  group_by(id) %>% 
+  mutate(n_timepoints = n()) %>% 
+  ungroup() %>% 
+  filter(n_timepoints == 3) %>% 
+  mutate(
+    grades = ifelse(
+      test = grades == 6 | grades == -1,
+      yes = NA,
+      no = grades),
+    too_kool_4_skool = case_when(
+      grades == 1 ~ 'nerds',
+      grades == 2 | grades == 3 ~ 'besties',
+      grades > 3 ~ 'teen movie cool kids')) %>% 
+  group_by(id) %>% 
+  arrange(age) %>% 
+  mutate(time = row_number()) %>% 
+  filter(time <= 2) %>% 
+  ungroup()
+
+df
+```
+
+```{r}
+df <- df %>% 
+  mutate(
+    is_bullied = ifelse(
+        test = is_bullied %in% c(1, 2),
+        yes = is_bullied,
+        no = NA) %>% 
+      factor(levels = c(1, 2), labels = c('yes', 'no')))
+
+df
+```
+
+```{r}
+ind_samples_df <- df %>% 
+  filter(time == 1) %>% 
+  pivot_wider(
+    id_cols = 'id',
+    names_from = 'is_bullied',
+    values_from = 'grades')
+
+t.test(
+  x = ind_samples_df$no, # grades of kids not bullied
+  y = ind_samples_df$yes) # grades of kids yes bullied
+
+round(2.2e-16, digits = 10)
+```
+
+```{r}
+paired_samples_df <- df %>% 
+  pivot_wider(
+    id_cols = 'id',
+    names_from = 'time',
+    names_glue = 'grades_at_{time}',
+    values_from = 'grades')
+
+t.test(
+  x = paired_samples_df$grades_at_1,
+  y = paired_samples_df$grades_at_2,
+  paired = T)
+```
+
+```{r}
+cor(
+  x = as.numeric(df$is_bullied),
+  y = df$grades,
+  use = 'complete.obs',
+  method = 'spearman')
+
+cor.test(
+  x = as.numeric(df$is_bullied),
+  y = df$grades,
+  method = 'pearson')
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
