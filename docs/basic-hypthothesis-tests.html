@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>6 Basic hypthothesis tests | R Notebook</title>
+  <meta name="description" content="This is the organic textbook accompanying Cero’s 2021 course on statistical programming with R" />
+  <meta name="generator" content="bookdown 0.24 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="6 Basic hypthothesis tests | R Notebook" />
+  <meta property="og:type" content="book" />
+  <meta property="og:url" content="https://iancero.github.io/musc_r_course_2021" />
+  
+  <meta property="og:description" content="This is the organic textbook accompanying Cero’s 2021 course on statistical programming with R" />
+  <meta name="github-repo" content="iancero/musc_r_course_2021" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="6 Basic hypthothesis tests | R Notebook" />
+  
+  <meta name="twitter:description" content="This is the organic textbook accompanying Cero’s 2021 course on statistical programming with R" />
+  
+
+<meta name="author" content="Ian Cero, PhD MStat" />
+
+
+<meta name="date" content="2021-01-01" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon" />
+<link rel="prev" href="visualization.html"/>
+<link rel="next" href="linear-regression.html"/>
+<script src="libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> About</a></li>
+<li class="chapter" data-level="2" data-path="getting-started.html"><a href="getting-started.html"><i class="fa fa-check"></i><b>2</b> Getting Started</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="getting-started.html"><a href="getting-started.html#overview-of-the-r-ecosystem"><i class="fa fa-check"></i><b>2.1</b> Overview of the R ecosystem</a></li>
+<li class="chapter" data-level="2.2" data-path="getting-started.html"><a href="getting-started.html#installation"><i class="fa fa-check"></i><b>2.2</b> Installation</a>
+<ul>
+<li class="chapter" data-level="2.2.1" data-path="getting-started.html"><a href="getting-started.html#step-1---download-and-install-the-r-language"><i class="fa fa-check"></i><b>2.2.1</b> Step 1 - Download and install the R language</a></li>
+<li class="chapter" data-level="2.2.2" data-path="getting-started.html"><a href="getting-started.html#step-2---download-and-install-the-rstudio-ide"><i class="fa fa-check"></i><b>2.2.2</b> Step 2 - Download and install the RStudio IDE</a></li>
+<li class="chapter" data-level="2.2.3" data-path="getting-started.html"><a href="getting-started.html#step-3---install-the-tidyverse-package-optional"><i class="fa fa-check"></i><b>2.2.3</b> Step 3 - Install the <code>tidyverse</code> package (optional)</a></li>
+</ul></li>
+<li class="chapter" data-level="2.3" data-path="getting-started.html"><a href="getting-started.html#a-tour-of-rstudio"><i class="fa fa-check"></i><b>2.3</b> A tour of RStudio</a>
+<ul>
+<li class="chapter" data-level="2.3.1" data-path="getting-started.html"><a href="getting-started.html#the-console"><i class="fa fa-check"></i><b>2.3.1</b> The console</a></li>
+<li class="chapter" data-level="2.3.2" data-path="getting-started.html"><a href="getting-started.html#the-environment"><i class="fa fa-check"></i><b>2.3.2</b> The environment</a></li>
+<li class="chapter" data-level="2.3.3" data-path="getting-started.html"><a href="getting-started.html#the-lower-right-pane"><i class="fa fa-check"></i><b>2.3.3</b> The lower right pane</a></li>
+</ul></li>
+<li class="chapter" data-level="2.4" data-path="getting-started.html"><a href="getting-started.html#your-very-first-analysis"><i class="fa fa-check"></i><b>2.4</b> Your very first analysis</a>
+<ul>
+<li class="chapter" data-level="2.4.1" data-path="getting-started.html"><a href="getting-started.html#step-1---download-the-data"><i class="fa fa-check"></i><b>2.4.1</b> Step 1 - download the data</a></li>
+<li class="chapter" data-level="2.4.2" data-path="getting-started.html"><a href="getting-started.html#step-2---make-an-rstudio-project"><i class="fa fa-check"></i><b>2.4.2</b> Step 2 - Make an RStudio Project</a></li>
+<li class="chapter" data-level="2.4.3" data-path="getting-started.html"><a href="getting-started.html#step-3---get-the-data-into-your-project-folder"><i class="fa fa-check"></i><b>2.4.3</b> Step 3 - Get the data into your project folder</a></li>
+<li class="chapter" data-level="2.4.4" data-path="getting-started.html"><a href="getting-started.html#step-4---open-an-rmarkdown-notebook"><i class="fa fa-check"></i><b>2.4.4</b> Step 4 - Open an Rmarkdown Notebook</a></li>
+<li class="chapter" data-level="2.4.5" data-path="getting-started.html"><a href="getting-started.html#step-5---create-a-space-to-code"><i class="fa fa-check"></i><b>2.4.5</b> Step 5 - Create a space to code</a></li>
+<li class="chapter" data-level="2.4.6" data-path="getting-started.html"><a href="getting-started.html#step-6---write-a-command-to-import-the-data"><i class="fa fa-check"></i><b>2.4.6</b> Step 6 - Write a command to import the data</a></li>
+<li class="chapter" data-level="2.4.7" data-path="getting-started.html"><a href="getting-started.html#step-7---look-inside-the-data"><i class="fa fa-check"></i><b>2.4.7</b> Step 7 - Look inside the data</a></li>
+<li class="chapter" data-level="2.4.8" data-path="getting-started.html"><a href="getting-started.html#step-8---make-a-histogram"><i class="fa fa-check"></i><b>2.4.8</b> Step 8 - Make a histogram</a></li>
+<li class="chapter" data-level="2.4.9" data-path="getting-started.html"><a href="getting-started.html#step-9---run-a-regression"><i class="fa fa-check"></i><b>2.4.9</b> Step 9 - Run a regression</a></li>
+<li class="chapter" data-level="2.4.10" data-path="getting-started.html"><a href="getting-started.html#step-10---get-a-summary-of-your-results"><i class="fa fa-check"></i><b>2.4.10</b> Step 10 - Get a summary of your results</a></li>
+<li class="chapter" data-level="2.4.11" data-path="getting-started.html"><a href="getting-started.html#a-look-forward"><i class="fa fa-check"></i><b>2.4.11</b> A Look forward</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="basic-r.html"><a href="basic-r.html"><i class="fa fa-check"></i><b>3</b> Basic R</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="basic-r.html"><a href="basic-r.html#writing-in-r-and-rmarkdown"><i class="fa fa-check"></i><b>3.1</b> Writing in R and Rmarkdown</a>
+<ul>
+<li class="chapter" data-level="3.1.1" data-path="basic-r.html"><a href="basic-r.html#chatting-with-r"><i class="fa fa-check"></i><b>3.1.1</b> Chatting with R</a></li>
+<li class="chapter" data-level="3.1.2" data-path="basic-r.html"><a href="basic-r.html#rmarkdown-tricks"><i class="fa fa-check"></i><b>3.1.2</b> Rmarkdown tricks</a></li>
+<li class="chapter" data-level="3.1.3" data-path="basic-r.html"><a href="basic-r.html#code-blocks"><i class="fa fa-check"></i><b>3.1.3</b> Code blocks</a></li>
+</ul></li>
+<li class="chapter" data-level="3.2" data-path="basic-r.html"><a href="basic-r.html#variables"><i class="fa fa-check"></i><b>3.2</b> Variables</a>
+<ul>
+<li class="chapter" data-level="3.2.1" data-path="basic-r.html"><a href="basic-r.html#the-assignment-operator"><i class="fa fa-check"></i><b>3.2.1</b> The assignment operator</a></li>
+<li class="chapter" data-level="3.2.2" data-path="basic-r.html"><a href="basic-r.html#numerics"><i class="fa fa-check"></i><b>3.2.2</b> Numerics</a></li>
+<li class="chapter" data-level="3.2.3" data-path="basic-r.html"><a href="basic-r.html#characters"><i class="fa fa-check"></i><b>3.2.3</b> Characters</a></li>
+<li class="chapter" data-level="3.2.4" data-path="basic-r.html"><a href="basic-r.html#booleans"><i class="fa fa-check"></i><b>3.2.4</b> Booleans</a></li>
+<li class="chapter" data-level="3.2.5" data-path="basic-r.html"><a href="basic-r.html#special-types"><i class="fa fa-check"></i><b>3.2.5</b> Special types</a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="basic-r.html"><a href="basic-r.html#vectors"><i class="fa fa-check"></i><b>3.3</b> Vectors</a></li>
+<li class="chapter" data-level="3.4" data-path="basic-r.html"><a href="basic-r.html#lists"><i class="fa fa-check"></i><b>3.4</b> Lists</a></li>
+<li class="chapter" data-level="3.5" data-path="basic-r.html"><a href="basic-r.html#dataframes"><i class="fa fa-check"></i><b>3.5</b> Dataframes</a>
+<ul>
+<li class="chapter" data-level="3.5.1" data-path="basic-r.html"><a href="basic-r.html#construction"><i class="fa fa-check"></i><b>3.5.1</b> Construction</a></li>
+<li class="chapter" data-level="3.5.2" data-path="basic-r.html"><a href="basic-r.html#built-in-dataframes"><i class="fa fa-check"></i><b>3.5.2</b> Built-in dataframes</a></li>
+</ul></li>
+<li class="chapter" data-level="3.6" data-path="basic-r.html"><a href="basic-r.html#functions"><i class="fa fa-check"></i><b>3.6</b> Functions</a>
+<ul>
+<li class="chapter" data-level="3.6.1" data-path="basic-r.html"><a href="basic-r.html#getting-help"><i class="fa fa-check"></i><b>3.6.1</b> Getting help</a></li>
+<li class="chapter" data-level="3.6.2" data-path="basic-r.html"><a href="basic-r.html#function-parameters"><i class="fa fa-check"></i><b>3.6.2</b> Function parameters</a></li>
+</ul></li>
+<li class="chapter" data-level="3.7" data-path="basic-r.html"><a href="basic-r.html#packages"><i class="fa fa-check"></i><b>3.7</b> Packages</a></li>
+<li class="chapter" data-level="3.8" data-path="basic-r.html"><a href="basic-r.html#error-messages"><i class="fa fa-check"></i><b>3.8</b> Error messages</a></li>
+<li class="chapter" data-level="3.9" data-path="basic-r.html"><a href="basic-r.html#coding-conventions"><i class="fa fa-check"></i><b>3.9</b> Coding Conventions</a>
+<ul>
+<li class="chapter" data-level="3.9.1" data-path="basic-r.html"><a href="basic-r.html#what-should-my-code-look-like"><i class="fa fa-check"></i><b>3.9.1</b> What should my code look like?</a></li>
+<li class="chapter" data-level="3.9.2" data-path="basic-r.html"><a href="basic-r.html#official-coding-conventions"><i class="fa fa-check"></i><b>3.9.2</b> Official coding conventions</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="working-with-abcd.html"><a href="working-with-abcd.html"><i class="fa fa-check"></i><b>4</b> Working with ABCD</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="working-with-abcd.html"><a href="working-with-abcd.html#importing-abcd-datafiles"><i class="fa fa-check"></i><b>4.1</b> Importing ABCD datafiles</a>
+<ul>
+<li class="chapter" data-level="4.1.1" data-path="working-with-abcd.html"><a href="working-with-abcd.html#whats-different-about-abcd"><i class="fa fa-check"></i><b>4.1.1</b> What’s different about ABCD?</a></li>
+<li class="chapter" data-level="4.1.2" data-path="working-with-abcd.html"><a href="working-with-abcd.html#walking-through-abcd-data-importation"><i class="fa fa-check"></i><b>4.1.2</b> Walking through ABCD data importation</a></li>
+<li class="chapter" data-level="4.1.3" data-path="working-with-abcd.html"><a href="working-with-abcd.html#copypaste-able-code"><i class="fa fa-check"></i><b>4.1.3</b> Copy/paste-able code</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="visualization.html"><a href="visualization.html"><i class="fa fa-check"></i><b>5</b> Visualization?</a></li>
+<li class="chapter" data-level="6" data-path="basic-hypthothesis-tests.html"><a href="basic-hypthothesis-tests.html"><i class="fa fa-check"></i><b>6</b> Basic hypthothesis tests</a></li>
+<li class="chapter" data-level="7" data-path="linear-regression.html"><a href="linear-regression.html"><i class="fa fa-check"></i><b>7</b> Linear Regression</a></li>
+<li class="chapter" data-level="8" data-path="logistic-regression.html"><a href="logistic-regression.html"><i class="fa fa-check"></i><b>8</b> Logistic Regression</a></li>
+<li class="chapter" data-level="9" data-path="intro-to-machine-learning.html"><a href="intro-to-machine-learning.html"><i class="fa fa-check"></i><b>9</b> Intro to machine learning</a></li>
+<li class="chapter" data-level="10" data-path="multilevel-models.html"><a href="multilevel-models.html"><i class="fa fa-check"></i><b>10</b> Multilevel Models</a></li>
+<li class="chapter" data-level="11" data-path="logistic-mixed-models.html"><a href="logistic-mixed-models.html"><i class="fa fa-check"></i><b>11</b> Logistic mixed models</a></li>
+<li class="chapter" data-level="12" data-path="bayesian-models.html"><a href="bayesian-models.html"><i class="fa fa-check"></i><b>12</b> Bayesian models</a></li>
+<li class="chapter" data-level="13" data-path="structural-equation-modeling.html"><a href="structural-equation-modeling.html"><i class="fa fa-check"></i><b>13</b> Structural Equation Modeling</a></li>
+<li class="chapter" data-level="14" data-path="strings-should-you-care.html"><a href="strings-should-you-care.html"><i class="fa fa-check"></i><b>14</b> Strings, should you care?</a></li>
+<li class="chapter" data-level="15" data-path="join-the-datasets.html"><a href="join-the-datasets.html"><i class="fa fa-check"></i><b>15</b> Join the datasets</a></li>
+<li class="chapter" data-level="16" data-path="extract-some-information.html"><a href="extract-some-information.html"><i class="fa fa-check"></i><b>16</b> Extract some information</a></li>
+<li class="chapter" data-level="17" data-path="string-interpolation.html"><a href="string-interpolation.html"><i class="fa fa-check"></i><b>17</b> String interpolation</a></li>
+<li class="chapter" data-level="18" data-path="sentiment-analysis.html"><a href="sentiment-analysis.html"><i class="fa fa-check"></i><b>18</b> Sentiment analysis</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">R Notebook</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="basic-hypthothesis-tests" class="section level1" number="6">
+<h1><span class="header-section-number">6</span> Basic hypthothesis tests</h1>
+<p>Starter code!</p>
+<div class="sourceCode" id="cb157"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb157-1"><a href="basic-hypthothesis-tests.html#cb157-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb157-2"><a href="basic-hypthothesis-tests.html#cb157-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb157-3"><a href="basic-hypthothesis-tests.html#cb157-3" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">read_delim</span>(<span class="st">&#39;data/abcd_lpksad01.txt&#39;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb157-4"><a href="basic-hypthothesis-tests.html#cb157-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">row_number</span>() <span class="sc">!=</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb157-5"><a href="basic-hypthothesis-tests.html#cb157-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">type_convert</span>()</span></code></pre></div>
+<pre><code>## Rows: 26744 Columns: 90
+## -- Column specification --------------------------------------------------------------
+## Delimiter: &quot;\t&quot;
+## chr (90): collection_id, abcd_lpksad01_id, dataset_id, subjectkey, src_subject_id,...
+## 
+## i Use `spec()` to retrieve the full column specification for this data.
+## i Specify the column types or set `show_col_types = FALSE` to quiet this message.
+## 
+## -- Column specification --------------------------------------------------------------
+## cols(
+##   .default = col_double(),
+##   subjectkey = col_character(),
+##   src_subject_id = col_character(),
+##   interview_date = col_character(),
+##   sex = col_character(),
+##   eventname = col_character(),
+##   collection_title = col_character()
+## )
+## i Use `spec()` for the full column specifications.</code></pre>
+<div class="sourceCode" id="cb159"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb159-1"><a href="basic-hypthothesis-tests.html#cb159-1" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> df <span class="sc">%&gt;%</span> </span>
+<span id="cb159-2"><a href="basic-hypthothesis-tests.html#cb159-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(src_subject_id) <span class="sc">%&gt;%</span> </span>
+<span id="cb159-3"><a href="basic-hypthothesis-tests.html#cb159-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(</span>
+<span id="cb159-4"><a href="basic-hypthothesis-tests.html#cb159-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">id =</span> src_subject_id, </span>
+<span id="cb159-5"><a href="basic-hypthothesis-tests.html#cb159-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">age =</span> interview_age, </span>
+<span id="cb159-6"><a href="basic-hypthothesis-tests.html#cb159-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">is_bullied =</span> kbi_p_c_bully_l,</span>
+<span id="cb159-7"><a href="basic-hypthothesis-tests.html#cb159-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">num_hospitalizations =</span> kbi_ss_c_mental_health_p_l,</span>
+<span id="cb159-8"><a href="basic-hypthothesis-tests.html#cb159-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">grades =</span> kbi_p_grades_in_school_l) <span class="sc">%&gt;%</span> </span>
+<span id="cb159-9"><a href="basic-hypthothesis-tests.html#cb159-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(id) <span class="sc">%&gt;%</span> </span>
+<span id="cb159-10"><a href="basic-hypthothesis-tests.html#cb159-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">n_timepoints =</span> <span class="fu">n</span>()) <span class="sc">%&gt;%</span> </span>
+<span id="cb159-11"><a href="basic-hypthothesis-tests.html#cb159-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb159-12"><a href="basic-hypthothesis-tests.html#cb159-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(n_timepoints <span class="sc">==</span> <span class="dv">3</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb159-13"><a href="basic-hypthothesis-tests.html#cb159-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb159-14"><a href="basic-hypthothesis-tests.html#cb159-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">grades =</span> <span class="fu">ifelse</span>(</span>
+<span id="cb159-15"><a href="basic-hypthothesis-tests.html#cb159-15" aria-hidden="true" tabindex="-1"></a>      <span class="at">test =</span> grades <span class="sc">==</span> <span class="dv">6</span> <span class="sc">|</span> grades <span class="sc">==</span> <span class="sc">-</span><span class="dv">1</span>,</span>
+<span id="cb159-16"><a href="basic-hypthothesis-tests.html#cb159-16" aria-hidden="true" tabindex="-1"></a>      <span class="at">yes =</span> <span class="cn">NA</span>,</span>
+<span id="cb159-17"><a href="basic-hypthothesis-tests.html#cb159-17" aria-hidden="true" tabindex="-1"></a>      <span class="at">no =</span> grades),</span>
+<span id="cb159-18"><a href="basic-hypthothesis-tests.html#cb159-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">too_kool_4_skool =</span> <span class="fu">case_when</span>(</span>
+<span id="cb159-19"><a href="basic-hypthothesis-tests.html#cb159-19" aria-hidden="true" tabindex="-1"></a>      grades <span class="sc">==</span> <span class="dv">1</span> <span class="sc">~</span> <span class="st">&#39;nerds&#39;</span>,</span>
+<span id="cb159-20"><a href="basic-hypthothesis-tests.html#cb159-20" aria-hidden="true" tabindex="-1"></a>      grades <span class="sc">==</span> <span class="dv">2</span> <span class="sc">|</span> grades <span class="sc">==</span> <span class="dv">3</span> <span class="sc">~</span> <span class="st">&#39;besties&#39;</span>,</span>
+<span id="cb159-21"><a href="basic-hypthothesis-tests.html#cb159-21" aria-hidden="true" tabindex="-1"></a>      grades <span class="sc">&gt;</span> <span class="dv">3</span> <span class="sc">~</span> <span class="st">&#39;teen movie cool kids&#39;</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb159-22"><a href="basic-hypthothesis-tests.html#cb159-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(id) <span class="sc">%&gt;%</span> </span>
+<span id="cb159-23"><a href="basic-hypthothesis-tests.html#cb159-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(age) <span class="sc">%&gt;%</span> </span>
+<span id="cb159-24"><a href="basic-hypthothesis-tests.html#cb159-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">time =</span> <span class="fu">row_number</span>()) <span class="sc">%&gt;%</span> </span>
+<span id="cb159-25"><a href="basic-hypthothesis-tests.html#cb159-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(time <span class="sc">&lt;=</span> <span class="dv">2</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb159-26"><a href="basic-hypthothesis-tests.html#cb159-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>()</span>
+<span id="cb159-27"><a href="basic-hypthothesis-tests.html#cb159-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb159-28"><a href="basic-hypthothesis-tests.html#cb159-28" aria-hidden="true" tabindex="-1"></a>df</span></code></pre></div>
+<pre><code>## # A tibble: 12,070 x 8
+##    id       age is_bullied num_hospitaliza~ grades n_timepoints too_kool_4_skool  time
+##    &lt;chr&gt;  &lt;dbl&gt;      &lt;dbl&gt;            &lt;dbl&gt;  &lt;dbl&gt;        &lt;int&gt; &lt;chr&gt;            &lt;int&gt;
+##  1 NDAR_~   117          2                0      1            3 nerds                1
+##  2 NDAR_~   117          2                0      2            3 besties              1
+##  3 NDAR_~   117          2                0      1            3 nerds                1
+##  4 NDAR_~   117          2                0      1            3 nerds                1
+##  5 NDAR_~   117          2                0      2            3 besties              1
+##  6 NDAR_~   117          2                0      2            3 besties              1
+##  7 NDAR_~   117          2                0     NA            3 &lt;NA&gt;                 1
+##  8 NDAR_~   117          2                0      2            3 besties              1
+##  9 NDAR_~   117          1                0      2            3 besties              1
+## 10 NDAR_~   117          2                0      1            3 nerds                1
+## # ... with 12,060 more rows</code></pre>
+<div class="sourceCode" id="cb161"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb161-1"><a href="basic-hypthothesis-tests.html#cb161-1" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> df <span class="sc">%&gt;%</span> </span>
+<span id="cb161-2"><a href="basic-hypthothesis-tests.html#cb161-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb161-3"><a href="basic-hypthothesis-tests.html#cb161-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">is_bullied =</span> <span class="fu">ifelse</span>(</span>
+<span id="cb161-4"><a href="basic-hypthothesis-tests.html#cb161-4" aria-hidden="true" tabindex="-1"></a>        <span class="at">test =</span> is_bullied <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>),</span>
+<span id="cb161-5"><a href="basic-hypthothesis-tests.html#cb161-5" aria-hidden="true" tabindex="-1"></a>        <span class="at">yes =</span> is_bullied,</span>
+<span id="cb161-6"><a href="basic-hypthothesis-tests.html#cb161-6" aria-hidden="true" tabindex="-1"></a>        <span class="at">no =</span> <span class="cn">NA</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb161-7"><a href="basic-hypthothesis-tests.html#cb161-7" aria-hidden="true" tabindex="-1"></a>      <span class="fu">factor</span>(<span class="at">levels =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>), <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">&#39;yes&#39;</span>, <span class="st">&#39;no&#39;</span>)))</span>
+<span id="cb161-8"><a href="basic-hypthothesis-tests.html#cb161-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb161-9"><a href="basic-hypthothesis-tests.html#cb161-9" aria-hidden="true" tabindex="-1"></a>df</span></code></pre></div>
+<pre><code>## # A tibble: 12,070 x 8
+##    id       age is_bullied num_hospitaliza~ grades n_timepoints too_kool_4_skool  time
+##    &lt;chr&gt;  &lt;dbl&gt; &lt;fct&gt;                 &lt;dbl&gt;  &lt;dbl&gt;        &lt;int&gt; &lt;chr&gt;            &lt;int&gt;
+##  1 NDAR_~   117 no                        0      1            3 nerds                1
+##  2 NDAR_~   117 no                        0      2            3 besties              1
+##  3 NDAR_~   117 no                        0      1            3 nerds                1
+##  4 NDAR_~   117 no                        0      1            3 nerds                1
+##  5 NDAR_~   117 no                        0      2            3 besties              1
+##  6 NDAR_~   117 no                        0      2            3 besties              1
+##  7 NDAR_~   117 no                        0     NA            3 &lt;NA&gt;                 1
+##  8 NDAR_~   117 no                        0      2            3 besties              1
+##  9 NDAR_~   117 yes                       0      2            3 besties              1
+## 10 NDAR_~   117 no                        0      1            3 nerds                1
+## # ... with 12,060 more rows</code></pre>
+<div class="sourceCode" id="cb163"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb163-1"><a href="basic-hypthothesis-tests.html#cb163-1" aria-hidden="true" tabindex="-1"></a>ind_samples_df <span class="ot">&lt;-</span> df <span class="sc">%&gt;%</span> </span>
+<span id="cb163-2"><a href="basic-hypthothesis-tests.html#cb163-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(time <span class="sc">==</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb163-3"><a href="basic-hypthothesis-tests.html#cb163-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(</span>
+<span id="cb163-4"><a href="basic-hypthothesis-tests.html#cb163-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">id_cols =</span> <span class="st">&#39;id&#39;</span>,</span>
+<span id="cb163-5"><a href="basic-hypthothesis-tests.html#cb163-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">names_from =</span> <span class="st">&#39;is_bullied&#39;</span>,</span>
+<span id="cb163-6"><a href="basic-hypthothesis-tests.html#cb163-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">values_from =</span> <span class="st">&#39;grades&#39;</span>)</span>
+<span id="cb163-7"><a href="basic-hypthothesis-tests.html#cb163-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb163-8"><a href="basic-hypthothesis-tests.html#cb163-8" aria-hidden="true" tabindex="-1"></a><span class="fu">t.test</span>(</span>
+<span id="cb163-9"><a href="basic-hypthothesis-tests.html#cb163-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> ind_samples_df<span class="sc">$</span>no, <span class="co"># grades of kids not bullied</span></span>
+<span id="cb163-10"><a href="basic-hypthothesis-tests.html#cb163-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">y =</span> ind_samples_df<span class="sc">$</span>yes) <span class="co"># grades of kids yes bullied</span></span></code></pre></div>
+<pre><code>## 
+##  Welch Two Sample t-test
+## 
+## data:  ind_samples_df$no and ind_samples_df$yes
+## t = -9.0654, df = 1170.1, p-value &lt; 2.2e-16
+## alternative hypothesis: true difference in means is not equal to 0
+## 95 percent confidence interval:
+##  -0.3426508 -0.2207223
+## sample estimates:
+## mean of x mean of y 
+##  1.583740  1.865427</code></pre>
+<div class="sourceCode" id="cb165"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb165-1"><a href="basic-hypthothesis-tests.html#cb165-1" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fl">2.2e-16</span>, <span class="at">digits =</span> <span class="dv">10</span>)</span></code></pre></div>
+<pre><code>## [1] 0</code></pre>
+<div class="sourceCode" id="cb167"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb167-1"><a href="basic-hypthothesis-tests.html#cb167-1" aria-hidden="true" tabindex="-1"></a>paired_samples_df <span class="ot">&lt;-</span> df <span class="sc">%&gt;%</span> </span>
+<span id="cb167-2"><a href="basic-hypthothesis-tests.html#cb167-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(</span>
+<span id="cb167-3"><a href="basic-hypthothesis-tests.html#cb167-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">id_cols =</span> <span class="st">&#39;id&#39;</span>,</span>
+<span id="cb167-4"><a href="basic-hypthothesis-tests.html#cb167-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">names_from =</span> <span class="st">&#39;time&#39;</span>,</span>
+<span id="cb167-5"><a href="basic-hypthothesis-tests.html#cb167-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">names_glue =</span> <span class="st">&#39;grades_at_{time}&#39;</span>,</span>
+<span id="cb167-6"><a href="basic-hypthothesis-tests.html#cb167-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">values_from =</span> <span class="st">&#39;grades&#39;</span>)</span>
+<span id="cb167-7"><a href="basic-hypthothesis-tests.html#cb167-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb167-8"><a href="basic-hypthothesis-tests.html#cb167-8" aria-hidden="true" tabindex="-1"></a><span class="fu">t.test</span>(</span>
+<span id="cb167-9"><a href="basic-hypthothesis-tests.html#cb167-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> paired_samples_df<span class="sc">$</span>grades_at_1,</span>
+<span id="cb167-10"><a href="basic-hypthothesis-tests.html#cb167-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">y =</span> paired_samples_df<span class="sc">$</span>grades_at_2,</span>
+<span id="cb167-11"><a href="basic-hypthothesis-tests.html#cb167-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">paired =</span> T)</span></code></pre></div>
+<pre><code>## 
+##  Paired t-test
+## 
+## data:  paired_samples_df$grades_at_1 and paired_samples_df$grades_at_2
+## t = 1.7198, df = 5459, p-value = 0.08552
+## alternative hypothesis: true difference in means is not equal to 0
+## 95 percent confidence interval:
+##  -0.002075183  0.031745513
+## sample estimates:
+## mean of the differences 
+##              0.01483516</code></pre>
+<div class="sourceCode" id="cb169"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb169-1"><a href="basic-hypthothesis-tests.html#cb169-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(</span>
+<span id="cb169-2"><a href="basic-hypthothesis-tests.html#cb169-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> <span class="fu">as.numeric</span>(df<span class="sc">$</span>is_bullied),</span>
+<span id="cb169-3"><a href="basic-hypthothesis-tests.html#cb169-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">y =</span> df<span class="sc">$</span>grades,</span>
+<span id="cb169-4"><a href="basic-hypthothesis-tests.html#cb169-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">use =</span> <span class="st">&#39;complete.obs&#39;</span>,</span>
+<span id="cb169-5"><a href="basic-hypthothesis-tests.html#cb169-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">method =</span> <span class="st">&#39;spearman&#39;</span>)</span></code></pre></div>
+<pre><code>## [1] -0.1271988</code></pre>
+<div class="sourceCode" id="cb171"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb171-1"><a href="basic-hypthothesis-tests.html#cb171-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cor.test</span>(</span>
+<span id="cb171-2"><a href="basic-hypthothesis-tests.html#cb171-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> <span class="fu">as.numeric</span>(df<span class="sc">$</span>is_bullied),</span>
+<span id="cb171-3"><a href="basic-hypthothesis-tests.html#cb171-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">y =</span> df<span class="sc">$</span>grades,</span>
+<span id="cb171-4"><a href="basic-hypthothesis-tests.html#cb171-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">method =</span> <span class="st">&#39;pearson&#39;</span>)</span></code></pre></div>
+<pre><code>## 
+##  Pearson&#39;s product-moment correlation
+## 
+## data:  as.numeric(df$is_bullied) and df$grades
+## t = -14.926, df = 11389, p-value &lt; 2.2e-16
+## alternative hypothesis: true correlation is not equal to 0
+## 95 percent confidence interval:
+##  -0.1564845 -0.1204603
+## sample estimates:
+##        cor 
+## -0.1385182</code></pre>
+
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="visualization.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="linear-regression.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "sepia",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/iancero/musc_r_course_2021/edit/main/basic_hypothesis_tests.Rmd",
+"text": "Find a typo? Please suggest an edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["_main.pdf", "_main.epub"],
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>
