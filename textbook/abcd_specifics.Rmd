@@ -4,7 +4,7 @@ In this section, we'll add specific content for the ABCD dataset issues as we un
 
 ## Importing ABCD datafiles
 
-One of the trickiest parts of working with the ABCD dataset is just getting the data into R. Under most circumstances, getting a file into R is as simple as loading the `tidyverse` and telling the `read_csv()` function where to look for your data.
+One of the trickiest parts of working with the ABCD dataset is just getting the data into R. Under most non-ABCD circumstances, getting a file into R is as simple as loading the `tidyverse` and telling the `read_csv()` function where to look for your data.
 
 ```{r, warning=FALSE, message=FALSE}
 library(tidyverse)
@@ -33,6 +33,7 @@ abcd_df <- read_delim('data/abcd_screen02.txt', delim = '\t')
 
 head(abcd_df)
 ```
+
 We made some progress, but unfortunately, we've got these variable descriptors stuck in the top row of our data now. To get rid of them, we can re-assign the value of `abcd_df` to be a version of itself without it's first row.
 
 ```{r}
@@ -41,13 +42,17 @@ abcd_df <- abcd_df %>%
   
 head(abcd_df)
 ```
-That helped, but R still thinks that all of our variables are character strings. We need to tell R that some of our variables might be numbers and that we want it to guess which ones those are. We can do that with the very handy `type_convert()` function.
+
+That helped, but R still thinks that all of our variables are character strings. We need to tell R that some of our variables might be numbers and that we want it to guess which ones those are. We can do that with the very handy `type_convert()` function. 
+
+This function isn't perfectly accurate at guessing what your underlying data types are, but after testing it on several ABCD datasets, it has yet to make a mistake. So, although the safest practice is technically to double-check every column in your dataset, it is should be safe to assume `type_convert()` is almost always right.
 
 ```{r, message=FALSE, warning=FALSE}
 abcd_df <- type_convert(abcd_df)
 
 head(abcd_df)
 ```
+
 ### Copy/paste-able code
 
 Putting it all together, we can import an ABCD dataset like so.
@@ -57,5 +62,108 @@ abcd_df <- read_delim('data/abcd_screen02.txt', delim = '\t') %>%
   filter(row_number() != 1) %>% 
   type_convert()
 ```
+
+
+## A general-purpose ABCD dataset import function
+
+If that's easy for your to remember, then feel free to type those three lines every time. On the other hand, if you have **multiple datasets** you need to import, it is safer to make a **function** that can repeat the process for you several times in **exactly the same way each time**.
+
+```{r}
+read_abcd <- function(file_path){
+  read_delim(file_path, delim = '\t') %>% 
+    filter(row_number() != 1) %>% 
+    type_convert()
+}
+```
+
+With this function, we can now load three different datasets according to exactly the same rules each time.
+
+```{r, message=FALSE, warning=FALSE}
+df1 <- read_abcd('data/abcd_lpds01.txt')
+df2 <- read_abcd('data/abcd_lpmh01.txt')
+df3 <- read_abcd('data/abcd_lpsaiq01.txt')
+```
+
+### Getting rid of import messages
+
+Although import messages are useful for understanding whether your data have made it into R, they are much less helpful (even overwhelming) when you are importing several datasets at once. To handle this, we can modify our `read_abcd()` function to suppress import messages.
+
+```{r}
+read_abcd_quietly <- function(file_path){
+  suppressMessages(
+    expr = read_delim(file_path, delim = '\t') %>% 
+      filter(row_number() != 1) %>% 
+      type_convert())
+}
+
+abcd_df <- read_abcd_quietly('data/abcd_lpds01.txt')
+```
+
+## Importing a whole folder of ABCD datasets
+
+One of the great advantages of a large data repository is the ability to incorporate multiple datasets in a single analysis. But this introduces a new problem for how to get all of those datasets into R to perform such an analysis.
+
+### As easy strategy that unfortunately won't scale
+
+A first guess that most people use is simply to import them all explicitly, like we did above. This is a great approach for a small number of files, but would not work for importing more than that (e.g., for "high-dimensional" analyses, like machine learning).
+
+```{r, eval=FALSE}
+# This is the same example as above
+
+df1 <- read_abcd('data/abcd_lpds01.txt')
+df2 <- read_abcd('data/abcd_lpmh01.txt')
+df3 <- read_abcd('data/abcd_lpsaiq01.txt')
+
+# ... 
+
+df100 <- read_abcd('data/abcd_lpksad01.txt')
+
+# Imagine how hard it would be to type out 100 dataset names (correctly)!
+```
+
+Instead, we can simply tell R that we want to import an entire folder of datasets, which in this case we named the `many_datasets` folder. Note, this trick uses functions from the `purrr` package of the `tidyverse`. These functions are a little trick and we cover them at various points later in this textbook. For now, all you need to know is that they take a list of objects (in this case, filenames) and perform the same process for each one.
+
+The first step is to get a list of files inside your folder of interest. Also, make sure to use `full.names = T` to get the file **path** in addition to each file's name.
+
+```{r}
+files_to_import <- list.files('data/many_datasets', full.names = T)
+
+files_to_import
+```
+
+The second step is to get the names we want to assign to each dataset, once it is imported into R. We use a few tricks here, including the `map_chr()` function from `purrr` and the `str_extract()` function from the `stringr` package. Both of these functions are again covered later in the textbook, but are mentioned here in case you simply want to copy/paste code in a hurry and explore the details later.
+
+```{r}
+df_names <- map_chr(files_to_import, ~ str_extract(.x, 'abcd_[\\w|\\d]*'))
+
+df_names
+```
+
+The final step has two parts we execute simultaneously: importing each file on the list (the `files_to_import` list) and assigning the imported file to an R object (using the `df_names` list we just made).
+
+
+```{r}
+my_datasets <- map(files_to_import, read_abcd_quietly) %>% 
+  set_names(df_names)
+```
+
+With this process completed, we can now import an entire folder of datasets and store them in a single object (`my_datasets`). Whenever we want to reference a specific one, we can just use the `$` operator to access it.
+
+```{r}
+head(my_datasets$abcd_lpds01)
+```
+
+Or 
+
+```{r}
+head(my_datasets$abcd_medhxss01)
+```
+
+
+
+
+
+
+
 
 

@@ -32,7 +32,7 @@
   
   <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon" />
 <link rel="prev" href="basic-r.html"/>
-
+<link rel="next" href="visualization.html"/>
 <script src="libs/header-attrs-2.11/header-attrs.js"></script>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
@@ -209,7 +209,25 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="4.1.2" data-path="working-with-abcd.html"><a href="working-with-abcd.html#walking-through-abcd-data-importation"><i class="fa fa-check"></i><b>4.1.2</b> Walking through ABCD data importation</a></li>
 <li class="chapter" data-level="4.1.3" data-path="working-with-abcd.html"><a href="working-with-abcd.html#copypaste-able-code"><i class="fa fa-check"></i><b>4.1.3</b> Copy/paste-able code</a></li>
 </ul></li>
+<li class="chapter" data-level="4.2" data-path="working-with-abcd.html"><a href="working-with-abcd.html#a-general-purpose-abcd-dataset-import-function"><i class="fa fa-check"></i><b>4.2</b> A general-purpose ABCD dataset import function</a>
+<ul>
+<li class="chapter" data-level="4.2.1" data-path="working-with-abcd.html"><a href="working-with-abcd.html#getting-rid-of-import-messages"><i class="fa fa-check"></i><b>4.2.1</b> Getting rid of import messages</a></li>
 </ul></li>
+<li class="chapter" data-level="4.3" data-path="working-with-abcd.html"><a href="working-with-abcd.html#importing-a-whole-folder-of-abcd-datasets"><i class="fa fa-check"></i><b>4.3</b> Importing a whole folder of ABCD datasets</a>
+<ul>
+<li class="chapter" data-level="4.3.1" data-path="working-with-abcd.html"><a href="working-with-abcd.html#as-easy-strategy-that-unfortunately-wont-scale"><i class="fa fa-check"></i><b>4.3.1</b> As easy strategy that unfortunately won’t scale</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="visualization.html"><a href="visualization.html"><i class="fa fa-check"></i><b>5</b> Visualization</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="visualization.html"><a href="visualization.html#overview"><i class="fa fa-check"></i><b>5.1</b> Overview</a></li>
+<li class="chapter" data-level="5.2" data-path="visualization.html"><a href="visualization.html#ggplot-mappings"><i class="fa fa-check"></i><b>5.2</b> <code>ggplot</code> Mappings</a></li>
+<li class="chapter" data-level="5.3" data-path="visualization.html"><a href="visualization.html#adding-geoms-to-the-plot"><i class="fa fa-check"></i><b>5.3</b> Adding geoms to the plot</a></li>
+<li class="chapter" data-level="5.4" data-path="visualization.html"><a href="visualization.html#geom-options-and-mappings"><i class="fa fa-check"></i><b>5.4</b> Geom Options and Mappings</a></li>
+<li class="chapter" data-level="5.5" data-path="visualization.html"><a href="visualization.html#saving-plots"><i class="fa fa-check"></i><b>5.5</b> Saving plots</a></li>
+<li class="chapter" data-level="5.6" data-path="visualization.html"><a href="visualization.html#other-features-to-look-for"><i class="fa fa-check"></i><b>5.6</b> Other features to look for</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="data-wrangling-and-joining-merging.html"><a href="data-wrangling-and-joining-merging.html"><i class="fa fa-check"></i><b>6</b> Data Wrangling and Joining / Merging</a></li>
 </ul>
 
       </nav>
@@ -232,23 +250,23 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>In this section, we’ll add specific content for the ABCD dataset issues as we uncover them over time.</p>
 <div id="importing-abcd-datafiles" class="section level2" number="4.1">
 <h2><span class="header-section-number">4.1</span> Importing ABCD datafiles</h2>
-<p>One of the trickiest parts of working with the ABCD dataset is just getting the data into R. Under most circumstances, getting a file into R is as simple as loading the <code>tidyverse</code> and telling the <code>read_csv()</code> function where to look for your data.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="working-with-abcd.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb1-2"><a href="working-with-abcd.html#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-3"><a href="working-with-abcd.html#cb1-3" aria-hidden="true" tabindex="-1"></a>wine_df <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">&#39;data/winequality-red.csv&#39;</span>)</span>
-<span id="cb1-4"><a href="working-with-abcd.html#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-5"><a href="working-with-abcd.html#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(wine_df)</span></code></pre></div>
+<p>One of the trickiest parts of working with the ABCD dataset is just getting the data into R. Under most non-ABCD circumstances, getting a file into R is as simple as loading the <code>tidyverse</code> and telling the <code>read_csv()</code> function where to look for your data.</p>
+<div class="sourceCode" id="cb138"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb138-1"><a href="working-with-abcd.html#cb138-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb138-2"><a href="working-with-abcd.html#cb138-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb138-3"><a href="working-with-abcd.html#cb138-3" aria-hidden="true" tabindex="-1"></a>wine_df <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">&#39;data/winequality-red.csv&#39;</span>)</span>
+<span id="cb138-4"><a href="working-with-abcd.html#cb138-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb138-5"><a href="working-with-abcd.html#cb138-5" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(wine_df)</span></code></pre></div>
 <pre><code>## # A tibble: 6 x 12
-##   `fixed acidity` `volatile acidity` `citric acid` `residual sugar` chlorides `free sulfur dioxide`
-##             &lt;dbl&gt;              &lt;dbl&gt;         &lt;dbl&gt;            &lt;dbl&gt;     &lt;dbl&gt;                 &lt;dbl&gt;
-## 1             7.4               0.7           0                 1.9     0.076                    11
-## 2             7.8               0.88          0                 2.6     0.098                    25
-## 3             7.8               0.76          0.04              2.3     0.092                    15
-## 4            11.2               0.28          0.56              1.9     0.075                    17
-## 5             7.4               0.7           0                 1.9     0.076                    11
-## 6             7.4               0.66          0                 1.8     0.075                    13
-## # ... with 6 more variables: total sulfur dioxide &lt;dbl&gt;, density &lt;dbl&gt;, pH &lt;dbl&gt;, sulphates &lt;dbl&gt;,
-## #   alcohol &lt;dbl&gt;, quality &lt;dbl&gt;</code></pre>
+##   `fixed acidity` `volatile acidity` `citric acid` `residual sugar` chlorides
+##             &lt;dbl&gt;              &lt;dbl&gt;         &lt;dbl&gt;            &lt;dbl&gt;     &lt;dbl&gt;
+## 1             7.4               0.7           0                 1.9     0.076
+## 2             7.8               0.88          0                 2.6     0.098
+## 3             7.8               0.76          0.04              2.3     0.092
+## 4            11.2               0.28          0.56              1.9     0.075
+## 5             7.4               0.7           0                 1.9     0.076
+## 6             7.4               0.66          0                 1.8     0.075
+## # ... with 7 more variables: free sulfur dioxide &lt;dbl&gt;, total sulfur dioxide &lt;dbl&gt;,
+## #   density &lt;dbl&gt;, pH &lt;dbl&gt;, sulphates &lt;dbl&gt;, alcohol &lt;dbl&gt;, quality &lt;dbl&gt;</code></pre>
 <div id="whats-different-about-abcd" class="section level3" number="4.1.1">
 <h3><span class="header-section-number">4.1.1</span> What’s different about ABCD?</h3>
 <p>There are a few things that are unique about ABCD datasets that make them a little bit harder to import than normal:</p>
@@ -261,73 +279,177 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h3><span class="header-section-number">4.1.2</span> Walking through ABCD data importation</h3>
 <p>We’ll do this in a few steps. If you’re just looking to copy/paste the code, then skip to the end of this section. If you’re looking for information about why we are doing what we are doing, then keep reading.</p>
 <p>First, notice that we need to use the <code>read_delim()</code> command, rather than the usual <code>read_csv()</code>. This tells R we are expecting a delimited file. We also tell that function we are expecting the delimeter to be a tab (<code>delim = '\t'</code>), which we could figure out by opening the raw data in a basic text editor, like Notepad, and looking at it.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="working-with-abcd.html#cb3-1" aria-hidden="true" tabindex="-1"></a>abcd_df <span class="ot">&lt;-</span> <span class="fu">read_delim</span>(<span class="st">&#39;data/abcd_screen02.txt&#39;</span>, <span class="at">delim =</span> <span class="st">&#39;</span><span class="sc">\t</span><span class="st">&#39;</span>)</span>
-<span id="cb3-2"><a href="working-with-abcd.html#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-3"><a href="working-with-abcd.html#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(abcd_df)</span></code></pre></div>
+<div class="sourceCode" id="cb140"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb140-1"><a href="working-with-abcd.html#cb140-1" aria-hidden="true" tabindex="-1"></a>abcd_df <span class="ot">&lt;-</span> <span class="fu">read_delim</span>(<span class="st">&#39;data/abcd_screen02.txt&#39;</span>, <span class="at">delim =</span> <span class="st">&#39;</span><span class="sc">\t</span><span class="st">&#39;</span>)</span>
+<span id="cb140-2"><a href="working-with-abcd.html#cb140-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb140-3"><a href="working-with-abcd.html#cb140-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(abcd_df)</span></code></pre></div>
 <pre><code>## # A tibble: 6 x 41
-##   collection_id abcd_screen02_id dataset_id subjectkey  src_subject_id  interview_date  interview_age
-##   &lt;chr&gt;         &lt;chr&gt;            &lt;chr&gt;      &lt;chr&gt;       &lt;chr&gt;           &lt;chr&gt;           &lt;chr&gt;        
-## 1 collection_id abcd_screen02_id dataset_id The NDAR G~ Subject ID how~ Date on which ~ Age in month~
-## 2 2573          6579             47156      NDAR_INV0C~ NDAR_INV0CZBUV~ 07/19/2019      136          
-## 3 2573          6581             47156      NDAR_INV0D~ NDAR_INV0D4C1R~ 03/10/2019      154          
-## 4 2573          6588             47156      NDAR_INV0D~ NDAR_INV0DKWEM~ 11/30/2019      152          
-## 5 2573          6594             47156      NDAR_INV0E~ NDAR_INV0E350J~ 12/16/2019      137          
-## 6 2573          6609             47156      NDAR_INV0F~ NDAR_INV0FM9MU~ 11/27/2019      140          
-## # ... with 34 more variables: sex &lt;chr&gt;, eventname &lt;chr&gt;, scrn2_select_language___1 &lt;chr&gt;,
-## #   scrn_braces_v2 &lt;chr&gt;, scrn_future_braces &lt;chr&gt;, scrn_bracesdate_v2 &lt;chr&gt;,
-## #   scrn_bracescallback_v2 &lt;chr&gt;, scrn_nr_hair_v2 &lt;chr&gt;, scrn_nr_hair_metal_v2 &lt;chr&gt;,
-## #   scrn_nr_hair_remove &lt;chr&gt;, scrn_nr_hair_date_v2 &lt;chr&gt;, scrn_nr_hair_callback_v2 &lt;chr&gt;,
+##   collection_id abcd_screen02_id dataset_id subjectkey   src_subject_id interview_date 
+##   &lt;chr&gt;         &lt;chr&gt;            &lt;chr&gt;      &lt;chr&gt;        &lt;chr&gt;          &lt;chr&gt;          
+## 1 collection_id abcd_screen02_id dataset_id The NDAR Gl~ Subject ID ho~ Date on which ~
+## 2 2573          6579             47156      NDAR_INV0CZ~ NDAR_INV0CZBU~ 07/19/2019     
+## 3 2573          6581             47156      NDAR_INV0D4~ NDAR_INV0D4C1~ 03/10/2019     
+## 4 2573          6588             47156      NDAR_INV0DK~ NDAR_INV0DKWE~ 11/30/2019     
+## 5 2573          6594             47156      NDAR_INV0E3~ NDAR_INV0E350~ 12/16/2019     
+## 6 2573          6609             47156      NDAR_INV0FM~ NDAR_INV0FM9M~ 11/27/2019     
+## # ... with 35 more variables: interview_age &lt;chr&gt;, sex &lt;chr&gt;, eventname &lt;chr&gt;,
+## #   scrn2_select_language___1 &lt;chr&gt;, scrn_braces_v2 &lt;chr&gt;, scrn_future_braces &lt;chr&gt;,
+## #   scrn_bracesdate_v2 &lt;chr&gt;, scrn_bracescallback_v2 &lt;chr&gt;, scrn_nr_hair_v2 &lt;chr&gt;,
+## #   scrn_nr_hair_metal_v2 &lt;chr&gt;, scrn_nr_hair_remove &lt;chr&gt;,
+## #   scrn_nr_hair_date_v2 &lt;chr&gt;, scrn_nr_hair_callback_v2 &lt;chr&gt;,
 ## #   scrn_eyeliner_v2 &lt;chr&gt;, scrn_nr_piercing_v2 &lt;chr&gt;, scrn_nr_piercing_remove &lt;chr&gt;,
-## #   scrn_nr_piercing_date &lt;chr&gt;, scrn_nr_piercing_callback &lt;chr&gt;, scrn_surgery_v2 &lt;chr&gt;,
-## #   scrn_height_v2 &lt;chr&gt;, scrn_weight_v2 &lt;chr&gt;, scrn_concerns &lt;chr&gt;, scrn_concerns_desc &lt;chr&gt;, ...</code></pre>
+## #   scrn_nr_piercing_date &lt;chr&gt;, scrn_nr_piercing_callback &lt;chr&gt;, ...</code></pre>
 <p>We made some progress, but unfortunately, we’ve got these variable descriptors stuck in the top row of our data now. To get rid of them, we can re-assign the value of <code>abcd_df</code> to be a version of itself without it’s first row.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="working-with-abcd.html#cb5-1" aria-hidden="true" tabindex="-1"></a>abcd_df <span class="ot">&lt;-</span> abcd_df <span class="sc">%&gt;%</span></span>
-<span id="cb5-2"><a href="working-with-abcd.html#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">row_number</span>() <span class="sc">!=</span> <span class="dv">1</span>)</span>
-<span id="cb5-3"><a href="working-with-abcd.html#cb5-3" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb5-4"><a href="working-with-abcd.html#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(abcd_df)</span></code></pre></div>
+<div class="sourceCode" id="cb142"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb142-1"><a href="working-with-abcd.html#cb142-1" aria-hidden="true" tabindex="-1"></a>abcd_df <span class="ot">&lt;-</span> abcd_df <span class="sc">%&gt;%</span></span>
+<span id="cb142-2"><a href="working-with-abcd.html#cb142-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">row_number</span>() <span class="sc">!=</span> <span class="dv">1</span>)</span>
+<span id="cb142-3"><a href="working-with-abcd.html#cb142-3" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb142-4"><a href="working-with-abcd.html#cb142-4" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(abcd_df)</span></code></pre></div>
 <pre><code>## # A tibble: 6 x 41
-##   collection_id abcd_screen02_id dataset_id subjectkey    src_subject_id interview_date interview_age
-##   &lt;chr&gt;         &lt;chr&gt;            &lt;chr&gt;      &lt;chr&gt;         &lt;chr&gt;          &lt;chr&gt;          &lt;chr&gt;        
-## 1 2573          6579             47156      NDAR_INV0CZB~ NDAR_INV0CZBU~ 07/19/2019     136          
-## 2 2573          6581             47156      NDAR_INV0D4C~ NDAR_INV0D4C1~ 03/10/2019     154          
-## 3 2573          6588             47156      NDAR_INV0DKW~ NDAR_INV0DKWE~ 11/30/2019     152          
-## 4 2573          6594             47156      NDAR_INV0E35~ NDAR_INV0E350~ 12/16/2019     137          
-## 5 2573          6609             47156      NDAR_INV0FM9~ NDAR_INV0FM9M~ 11/27/2019     140          
-## 6 2573          6630             47156      NDAR_INV0HFH~ NDAR_INV0HFHM~ 11/12/2020     152          
-## # ... with 34 more variables: sex &lt;chr&gt;, eventname &lt;chr&gt;, scrn2_select_language___1 &lt;chr&gt;,
-## #   scrn_braces_v2 &lt;chr&gt;, scrn_future_braces &lt;chr&gt;, scrn_bracesdate_v2 &lt;chr&gt;,
-## #   scrn_bracescallback_v2 &lt;chr&gt;, scrn_nr_hair_v2 &lt;chr&gt;, scrn_nr_hair_metal_v2 &lt;chr&gt;,
-## #   scrn_nr_hair_remove &lt;chr&gt;, scrn_nr_hair_date_v2 &lt;chr&gt;, scrn_nr_hair_callback_v2 &lt;chr&gt;,
+##   collection_id abcd_screen02_id dataset_id subjectkey    src_subject_id interview_date
+##   &lt;chr&gt;         &lt;chr&gt;            &lt;chr&gt;      &lt;chr&gt;         &lt;chr&gt;          &lt;chr&gt;         
+## 1 2573          6579             47156      NDAR_INV0CZB~ NDAR_INV0CZBU~ 07/19/2019    
+## 2 2573          6581             47156      NDAR_INV0D4C~ NDAR_INV0D4C1~ 03/10/2019    
+## 3 2573          6588             47156      NDAR_INV0DKW~ NDAR_INV0DKWE~ 11/30/2019    
+## 4 2573          6594             47156      NDAR_INV0E35~ NDAR_INV0E350~ 12/16/2019    
+## 5 2573          6609             47156      NDAR_INV0FM9~ NDAR_INV0FM9M~ 11/27/2019    
+## 6 2573          6630             47156      NDAR_INV0HFH~ NDAR_INV0HFHM~ 11/12/2020    
+## # ... with 35 more variables: interview_age &lt;chr&gt;, sex &lt;chr&gt;, eventname &lt;chr&gt;,
+## #   scrn2_select_language___1 &lt;chr&gt;, scrn_braces_v2 &lt;chr&gt;, scrn_future_braces &lt;chr&gt;,
+## #   scrn_bracesdate_v2 &lt;chr&gt;, scrn_bracescallback_v2 &lt;chr&gt;, scrn_nr_hair_v2 &lt;chr&gt;,
+## #   scrn_nr_hair_metal_v2 &lt;chr&gt;, scrn_nr_hair_remove &lt;chr&gt;,
+## #   scrn_nr_hair_date_v2 &lt;chr&gt;, scrn_nr_hair_callback_v2 &lt;chr&gt;,
 ## #   scrn_eyeliner_v2 &lt;chr&gt;, scrn_nr_piercing_v2 &lt;chr&gt;, scrn_nr_piercing_remove &lt;chr&gt;,
-## #   scrn_nr_piercing_date &lt;chr&gt;, scrn_nr_piercing_callback &lt;chr&gt;, scrn_surgery_v2 &lt;chr&gt;,
-## #   scrn_height_v2 &lt;chr&gt;, scrn_weight_v2 &lt;chr&gt;, scrn_concerns &lt;chr&gt;, scrn_concerns_desc &lt;chr&gt;, ...</code></pre>
+## #   scrn_nr_piercing_date &lt;chr&gt;, scrn_nr_piercing_callback &lt;chr&gt;, ...</code></pre>
 <p>That helped, but R still thinks that all of our variables are character strings. We need to tell R that some of our variables might be numbers and that we want it to guess which ones those are. We can do that with the very handy <code>type_convert()</code> function.</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="working-with-abcd.html#cb7-1" aria-hidden="true" tabindex="-1"></a>abcd_df <span class="ot">&lt;-</span> <span class="fu">type_convert</span>(abcd_df)</span>
-<span id="cb7-2"><a href="working-with-abcd.html#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-3"><a href="working-with-abcd.html#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(abcd_df)</span></code></pre></div>
+<p>This function isn’t perfectly accurate at guessing what your underlying data types are, but after testing it on several ABCD datasets, it has yet to make a mistake. So, although the safest practice is technically to double-check every column in your dataset, it is should be safe to assume <code>type_convert()</code> is almost always right.</p>
+<div class="sourceCode" id="cb144"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb144-1"><a href="working-with-abcd.html#cb144-1" aria-hidden="true" tabindex="-1"></a>abcd_df <span class="ot">&lt;-</span> <span class="fu">type_convert</span>(abcd_df)</span>
+<span id="cb144-2"><a href="working-with-abcd.html#cb144-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb144-3"><a href="working-with-abcd.html#cb144-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(abcd_df)</span></code></pre></div>
 <pre><code>## # A tibble: 6 x 41
-##   collection_id abcd_screen02_id dataset_id subjectkey    src_subject_id interview_date interview_age
-##           &lt;dbl&gt;            &lt;dbl&gt;      &lt;dbl&gt; &lt;chr&gt;         &lt;chr&gt;          &lt;chr&gt;                  &lt;dbl&gt;
-## 1          2573             6579      47156 NDAR_INV0CZB~ NDAR_INV0CZBU~ 07/19/2019               136
-## 2          2573             6581      47156 NDAR_INV0D4C~ NDAR_INV0D4C1~ 03/10/2019               154
-## 3          2573             6588      47156 NDAR_INV0DKW~ NDAR_INV0DKWE~ 11/30/2019               152
-## 4          2573             6594      47156 NDAR_INV0E35~ NDAR_INV0E350~ 12/16/2019               137
-## 5          2573             6609      47156 NDAR_INV0FM9~ NDAR_INV0FM9M~ 11/27/2019               140
-## 6          2573             6630      47156 NDAR_INV0HFH~ NDAR_INV0HFHM~ 11/12/2020               152
-## # ... with 34 more variables: sex &lt;chr&gt;, eventname &lt;chr&gt;, scrn2_select_language___1 &lt;dbl&gt;,
-## #   scrn_braces_v2 &lt;dbl&gt;, scrn_future_braces &lt;dbl&gt;, scrn_bracesdate_v2 &lt;chr&gt;,
-## #   scrn_bracescallback_v2 &lt;dbl&gt;, scrn_nr_hair_v2 &lt;dbl&gt;, scrn_nr_hair_metal_v2 &lt;dbl&gt;,
-## #   scrn_nr_hair_remove &lt;dbl&gt;, scrn_nr_hair_date_v2 &lt;lgl&gt;, scrn_nr_hair_callback_v2 &lt;lgl&gt;,
+##   collection_id abcd_screen02_id dataset_id subjectkey    src_subject_id interview_date
+##           &lt;dbl&gt;            &lt;dbl&gt;      &lt;dbl&gt; &lt;chr&gt;         &lt;chr&gt;          &lt;chr&gt;         
+## 1          2573             6579      47156 NDAR_INV0CZB~ NDAR_INV0CZBU~ 07/19/2019    
+## 2          2573             6581      47156 NDAR_INV0D4C~ NDAR_INV0D4C1~ 03/10/2019    
+## 3          2573             6588      47156 NDAR_INV0DKW~ NDAR_INV0DKWE~ 11/30/2019    
+## 4          2573             6594      47156 NDAR_INV0E35~ NDAR_INV0E350~ 12/16/2019    
+## 5          2573             6609      47156 NDAR_INV0FM9~ NDAR_INV0FM9M~ 11/27/2019    
+## 6          2573             6630      47156 NDAR_INV0HFH~ NDAR_INV0HFHM~ 11/12/2020    
+## # ... with 35 more variables: interview_age &lt;dbl&gt;, sex &lt;chr&gt;, eventname &lt;chr&gt;,
+## #   scrn2_select_language___1 &lt;dbl&gt;, scrn_braces_v2 &lt;dbl&gt;, scrn_future_braces &lt;dbl&gt;,
+## #   scrn_bracesdate_v2 &lt;chr&gt;, scrn_bracescallback_v2 &lt;dbl&gt;, scrn_nr_hair_v2 &lt;dbl&gt;,
+## #   scrn_nr_hair_metal_v2 &lt;dbl&gt;, scrn_nr_hair_remove &lt;dbl&gt;,
+## #   scrn_nr_hair_date_v2 &lt;lgl&gt;, scrn_nr_hair_callback_v2 &lt;lgl&gt;,
 ## #   scrn_eyeliner_v2 &lt;dbl&gt;, scrn_nr_piercing_v2 &lt;dbl&gt;, scrn_nr_piercing_remove &lt;dbl&gt;,
-## #   scrn_nr_piercing_date &lt;lgl&gt;, scrn_nr_piercing_callback &lt;dbl&gt;, scrn_surgery_v2 &lt;dbl&gt;,
-## #   scrn_height_v2 &lt;dbl&gt;, scrn_weight_v2 &lt;dbl&gt;, scrn_concerns &lt;dbl&gt;, scrn_concerns_desc &lt;chr&gt;, ...</code></pre>
+## #   scrn_nr_piercing_date &lt;lgl&gt;, scrn_nr_piercing_callback &lt;dbl&gt;, ...</code></pre>
 </div>
 <div id="copypaste-able-code" class="section level3" number="4.1.3">
 <h3><span class="header-section-number">4.1.3</span> Copy/paste-able code</h3>
 <p>Putting it all together, we can import an ABCD dataset like so.</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="working-with-abcd.html#cb9-1" aria-hidden="true" tabindex="-1"></a>abcd_df <span class="ot">&lt;-</span> <span class="fu">read_delim</span>(<span class="st">&#39;data/abcd_screen02.txt&#39;</span>, <span class="at">delim =</span> <span class="st">&#39;</span><span class="sc">\t</span><span class="st">&#39;</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb9-2"><a href="working-with-abcd.html#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">row_number</span>() <span class="sc">!=</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb9-3"><a href="working-with-abcd.html#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">type_convert</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb146"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb146-1"><a href="working-with-abcd.html#cb146-1" aria-hidden="true" tabindex="-1"></a>abcd_df <span class="ot">&lt;-</span> <span class="fu">read_delim</span>(<span class="st">&#39;data/abcd_screen02.txt&#39;</span>, <span class="at">delim =</span> <span class="st">&#39;</span><span class="sc">\t</span><span class="st">&#39;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb146-2"><a href="working-with-abcd.html#cb146-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">row_number</span>() <span class="sc">!=</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb146-3"><a href="working-with-abcd.html#cb146-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">type_convert</span>()</span></code></pre></div>
+</div>
+</div>
+<div id="a-general-purpose-abcd-dataset-import-function" class="section level2" number="4.2">
+<h2><span class="header-section-number">4.2</span> A general-purpose ABCD dataset import function</h2>
+<p>If that’s easy for your to remember, then feel free to type those three lines every time. On the other hand, if you have <strong>multiple datasets</strong> you need to import, it is safer to make a <strong>function</strong> that can repeat the process for you several times in <strong>exactly the same way each time</strong>.</p>
+<div class="sourceCode" id="cb147"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb147-1"><a href="working-with-abcd.html#cb147-1" aria-hidden="true" tabindex="-1"></a>read_abcd <span class="ot">&lt;-</span> <span class="cf">function</span>(file_path){</span>
+<span id="cb147-2"><a href="working-with-abcd.html#cb147-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">read_delim</span>(file_path, <span class="at">delim =</span> <span class="st">&#39;</span><span class="sc">\t</span><span class="st">&#39;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb147-3"><a href="working-with-abcd.html#cb147-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(<span class="fu">row_number</span>() <span class="sc">!=</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb147-4"><a href="working-with-abcd.html#cb147-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">type_convert</span>()</span>
+<span id="cb147-5"><a href="working-with-abcd.html#cb147-5" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<p>With this function, we can now load three different datasets according to exactly the same rules each time.</p>
+<div class="sourceCode" id="cb148"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb148-1"><a href="working-with-abcd.html#cb148-1" aria-hidden="true" tabindex="-1"></a>df1 <span class="ot">&lt;-</span> <span class="fu">read_abcd</span>(<span class="st">&#39;data/abcd_lpds01.txt&#39;</span>)</span>
+<span id="cb148-2"><a href="working-with-abcd.html#cb148-2" aria-hidden="true" tabindex="-1"></a>df2 <span class="ot">&lt;-</span> <span class="fu">read_abcd</span>(<span class="st">&#39;data/abcd_lpmh01.txt&#39;</span>)</span>
+<span id="cb148-3"><a href="working-with-abcd.html#cb148-3" aria-hidden="true" tabindex="-1"></a>df3 <span class="ot">&lt;-</span> <span class="fu">read_abcd</span>(<span class="st">&#39;data/abcd_lpsaiq01.txt&#39;</span>)</span></code></pre></div>
+<div id="getting-rid-of-import-messages" class="section level3" number="4.2.1">
+<h3><span class="header-section-number">4.2.1</span> Getting rid of import messages</h3>
+<p>Although import messages are useful for understanding whether your data have made it into R, they are much less helpful (even overwhelming) when you are importing several datasets at once. To handle this, we can modify our <code>read_abcd()</code> function to suppress import messages.</p>
+<div class="sourceCode" id="cb149"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb149-1"><a href="working-with-abcd.html#cb149-1" aria-hidden="true" tabindex="-1"></a>read_abcd_quietly <span class="ot">&lt;-</span> <span class="cf">function</span>(file_path){</span>
+<span id="cb149-2"><a href="working-with-abcd.html#cb149-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">suppressMessages</span>(</span>
+<span id="cb149-3"><a href="working-with-abcd.html#cb149-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">expr =</span> <span class="fu">read_delim</span>(file_path, <span class="at">delim =</span> <span class="st">&#39;</span><span class="sc">\t</span><span class="st">&#39;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb149-4"><a href="working-with-abcd.html#cb149-4" aria-hidden="true" tabindex="-1"></a>      <span class="fu">filter</span>(<span class="fu">row_number</span>() <span class="sc">!=</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb149-5"><a href="working-with-abcd.html#cb149-5" aria-hidden="true" tabindex="-1"></a>      <span class="fu">type_convert</span>())</span>
+<span id="cb149-6"><a href="working-with-abcd.html#cb149-6" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb149-7"><a href="working-with-abcd.html#cb149-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb149-8"><a href="working-with-abcd.html#cb149-8" aria-hidden="true" tabindex="-1"></a>abcd_df <span class="ot">&lt;-</span> <span class="fu">read_abcd_quietly</span>(<span class="st">&#39;data/abcd_lpds01.txt&#39;</span>)</span></code></pre></div>
+</div>
+</div>
+<div id="importing-a-whole-folder-of-abcd-datasets" class="section level2" number="4.3">
+<h2><span class="header-section-number">4.3</span> Importing a whole folder of ABCD datasets</h2>
+<p>One of the great advantages of a large data repository is the ability to incorporate multiple datasets in a single analysis. But this introduces a new problem for how to get all of those datasets into R to perform such an analysis.</p>
+<div id="as-easy-strategy-that-unfortunately-wont-scale" class="section level3" number="4.3.1">
+<h3><span class="header-section-number">4.3.1</span> As easy strategy that unfortunately won’t scale</h3>
+<p>A first guess that most people use is simply to import them all explicitly, like we did above. This is a great approach for a small number of files, but would not work for importing more than that (e.g., for “high-dimensional” analyses, like machine learning).</p>
+<div class="sourceCode" id="cb150"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb150-1"><a href="working-with-abcd.html#cb150-1" aria-hidden="true" tabindex="-1"></a><span class="co"># This is the same example as above</span></span>
+<span id="cb150-2"><a href="working-with-abcd.html#cb150-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb150-3"><a href="working-with-abcd.html#cb150-3" aria-hidden="true" tabindex="-1"></a>df1 <span class="ot">&lt;-</span> <span class="fu">read_abcd</span>(<span class="st">&#39;data/abcd_lpds01.txt&#39;</span>)</span>
+<span id="cb150-4"><a href="working-with-abcd.html#cb150-4" aria-hidden="true" tabindex="-1"></a>df2 <span class="ot">&lt;-</span> <span class="fu">read_abcd</span>(<span class="st">&#39;data/abcd_lpmh01.txt&#39;</span>)</span>
+<span id="cb150-5"><a href="working-with-abcd.html#cb150-5" aria-hidden="true" tabindex="-1"></a>df3 <span class="ot">&lt;-</span> <span class="fu">read_abcd</span>(<span class="st">&#39;data/abcd_lpsaiq01.txt&#39;</span>)</span>
+<span id="cb150-6"><a href="working-with-abcd.html#cb150-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb150-7"><a href="working-with-abcd.html#cb150-7" aria-hidden="true" tabindex="-1"></a><span class="co"># ... </span></span>
+<span id="cb150-8"><a href="working-with-abcd.html#cb150-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb150-9"><a href="working-with-abcd.html#cb150-9" aria-hidden="true" tabindex="-1"></a>df100 <span class="ot">&lt;-</span> <span class="fu">read_abcd</span>(<span class="st">&#39;data/abcd_lpksad01.txt&#39;</span>)</span>
+<span id="cb150-10"><a href="working-with-abcd.html#cb150-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb150-11"><a href="working-with-abcd.html#cb150-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Imagine how hard it would be to type out 100 dataset names (correctly)!</span></span></code></pre></div>
+<p>Instead, we can simply tell R that we want to import an entire folder of datasets, which in this case we named the <code>many_datasets</code> folder. Note, this trick uses functions from the <code>purrr</code> package of the <code>tidyverse</code>. These functions are a little trick and we cover them at various points later in this textbook. For now, all you need to know is that they take a list of objects (in this case, filenames) and perform the same process for each one.</p>
+<p>The first step is to get a list of files inside your folder of interest. Also, make sure to use <code>full.names = T</code> to get the file <strong>path</strong> in addition to each file’s name.</p>
+<div class="sourceCode" id="cb151"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb151-1"><a href="working-with-abcd.html#cb151-1" aria-hidden="true" tabindex="-1"></a>files_to_import <span class="ot">&lt;-</span> <span class="fu">list.files</span>(<span class="st">&#39;data/many_datasets&#39;</span>, <span class="at">full.names =</span> T)</span>
+<span id="cb151-2"><a href="working-with-abcd.html#cb151-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb151-3"><a href="working-with-abcd.html#cb151-3" aria-hidden="true" tabindex="-1"></a>files_to_import</span></code></pre></div>
+<pre><code>## [1] &quot;data/many_datasets/abcd_lpds01.txt&quot;            
+## [2] &quot;data/many_datasets/abcd_lpksad01.txt&quot;          
+## [3] &quot;data/many_datasets/abcd_lpmh01.txt&quot;            
+## [4] &quot;data/many_datasets/abcd_lpohstbi01.txt&quot;        
+## [5] &quot;data/many_datasets/abcd_lpsaiq01.txt&quot;          
+## [6] &quot;data/many_datasets/abcd_medhxss01.txt&quot;         
+## [7] &quot;data/many_datasets/abcd_screen02.txt&quot;          
+## [8] &quot;data/many_datasets/abcd_socdev_child_emr01.txt&quot;</code></pre>
+<p>The second step is to get the names we want to assign to each dataset, once it is imported into R. We use a few tricks here, including the <code>map_chr()</code> function from <code>purrr</code> and the <code>str_extract()</code> function from the <code>stringr</code> package. Both of these functions are again covered later in the textbook, but are mentioned here in case you simply want to copy/paste code in a hurry and explore the details later.</p>
+<div class="sourceCode" id="cb153"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb153-1"><a href="working-with-abcd.html#cb153-1" aria-hidden="true" tabindex="-1"></a>df_names <span class="ot">&lt;-</span> <span class="fu">map_chr</span>(files_to_import, <span class="sc">~</span> <span class="fu">str_extract</span>(.x, <span class="st">&#39;abcd_[</span><span class="sc">\\</span><span class="st">w|</span><span class="sc">\\</span><span class="st">d]*&#39;</span>))</span>
+<span id="cb153-2"><a href="working-with-abcd.html#cb153-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb153-3"><a href="working-with-abcd.html#cb153-3" aria-hidden="true" tabindex="-1"></a>df_names</span></code></pre></div>
+<pre><code>## [1] &quot;abcd_lpds01&quot;             &quot;abcd_lpksad01&quot;           &quot;abcd_lpmh01&quot;            
+## [4] &quot;abcd_lpohstbi01&quot;         &quot;abcd_lpsaiq01&quot;           &quot;abcd_medhxss01&quot;         
+## [7] &quot;abcd_screen02&quot;           &quot;abcd_socdev_child_emr01&quot;</code></pre>
+<p>The final step has two parts we execute simultaneously: importing each file on the list (the <code>files_to_import</code> list) and assigning the imported file to an R object (using the <code>df_names</code> list we just made).</p>
+<div class="sourceCode" id="cb155"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb155-1"><a href="working-with-abcd.html#cb155-1" aria-hidden="true" tabindex="-1"></a>my_datasets <span class="ot">&lt;-</span> <span class="fu">map</span>(files_to_import, read_abcd_quietly) <span class="sc">%&gt;%</span> </span>
+<span id="cb155-2"><a href="working-with-abcd.html#cb155-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_names</span>(df_names)</span></code></pre></div>
+<p>With this process completed, we can now import an entire folder of datasets and store them in a single object (<code>my_datasets</code>). Whenever we want to reference a specific one, we can just use the <code>$</code> operator to access it.</p>
+<div class="sourceCode" id="cb156"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb156-1"><a href="working-with-abcd.html#cb156-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(my_datasets<span class="sc">$</span>abcd_lpds01)</span></code></pre></div>
+<pre><code>## # A tibble: 6 x 160
+##   collection_id abcd_lpds01_id dataset_id subjectkey       src_subject_id interview_age
+##           &lt;dbl&gt;          &lt;dbl&gt;      &lt;dbl&gt; &lt;chr&gt;            &lt;chr&gt;                  &lt;dbl&gt;
+## 1          2573          61501      47217 NDAR_INV1FW43D9V NDAR_INV1FW43~           155
+## 2          2573          61535      47217 NDAR_INV1KZTEZF5 NDAR_INV1KZTE~           154
+## 3          2573          61646      47217 NDAR_INV1LC5DBRK NDAR_INV1LC5D~           126
+## 4          2573          64616      47217 NDAR_INV4AYYAKWZ NDAR_INV4AYYA~           144
+## 5          2573          64701      47217 NDAR_INV4JZNJZVZ NDAR_INV4JZNJ~           158
+## 6          2573          64711      47217 NDAR_INV4KKHGHCL NDAR_INV4KKHG~           138
+## # ... with 154 more variables: interview_date &lt;chr&gt;, sex &lt;chr&gt;, eventname &lt;chr&gt;,
+## #   demo_l_p_select_language___1 &lt;dbl&gt;, demo_prim_l &lt;dbl&gt;, demo_brthdat_v2_l &lt;dbl&gt;,
+## #   demo_ed_v2_l &lt;dbl&gt;, demo_gender_id_v2_l &lt;dbl&gt;, demo_nat_lang_l &lt;dbl&gt;,
+## #   demo_nat_lang_2_l &lt;dbl&gt;, demo_dual_lang_v2_l &lt;dbl&gt;,
+## #   demo_dual_lang_years_p___1 &lt;dbl&gt;, demo_dual_lang_years_p___2 &lt;dbl&gt;,
+## #   demo_dual_lang_years_p___3 &lt;dbl&gt;, demo_dual_lang_years_p___4 &lt;dbl&gt;,
+## #   demo_dual_lang_years_p___5 &lt;dbl&gt;, demo_dual_lang_years_p___6 &lt;dbl&gt;, ...</code></pre>
+<p>Or</p>
+<div class="sourceCode" id="cb158"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb158-1"><a href="working-with-abcd.html#cb158-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(my_datasets<span class="sc">$</span>abcd_medhxss01)</span></code></pre></div>
+<pre><code>## # A tibble: 6 x 34
+##   collection_id abcd_medhxss01_id dataset_id subjectkey   src_subject_id interview_date
+##           &lt;dbl&gt;             &lt;dbl&gt;      &lt;dbl&gt; &lt;chr&gt;        &lt;chr&gt;          &lt;chr&gt;         
+## 1          2573             32816      47391 NDAR_INV0EW~ NDAR_INV0EWGP~ 06/29/2017    
+## 2          2573             32821      47391 NDAR_INV0F8~ NDAR_INV0F82C~ 08/05/2017    
+## 3          2573             32831      47391 NDAR_INV0G2~ NDAR_INV0G2N5~ 06/23/2017    
+## 4          2573             32837      47391 NDAR_INV0GP~ NDAR_INV0GPKY~ 10/10/2017    
+## 5          2573             32839      47391 NDAR_INV0GV~ NDAR_INV0GVW9~ 04/28/2017    
+## 6          2573             32843      47391 NDAR_INV0GZ~ NDAR_INV0GZM9~ 07/13/2017    
+## # ... with 28 more variables: interview_age &lt;dbl&gt;, sex &lt;chr&gt;, eventname &lt;chr&gt;,
+## #   medhx_ss_4b_p &lt;dbl&gt;, medhx_ss_5b_p &lt;dbl&gt;, medhx_ss_6a_times_p &lt;dbl&gt;,
+## #   medhx_ss_6b_times_p &lt;dbl&gt;, medhx_ss_6c_times_p &lt;dbl&gt;, medhx_ss_6d_times_p &lt;dbl&gt;,
+## #   medhx_ss_6e_times_p &lt;dbl&gt;, medhx_ss_6f_times_p &lt;dbl&gt;, medhx_ss_6g_times_p &lt;dbl&gt;,
+## #   medhx_ss_6h_times_p &lt;dbl&gt;, medhx_ss_6i_times_p &lt;dbl&gt;, medhx_ss_6j_times_p &lt;dbl&gt;,
+## #   medhx_ss_6k_times_p &lt;dbl&gt;, medhx_ss_6l_times_p &lt;dbl&gt;, medhx_ss_6m_times_p &lt;dbl&gt;,
+## #   medhx_ss_6n_times_p &lt;dbl&gt;, medhx_ss_6o_times_p &lt;dbl&gt;, ...</code></pre>
 
 </div>
 </div>
@@ -337,8 +459,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           </div>
         </div>
       </div>
-<a href="basic-r.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-
+<a href="basic-r.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="visualization.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
@@ -392,6 +514,20 @@ gitbook.start({
 });
 </script>
 
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
 </body>
 
 </html>
