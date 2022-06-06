@@ -1,0 +1,112 @@
+
+# Strings, should you care?
+
+```{r}
+library(tidyverse)
+
+contact_df <- read_csv('data/contact_info.csv')
+mood_df <- read_csv('data/mood_data.csv')
+
+contact_df
+mood_df
+```
+# Join the datasets
+
+```{r}
+contact_df <- contact_df %>% 
+  mutate(
+    name = paste(toupper(lname), fname, sep = ', '))
+
+contact_df <- contact_df %>% 
+  left_join(mood_df, by = 'name')
+```
+
+```{r}
+mood_df <- mood_df %>% 
+  mutate(
+    lname = str_extract(name, '\\w+') %>% 
+      tolower() %>% 
+      tools::toTitleCase() %>% 
+      str_replace('Mcf', 'McF'),
+    fname = str_extract(name, ', \\w+') %>% 
+      str_remove(', '))
+
+mood_df %>% 
+  left_join(contact_df, by = c('fname', 'lname'))
+```
+
+# Extract some information
+
+```{r}
+contact_df %>% 
+  mutate(
+    formatted_phone = str_replace_all(phone, '[^0-9]', '')) %>% 
+  select(phone, formatted_phone)
+```
+
+```{r}
+contact_df %>% 
+  mutate(
+    zip = str_extract(address, '[0-9]+$')) %>% 
+  select(address, zip)
+```
+
+```{r}
+contact_df %>% 
+  mutate(
+    formatted_phone = map_chr(
+      .x = phone, 
+      .f = ~ str_extract_all(.x, '[0-9]+') %>% 
+        unlist() %>% 
+        paste(collapse = '-'))) %>% 
+  select(phone, formatted_phone)
+```
+
+
+```{r}
+library(glue)
+
+contact_df %>% 
+  mutate(
+    tax_date = lubridate::mdy(tax_day),
+    days_late = tax_date - as.Date('2022-04-18')) %>% 
+  filter(days_late > 0) %>% 
+  mutate(message = glue('Dear Mr. {lname}, your taxes are {days_late} days late.')) %>% 
+  select(phone, fname, lname, message)
+```
+
+# String interpolation
+
+```{r}
+library(glue)
+
+me <- 'Ian'
+glue('My name is {me}')
+```
+
+```{r}
+data.frame(id = 1:3) %>% 
+  mutate(
+    name = c('Ian', 'Jen', 'Andy'),
+    job = c('statistician', 'writer', 'researcher'),
+    pronouns = c('He', 'She', 'They'),
+    verb = ifelse(pronouns == 'They', 'are', 'is'),
+    bio = glue('This is {name}. {pronouns} {verb} a {job}.'))
+```
+
+
+# Sentiment analysis
+
+
+```{r}
+library(tidytext)
+
+contact_df %>% 
+  unnest_tokens(word, open_ended) %>% 
+  left_join(get_sentiments('bing'), by = 'word') %>% 
+  group_by(record_id, sentiment) %>% 
+  count()
+```
+
+
+

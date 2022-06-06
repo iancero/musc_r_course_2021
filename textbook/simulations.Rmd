@@ -1,0 +1,82 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+library(tidyverse)
+
+possible_nums <- 1:1000
+
+df <- expand_grid(sample_num = 1:10000, draw_num = 1:100) %>% 
+  group_by(sample_num) %>% 
+  mutate(score = sample(possible_nums, size = n(), replace = T)) %>% 
+  summarise(
+    mean_score = mean(score),
+    standard_dev = sd(score))
+
+ggplot(df, mapping = aes(x = mean_score)) +
+  geom_histogram()
+```
+
+
+
+
+```{r}
+my_normal <- rpois(n = 1000, lambda = 10)
+
+my_binomial <- rbinom(n = 10, size = 100, prob = .60)
+
+hist(my_binomial)
+```
+
+```{r}
+pwr::pwr.t.test(n = 150, d = .30)
+```
+
+```{r}
+df <- expand_grid(sample = 1:1000, group = 0:1, person_id = 1:150) %>% 
+  group_by(sample) %>% 
+  mutate(
+    bias = if_else(
+      condition = group == 0,
+      true = 0,
+      false = runif(n = n(), min = 0, max = .20)),
+    true_score = if_else(
+      condition = group == 0,
+      true = rnorm(n = n(), mean = 0, sd = 1),
+      false = rnorm(n = n(), mean = .30, sd = 1)),
+    biased_score = true_score + bias) %>% 
+  nest() %>% 
+  mutate(
+    fit = map(data, ~ t.test(biased_score ~ group, data = .x)),
+    results = map(fit, ~ broom::tidy(.x))) %>% 
+  unnest(results) %>% 
+  ungroup() %>% 
+  summarise(
+    mean_bias = mean(estimate - -.30),
+    power = sum(p.value < .05)/length(p.value))
+
+df
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
