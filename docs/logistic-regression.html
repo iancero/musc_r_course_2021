@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>8 Logistic Regression | R Notebook</title>
+  <title>4 Logistic Regression | An Organic R Textbook</title>
   <meta name="description" content="This is the organic textbook accompanying Cero’s 2021 course on statistical programming with R" />
   <meta name="generator" content="bookdown 0.24 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="8 Logistic Regression | R Notebook" />
+  <meta property="og:title" content="4 Logistic Regression | An Organic R Textbook" />
   <meta property="og:type" content="book" />
   <meta property="og:url" content="https://iancero.github.io/musc_r_course_2021" />
   
@@ -16,7 +16,7 @@
   <meta name="github-repo" content="iancero/musc_r_course_2021" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="8 Logistic Regression | R Notebook" />
+  <meta name="twitter:title" content="4 Logistic Regression | An Organic R Textbook" />
   
   <meta name="twitter:description" content="This is the organic textbook accompanying Cero’s 2021 course on statistical programming with R" />
   
@@ -31,8 +31,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon" />
-<link rel="prev" href="linear-regression.html"/>
-<link rel="next" href="intro-to-machine-learning.html"/>
+<link rel="prev" href="basic-r.html"/>
+
 <script src="libs/header-attrs-2.11/header-attrs.js"></script>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
@@ -201,29 +201,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="3.9.2" data-path="basic-r.html"><a href="basic-r.html#official-coding-conventions"><i class="fa fa-check"></i><b>3.9.2</b> Official coding conventions</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="4" data-path="working-with-abcd.html"><a href="working-with-abcd.html"><i class="fa fa-check"></i><b>4</b> Working with ABCD</a>
+<li class="chapter" data-level="4" data-path="logistic-regression.html"><a href="logistic-regression.html"><i class="fa fa-check"></i><b>4</b> Logistic Regression</a>
 <ul>
-<li class="chapter" data-level="4.1" data-path="working-with-abcd.html"><a href="working-with-abcd.html#importing-abcd-datafiles"><i class="fa fa-check"></i><b>4.1</b> Importing ABCD datafiles</a>
+<li class="chapter" data-level="4.1" data-path="logistic-regression.html"><a href="logistic-regression.html#steps-1-2---import-and-clean-data"><i class="fa fa-check"></i><b>4.1</b> Steps 1 &amp; 2 - Import and clean data</a></li>
+<li class="chapter" data-level="4.2" data-path="logistic-regression.html"><a href="logistic-regression.html#steps-3-4---fit-the-model-and-summarize-it"><i class="fa fa-check"></i><b>4.2</b> Steps 3 &amp; 4 - Fit the model and summarize it</a>
 <ul>
-<li class="chapter" data-level="4.1.1" data-path="working-with-abcd.html"><a href="working-with-abcd.html#whats-different-about-abcd"><i class="fa fa-check"></i><b>4.1.1</b> What’s different about ABCD?</a></li>
-<li class="chapter" data-level="4.1.2" data-path="working-with-abcd.html"><a href="working-with-abcd.html#walking-through-abcd-data-importation"><i class="fa fa-check"></i><b>4.1.2</b> Walking through ABCD data importation</a></li>
-<li class="chapter" data-level="4.1.3" data-path="working-with-abcd.html"><a href="working-with-abcd.html#copypaste-able-code"><i class="fa fa-check"></i><b>4.1.3</b> Copy/paste-able code</a></li>
+<li class="chapter" data-level="4.2.1" data-path="logistic-regression.html"><a href="logistic-regression.html#where-are-my-odds-ratios"><i class="fa fa-check"></i><b>4.2.1</b> Where are my odds ratios?</a></li>
 </ul></li>
+<li class="chapter" data-level="4.3" data-path="logistic-regression.html"><a href="logistic-regression.html#plotting-predicted-values"><i class="fa fa-check"></i><b>4.3</b> Plotting predicted values</a></li>
 </ul></li>
-<li class="chapter" data-level="5" data-path="visualization.html"><a href="visualization.html"><i class="fa fa-check"></i><b>5</b> Visualization?</a></li>
-<li class="chapter" data-level="6" data-path="basic-hypthothesis-tests.html"><a href="basic-hypthothesis-tests.html"><i class="fa fa-check"></i><b>6</b> Basic hypthothesis tests</a></li>
-<li class="chapter" data-level="7" data-path="linear-regression.html"><a href="linear-regression.html"><i class="fa fa-check"></i><b>7</b> Linear Regression</a></li>
-<li class="chapter" data-level="8" data-path="logistic-regression.html"><a href="logistic-regression.html"><i class="fa fa-check"></i><b>8</b> Logistic Regression</a></li>
-<li class="chapter" data-level="9" data-path="intro-to-machine-learning.html"><a href="intro-to-machine-learning.html"><i class="fa fa-check"></i><b>9</b> Intro to machine learning</a></li>
-<li class="chapter" data-level="10" data-path="multilevel-models.html"><a href="multilevel-models.html"><i class="fa fa-check"></i><b>10</b> Multilevel Models</a></li>
-<li class="chapter" data-level="11" data-path="logistic-mixed-models.html"><a href="logistic-mixed-models.html"><i class="fa fa-check"></i><b>11</b> Logistic mixed models</a></li>
-<li class="chapter" data-level="12" data-path="bayesian-models.html"><a href="bayesian-models.html"><i class="fa fa-check"></i><b>12</b> Bayesian models</a></li>
-<li class="chapter" data-level="13" data-path="structural-equation-modeling.html"><a href="structural-equation-modeling.html"><i class="fa fa-check"></i><b>13</b> Structural Equation Modeling</a></li>
-<li class="chapter" data-level="14" data-path="strings-should-you-care.html"><a href="strings-should-you-care.html"><i class="fa fa-check"></i><b>14</b> Strings, should you care?</a></li>
-<li class="chapter" data-level="15" data-path="join-the-datasets.html"><a href="join-the-datasets.html"><i class="fa fa-check"></i><b>15</b> Join the datasets</a></li>
-<li class="chapter" data-level="16" data-path="extract-some-information.html"><a href="extract-some-information.html"><i class="fa fa-check"></i><b>16</b> Extract some information</a></li>
-<li class="chapter" data-level="17" data-path="string-interpolation.html"><a href="string-interpolation.html"><i class="fa fa-check"></i><b>17</b> String interpolation</a></li>
-<li class="chapter" data-level="18" data-path="sentiment-analysis.html"><a href="sentiment-analysis.html"><i class="fa fa-check"></i><b>18</b> Sentiment analysis</a></li>
 </ul>
 
       </nav>
@@ -233,7 +219,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <div class="body-inner">
         <div class="book-header" role="navigation">
           <h1>
-            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">R Notebook</a>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">An Organic R Textbook</a>
           </h1>
         </div>
 
@@ -241,54 +227,45 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="logistic-regression" class="section level1" number="8">
-<h1><span class="header-section-number">8</span> Logistic Regression</h1>
-<p>Starter code!</p>
-<div class="sourceCode" id="cb190"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb190-1"><a href="logistic-regression.html#cb190-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb190-2"><a href="logistic-regression.html#cb190-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb190-3"><a href="logistic-regression.html#cb190-3" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">read_delim</span>(<span class="st">&#39;data/abcd_lpksad01.txt&#39;</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb190-4"><a href="logistic-regression.html#cb190-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">row_number</span>() <span class="sc">!=</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb190-5"><a href="logistic-regression.html#cb190-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">type_convert</span>()</span></code></pre></div>
-<pre><code>## Rows: 26744 Columns: 90
-## -- Column specification --------------------------------------------------------------
-## Delimiter: &quot;\t&quot;
-## chr (90): collection_id, abcd_lpksad01_id, dataset_id, subjectkey, src_subject_id,...
-## 
-## i Use `spec()` to retrieve the full column specification for this data.
-## i Specify the column types or set `show_col_types = FALSE` to quiet this message.
-## 
-## -- Column specification --------------------------------------------------------------
-## cols(
-##   .default = col_double(),
-##   subjectkey = col_character(),
-##   src_subject_id = col_character(),
-##   interview_date = col_character(),
-##   sex = col_character(),
-##   eventname = col_character(),
-##   collection_title = col_character()
-## )
-## i Use `spec()` for the full column specifications.</code></pre>
-<div class="sourceCode" id="cb192"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb192-1"><a href="logistic-regression.html#cb192-1" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> df <span class="sc">%&gt;%</span> </span>
-<span id="cb192-2"><a href="logistic-regression.html#cb192-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(src_subject_id) <span class="sc">%&gt;%</span> </span>
-<span id="cb192-3"><a href="logistic-regression.html#cb192-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(</span>
-<span id="cb192-4"><a href="logistic-regression.html#cb192-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">id =</span> src_subject_id, </span>
-<span id="cb192-5"><a href="logistic-regression.html#cb192-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">age =</span> interview_age,</span>
-<span id="cb192-6"><a href="logistic-regression.html#cb192-6" aria-hidden="true" tabindex="-1"></a>    sex, </span>
-<span id="cb192-7"><a href="logistic-regression.html#cb192-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">num_hosp =</span> kbi_ss_c_mental_health_p_l,</span>
-<span id="cb192-8"><a href="logistic-regression.html#cb192-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">grades =</span> kbi_p_grades_in_school_l) <span class="sc">%&gt;%</span> </span>
-<span id="cb192-9"><a href="logistic-regression.html#cb192-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(id) <span class="sc">%&gt;%</span> </span>
-<span id="cb192-10"><a href="logistic-regression.html#cb192-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(age) <span class="sc">%&gt;%</span> </span>
-<span id="cb192-11"><a href="logistic-regression.html#cb192-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb192-12"><a href="logistic-regression.html#cb192-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">age =</span> <span class="fu">floor</span>(age <span class="sc">/</span> <span class="dv">12</span>),</span>
-<span id="cb192-13"><a href="logistic-regression.html#cb192-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">sex =</span> <span class="fu">factor</span>(sex, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">&#39;M&#39;</span>, <span class="st">&#39;F&#39;</span>)),</span>
-<span id="cb192-14"><a href="logistic-regression.html#cb192-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">time =</span> <span class="fu">row_number</span>(),</span>
-<span id="cb192-15"><a href="logistic-regression.html#cb192-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">n_timepoints =</span> <span class="fu">max</span>(time)) <span class="sc">%&gt;%</span> </span>
-<span id="cb192-16"><a href="logistic-regression.html#cb192-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb192-17"><a href="logistic-regression.html#cb192-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(time <span class="sc">==</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb192-18"><a href="logistic-regression.html#cb192-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(grades <span class="sc">%in%</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb192-19"><a href="logistic-regression.html#cb192-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(id, age, sex, grades, num_hosp)</span>
-<span id="cb192-20"><a href="logistic-regression.html#cb192-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb192-21"><a href="logistic-regression.html#cb192-21" aria-hidden="true" tabindex="-1"></a>df</span></code></pre></div>
+<div id="logistic-regression" class="section level1" number="4">
+<h1><span class="header-section-number">4</span> Logistic Regression</h1>
+<p>In this chapter, we’ll see the advantage of R’s linear regression-centric statistical analysis style (i.e., in which basically everything works the same way as a linear regression). Specifically, we’ll switch to a different form of statistical model, with different assumptions and observe that almost everything is the same.</p>
+<p>This has the advantage that we need to relearn very little from model to model, and that we can feel more confident that we got our new model (in this case a logistic one) right on the first try.</p>
+<div id="steps-1-2---import-and-clean-data" class="section level2" number="4.1">
+<h2><span class="header-section-number">4.1</span> Steps 1 &amp; 2 - Import and clean data</h2>
+<p>To maximize comparability with the regression and hypotehsis testing chapters, we’ll again use the KSADS ABCD dataset. We can again import that dataset with our custom functions from earlier chapters.</p>
+<div class="sourceCode" id="cb138"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb138-1"><a href="logistic-regression.html#cb138-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb138-2"><a href="logistic-regression.html#cb138-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb138-3"><a href="logistic-regression.html#cb138-3" aria-hidden="true" tabindex="-1"></a>read_abcd_quietly <span class="ot">&lt;-</span> <span class="cf">function</span>(file_path){</span>
+<span id="cb138-4"><a href="logistic-regression.html#cb138-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">suppressMessages</span>(</span>
+<span id="cb138-5"><a href="logistic-regression.html#cb138-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">expr =</span> <span class="fu">read_delim</span>(file_path, <span class="at">delim =</span> <span class="st">&#39;</span><span class="sc">\t</span><span class="st">&#39;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb138-6"><a href="logistic-regression.html#cb138-6" aria-hidden="true" tabindex="-1"></a>      <span class="fu">filter</span>(<span class="fu">row_number</span>() <span class="sc">!=</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb138-7"><a href="logistic-regression.html#cb138-7" aria-hidden="true" tabindex="-1"></a>      <span class="fu">type_convert</span>())</span>
+<span id="cb138-8"><a href="logistic-regression.html#cb138-8" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb138-9"><a href="logistic-regression.html#cb138-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb138-10"><a href="logistic-regression.html#cb138-10" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">read_abcd_quietly</span>(<span class="st">&#39;data/abcd_lpksad01.txt&#39;</span>)</span></code></pre></div>
+<p>With the dataset loaded, we can now engage in some basic cleanup - the same as in previous chapters.</p>
+<div class="sourceCode" id="cb139"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb139-1"><a href="logistic-regression.html#cb139-1" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> df <span class="sc">%&gt;%</span> </span>
+<span id="cb139-2"><a href="logistic-regression.html#cb139-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(src_subject_id) <span class="sc">%&gt;%</span> </span>
+<span id="cb139-3"><a href="logistic-regression.html#cb139-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(</span>
+<span id="cb139-4"><a href="logistic-regression.html#cb139-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">id =</span> src_subject_id, </span>
+<span id="cb139-5"><a href="logistic-regression.html#cb139-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">age =</span> interview_age,</span>
+<span id="cb139-6"><a href="logistic-regression.html#cb139-6" aria-hidden="true" tabindex="-1"></a>    sex, </span>
+<span id="cb139-7"><a href="logistic-regression.html#cb139-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">num_hosp =</span> kbi_ss_c_mental_health_p_l,</span>
+<span id="cb139-8"><a href="logistic-regression.html#cb139-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">grades =</span> kbi_p_grades_in_school_l) <span class="sc">%&gt;%</span> </span>
+<span id="cb139-9"><a href="logistic-regression.html#cb139-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(id) <span class="sc">%&gt;%</span> </span>
+<span id="cb139-10"><a href="logistic-regression.html#cb139-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(age) <span class="sc">%&gt;%</span> </span>
+<span id="cb139-11"><a href="logistic-regression.html#cb139-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb139-12"><a href="logistic-regression.html#cb139-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">age =</span> <span class="fu">floor</span>(age <span class="sc">/</span> <span class="dv">12</span>),</span>
+<span id="cb139-13"><a href="logistic-regression.html#cb139-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">sex =</span> <span class="fu">factor</span>(sex, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">&#39;M&#39;</span>, <span class="st">&#39;F&#39;</span>)),</span>
+<span id="cb139-14"><a href="logistic-regression.html#cb139-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">time =</span> <span class="fu">row_number</span>(),</span>
+<span id="cb139-15"><a href="logistic-regression.html#cb139-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">n_timepoints =</span> <span class="fu">max</span>(time)) <span class="sc">%&gt;%</span> </span>
+<span id="cb139-16"><a href="logistic-regression.html#cb139-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb139-17"><a href="logistic-regression.html#cb139-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(time <span class="sc">==</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb139-18"><a href="logistic-regression.html#cb139-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(grades <span class="sc">%in%</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb139-19"><a href="logistic-regression.html#cb139-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(id, age, sex, grades, num_hosp)</span>
+<span id="cb139-20"><a href="logistic-regression.html#cb139-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb139-21"><a href="logistic-regression.html#cb139-21" aria-hidden="true" tabindex="-1"></a>df</span></code></pre></div>
 <pre><code>## # A tibble: 9,727 x 5
 ##    id                 age sex   grades num_hosp
 ##    &lt;chr&gt;            &lt;dbl&gt; &lt;fct&gt;  &lt;dbl&gt;    &lt;dbl&gt;
@@ -303,14 +280,21 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ##  9 NDAR_INV3NT6ML17     9 F          1        0
 ## 10 NDAR_INV5FKNM21M     9 F          1        0
 ## # ... with 9,717 more rows</code></pre>
-<div class="sourceCode" id="cb194"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb194-1"><a href="logistic-regression.html#cb194-1" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> df <span class="sc">%&gt;%</span> </span>
-<span id="cb194-2"><a href="logistic-regression.html#cb194-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">ever_hosp =</span> num_hosp <span class="sc">&gt;</span> <span class="dv">0</span>)</span></code></pre></div>
-<div class="sourceCode" id="cb195"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb195-1"><a href="logistic-regression.html#cb195-1" aria-hidden="true" tabindex="-1"></a>fit <span class="ot">&lt;-</span> <span class="fu">glm</span>(</span>
-<span id="cb195-2"><a href="logistic-regression.html#cb195-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> ever_hosp <span class="sc">~</span> sex <span class="sc">+</span> age,</span>
-<span id="cb195-3"><a href="logistic-regression.html#cb195-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> df,</span>
-<span id="cb195-4"><a href="logistic-regression.html#cb195-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">family =</span> <span class="st">&#39;binomial&#39;</span>)</span>
-<span id="cb195-5"><a href="logistic-regression.html#cb195-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb195-6"><a href="logistic-regression.html#cb195-6" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(fit)</span></code></pre></div>
+<p>One difference, though, is that we’ll need a dichotomous variable to analyze in our logistic regression. Here, we turn our <code>num_hosp</code> variable (i.e., the number of times a given patient has been hospitalized since last interview) into a dichotomous one, <code>ever_hosp</code> (i.e., has the patient been hospitalized at all since the past interview?).</p>
+<div class="sourceCode" id="cb141"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb141-1"><a href="logistic-regression.html#cb141-1" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> df <span class="sc">%&gt;%</span> </span>
+<span id="cb141-2"><a href="logistic-regression.html#cb141-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">ever_hosp =</span> num_hosp <span class="sc">&gt;</span> <span class="dv">0</span>)</span></code></pre></div>
+</div>
+<div id="steps-3-4---fit-the-model-and-summarize-it" class="section level2" number="4.2">
+<h2><span class="header-section-number">4.2</span> Steps 3 &amp; 4 - Fit the model and summarize it</h2>
+<p>To fit a logistic regression, we follow roughly the same steps as a linear one, with just a few changes.</p>
+<p>First, we need to use <code>glm()</code> instead of the regular <code>lm()</code>. This is because we are fitting a “generalized linear model” (the family logistic regression belong to) instead of a traditional “general linear model.”</p>
+<p>The second change is that we need to tell R which kind of GLM we want to fit (there are many). We do this by telling it what we think the outcome distribution is like (e.g., normal, binomial, etc). In this case, the family of distributions that logistic regressions use is the “binomial” one, so to get a logistic regression we simply feed the argument <code>'binomial'</code> to the <code>family</code> parameter.</p>
+<div class="sourceCode" id="cb142"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb142-1"><a href="logistic-regression.html#cb142-1" aria-hidden="true" tabindex="-1"></a>fit <span class="ot">&lt;-</span> <span class="fu">glm</span>(</span>
+<span id="cb142-2"><a href="logistic-regression.html#cb142-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> ever_hosp <span class="sc">~</span> sex <span class="sc">+</span> age,</span>
+<span id="cb142-3"><a href="logistic-regression.html#cb142-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> df,</span>
+<span id="cb142-4"><a href="logistic-regression.html#cb142-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">family =</span> <span class="st">&#39;binomial&#39;</span>)</span></code></pre></div>
+<p>Once the model is fit, we can ask for a summary the same way that we would with a linear regression and we’ll see that the table we get is essentially the same.</p>
+<div class="sourceCode" id="cb143"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb143-1"><a href="logistic-regression.html#cb143-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(fit)</span></code></pre></div>
 <pre><code>## 
 ## Call:
 ## glm(formula = ever_hosp ~ sex + age, family = &quot;binomial&quot;, data = df)
@@ -335,83 +319,63 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## AIC: 311.73
 ## 
 ## Number of Fisher Scoring iterations: 9</code></pre>
-<div class="sourceCode" id="cb197"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb197-1"><a href="logistic-regression.html#cb197-1" aria-hidden="true" tabindex="-1"></a>results <span class="ot">&lt;-</span> fit <span class="sc">%&gt;%</span> </span>
-<span id="cb197-2"><a href="logistic-regression.html#cb197-2" aria-hidden="true" tabindex="-1"></a>  broom<span class="sc">::</span><span class="fu">tidy</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb197-3"><a href="logistic-regression.html#cb197-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">or =</span> <span class="fu">exp</span>(estimate)) <span class="sc">%&gt;%</span> </span>
-<span id="cb197-4"><a href="logistic-regression.html#cb197-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">b =</span> estimate) <span class="sc">%&gt;%</span> </span>
-<span id="cb197-5"><a href="logistic-regression.html#cb197-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">where</span>(is.numeric), <span class="at">.fns =</span> <span class="sc">~</span> <span class="fu">round</span>(.x, <span class="dv">3</span>)))</span>
-<span id="cb197-6"><a href="logistic-regression.html#cb197-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb197-7"><a href="logistic-regression.html#cb197-7" aria-hidden="true" tabindex="-1"></a>results</span></code></pre></div>
+<div id="where-are-my-odds-ratios" class="section level3" number="4.2.1">
+<h3><span class="header-section-number">4.2.1</span> Where are my odds ratios?</h3>
+<p>Most research scientists are used to thinking about logistic regression results in terms of odds ratios. Unfortunately, R won’t give you odds ratios by default. You need to compute them. Fortunately, it is really easy, once you remember that odds ratios are equal to:</p>
+<p><span class="math display">\[
+OR = e^b =  \exp(b)
+\]</span></p>
+<p>Thus, the quickest way to get them is to extract your coefficients from your fit object, then use <code>exp()</code> on them.</p>
+<div class="sourceCode" id="cb145"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb145-1"><a href="logistic-regression.html#cb145-1" aria-hidden="true" tabindex="-1"></a>my_odds_ratios <span class="ot">&lt;-</span> fit <span class="sc">%&gt;%</span> </span>
+<span id="cb145-2"><a href="logistic-regression.html#cb145-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coef</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb145-3"><a href="logistic-regression.html#cb145-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">exp</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb145-4"><a href="logistic-regression.html#cb145-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">round</span>(<span class="at">digits =</span> <span class="dv">2</span>)</span>
+<span id="cb145-5"><a href="logistic-regression.html#cb145-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb145-6"><a href="logistic-regression.html#cb145-6" aria-hidden="true" tabindex="-1"></a>my_odds_ratios</span></code></pre></div>
+<pre><code>## (Intercept)        sexF         age 
+##        0.00        0.41        1.61</code></pre>
+<p>If you are in the process of creating a regression table, though, you might prefer to use <code>broom::tidy()</code> to get a dataframe of your <code>fit</code> object, then modify that with <code>mutate()</code>. This will make your results easier to export in .csv format.
+If all you want are the numbers,</p>
+<div class="sourceCode" id="cb147"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb147-1"><a href="logistic-regression.html#cb147-1" aria-hidden="true" tabindex="-1"></a>results <span class="ot">&lt;-</span> fit <span class="sc">%&gt;%</span> </span>
+<span id="cb147-2"><a href="logistic-regression.html#cb147-2" aria-hidden="true" tabindex="-1"></a>  broom<span class="sc">::</span><span class="fu">tidy</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb147-3"><a href="logistic-regression.html#cb147-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">or =</span> <span class="fu">exp</span>(estimate)) <span class="sc">%&gt;%</span> </span>
+<span id="cb147-4"><a href="logistic-regression.html#cb147-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">b =</span> estimate) <span class="sc">%&gt;%</span> </span>
+<span id="cb147-5"><a href="logistic-regression.html#cb147-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">where</span>(is.numeric), <span class="at">.fns =</span> <span class="sc">~</span> <span class="fu">round</span>(.x, <span class="dv">3</span>)))</span>
+<span id="cb147-6"><a href="logistic-regression.html#cb147-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb147-7"><a href="logistic-regression.html#cb147-7" aria-hidden="true" tabindex="-1"></a>results</span></code></pre></div>
 <pre><code>## # A tibble: 3 x 6
 ##   term              b std.error statistic p.value    or
 ##   &lt;chr&gt;         &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;
 ## 1 (Intercept) -10.8       3.38      -3.20   0.001 0    
 ## 2 sexF         -0.893     0.479     -1.86   0.062 0.409
 ## 3 age           0.478     0.315      1.52   0.129 1.61</code></pre>
-<div class="sourceCode" id="cb199"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb199-1"><a href="logistic-regression.html#cb199-1" aria-hidden="true" tabindex="-1"></a><span class="fu">write_csv</span>(results, <span class="st">&#39;logistic_results&#39;</span>)</span></code></pre></div>
-<div class="sourceCode" id="cb200"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb200-1"><a href="logistic-regression.html#cb200-1" aria-hidden="true" tabindex="-1"></a>predicted_vals <span class="ot">&lt;-</span> fit <span class="sc">%&gt;%</span></span>
-<span id="cb200-2"><a href="logistic-regression.html#cb200-2" aria-hidden="true" tabindex="-1"></a>  broom<span class="sc">::</span><span class="fu">augment</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb200-3"><a href="logistic-regression.html#cb200-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(sex, age, <span class="at">log_odds =</span> .fitted) <span class="sc">%&gt;%</span> </span>
-<span id="cb200-4"><a href="logistic-regression.html#cb200-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">odds =</span> <span class="fu">exp</span>(log_odds), <span class="at">p =</span> odds<span class="sc">/</span>(<span class="dv">1</span> <span class="sc">+</span> odds)) <span class="sc">%&gt;%</span> </span>
-<span id="cb200-5"><a href="logistic-regression.html#cb200-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unique</span>() </span>
-<span id="cb200-6"><a href="logistic-regression.html#cb200-6" aria-hidden="true" tabindex="-1"></a> </span>
-<span id="cb200-7"><a href="logistic-regression.html#cb200-7" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(predicted_vals, <span class="fu">aes</span>(<span class="at">x =</span> age, <span class="at">y =</span> log_odds, <span class="at">color =</span> sex)) <span class="sc">+</span></span>
-<span id="cb200-8"><a href="logistic-regression.html#cb200-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
-<span id="cb200-9"><a href="logistic-regression.html#cb200-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>()</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-94-1.png" width="672" /></p>
-<div class="sourceCode" id="cb201"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb201-1"><a href="logistic-regression.html#cb201-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(predicted_vals, <span class="fu">aes</span>(<span class="at">x =</span> age, <span class="at">y =</span> p, <span class="at">color =</span> sex)) <span class="sc">+</span></span>
-<span id="cb201-2"><a href="logistic-regression.html#cb201-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
-<span id="cb201-3"><a href="logistic-regression.html#cb201-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>()</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-94-2.png" width="672" /></p>
-<div class="sourceCode" id="cb202"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb202-1"><a href="logistic-regression.html#cb202-1" aria-hidden="true" tabindex="-1"></a>df <span class="sc">%&gt;%</span> </span>
-<span id="cb202-2"><a href="logistic-regression.html#cb202-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(sex, age, ever_hosp) <span class="sc">%&gt;%</span> </span>
-<span id="cb202-3"><a href="logistic-regression.html#cb202-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>()</span></code></pre></div>
-<pre><code>## # A tibble: 20 x 4
-## # Groups:   sex, age, ever_hosp [20]
-##    sex     age ever_hosp     n
-##    &lt;fct&gt; &lt;dbl&gt; &lt;lgl&gt;     &lt;int&gt;
-##  1 M         9 FALSE       190
-##  2 M        10 FALSE      2317
-##  3 M        10 TRUE          4
-##  4 M        10 NA            3
-##  5 M        11 FALSE      2272
-##  6 M        11 TRUE         10
-##  7 M        11 NA            1
-##  8 M        12 FALSE       253
-##  9 M        12 TRUE          2
-## 10 M        12 NA            1
-## 11 M        13 FALSE         8
-## 12 F         9 FALSE       191
-## 13 F        10 FALSE      2197
-## 14 F        10 TRUE          4
-## 15 F        10 NA            1
-## 16 F        11 FALSE      2044
-## 17 F        11 TRUE          2
-## 18 F        11 NA            1
-## 19 F        12 FALSE       211
-## 20 F        13 FALSE        15</code></pre>
-<div class="sourceCode" id="cb204"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb204-1"><a href="logistic-regression.html#cb204-1" aria-hidden="true" tabindex="-1"></a>read_abcd <span class="ot">&lt;-</span> <span class="cf">function</span>(abcd_path){</span>
-<span id="cb204-2"><a href="logistic-regression.html#cb204-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">suppressMessages</span>({</span>
-<span id="cb204-3"><a href="logistic-regression.html#cb204-3" aria-hidden="true" tabindex="-1"></a>    abcd_path <span class="sc">%&gt;%</span> </span>
-<span id="cb204-4"><a href="logistic-regression.html#cb204-4" aria-hidden="true" tabindex="-1"></a>      <span class="fu">read_delim</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb204-5"><a href="logistic-regression.html#cb204-5" aria-hidden="true" tabindex="-1"></a>      <span class="fu">filter</span>(<span class="fu">row_number</span>() <span class="sc">!=</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb204-6"><a href="logistic-regression.html#cb204-6" aria-hidden="true" tabindex="-1"></a>      <span class="fu">type_convert</span>()  </span>
-<span id="cb204-7"><a href="logistic-regression.html#cb204-7" aria-hidden="true" tabindex="-1"></a>  })</span>
-<span id="cb204-8"><a href="logistic-regression.html#cb204-8" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb204-9"><a href="logistic-regression.html#cb204-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb204-10"><a href="logistic-regression.html#cb204-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb204-11"><a href="logistic-regression.html#cb204-11" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">list.files</span>(<span class="st">&#39;data&#39;</span>, <span class="at">pattern =</span> <span class="st">&#39;abcd_&#39;</span>, <span class="at">full.names =</span> T) <span class="sc">%&gt;%</span> </span>
-<span id="cb204-12"><a href="logistic-regression.html#cb204-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">map</span>(read_abcd) <span class="sc">%&gt;%</span> </span>
-<span id="cb204-13"><a href="logistic-regression.html#cb204-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">reduce</span>(<span class="sc">~</span> <span class="fu">inner_join</span>(.x, .y, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">&#39;subjectkey&#39;</span>, <span class="st">&#39;interview_age&#39;</span>)))</span></code></pre></div>
+<div class="sourceCode" id="cb149"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb149-1"><a href="logistic-regression.html#cb149-1" aria-hidden="true" tabindex="-1"></a><span class="fu">write_csv</span>(results, <span class="st">&#39;logistic_results.csv&#39;</span>)</span></code></pre></div>
+</div>
+</div>
+<div id="plotting-predicted-values" class="section level2" number="4.3">
+<h2><span class="header-section-number">4.3</span> Plotting predicted values</h2>
+<p>One question that has come up in the past is how to produce a plot of predicted values for a regression, including logistic ones.</p>
+<p>This is possible by mixing tricks from <code>broom</code> and <code>ggplot</code> together, like so.</p>
+<div class="sourceCode" id="cb150"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb150-1"><a href="logistic-regression.html#cb150-1" aria-hidden="true" tabindex="-1"></a>predicted_vals <span class="ot">&lt;-</span> fit <span class="sc">%&gt;%</span></span>
+<span id="cb150-2"><a href="logistic-regression.html#cb150-2" aria-hidden="true" tabindex="-1"></a>  broom<span class="sc">::</span><span class="fu">augment</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb150-3"><a href="logistic-regression.html#cb150-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(sex, age, <span class="at">log_odds =</span> .fitted) <span class="sc">%&gt;%</span> </span>
+<span id="cb150-4"><a href="logistic-regression.html#cb150-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">odds =</span> <span class="fu">exp</span>(log_odds), <span class="at">p =</span> odds<span class="sc">/</span>(<span class="dv">1</span> <span class="sc">+</span> odds)) <span class="sc">%&gt;%</span> </span>
+<span id="cb150-5"><a href="logistic-regression.html#cb150-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unique</span>() </span>
+<span id="cb150-6"><a href="logistic-regression.html#cb150-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb150-7"><a href="logistic-regression.html#cb150-7" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(predicted_vals, <span class="fu">aes</span>(<span class="at">x =</span> age, <span class="at">y =</span> p, <span class="at">color =</span> sex)) <span class="sc">+</span></span>
+<span id="cb150-8"><a href="logistic-regression.html#cb150-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb150-9"><a href="logistic-regression.html#cb150-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>()</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-97-1.png" width="672" /></p>
 
+</div>
 </div>
             </section>
 
           </div>
         </div>
       </div>
-<a href="linear-regression.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="intro-to-machine-learning.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="basic-r.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

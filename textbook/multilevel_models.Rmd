@@ -1,18 +1,39 @@
 # Multilevel Models
 
+In a multilevel model, we try to account not only for group-level variation, but individual variation as well. As a reminder, the way that we do this is by proposing:
+
+1. There is an overall slope and intercept for our regression model, just like in a traditional linear regression.
+
+2. But, there might be some variation from person to person or day to day in the value of that **slope**, **intercept**, or **both**.
+
+    - You can think of this like it being generally true that sleep loss leads to decreased mood the next day, but for some people it is worse than others (**variable slopes**). 
+    - Alternatively, you might think the damage done by sleep loss is roughly the same from person to person - or perhaps that an intervention is roughly as effective for all people - but that different people start with varying degrees of sleep lost (**variable intercepts**).
+    - Lastly, you might think **both**.
+    
+The trick to remember is that we are just specifying a traditional regression, *plus* allowing some of its parameters to be slightly different from person to person.
+
+## Steps 1 & 2 - Import and clean the data
+
+Again to maximize comparability with previous chapters on regression techniques, we'll use the same KSADS ABCD dataset.
+    
+
 ```{r}
 library(tidyverse)
 
-read_abcd <- function(abcd_path){
-  suppressMessages({
-    abcd_path %>% 
-      read_delim() %>% 
+read_abcd_quietly <- function(file_path){
+  suppressMessages(
+    expr = read_delim(file_path, delim = '\t') %>% 
       filter(row_number() != 1) %>% 
-      type_convert()  
-  })
+      type_convert())
 }
 
-df <- read_abcd('data/abcd_lpksad01.txt') %>% 
+df <- read_abcd_quietly('data/abcd_lpksad01.txt')
+```
+
+But along the way, it is important to note that this is a **longitudinal** dataset with many participants providing multiple data points to us. You can thus think of those data points as providing multiple pieces of information for each person, which we can use to estimate (for example) their own personal intercept in a multilevel model.
+
+```{r}
+df <- df %>% 
   select(
     id = src_subject_id, 
     age = interview_age,
@@ -26,16 +47,21 @@ df <- read_abcd('data/abcd_lpksad01.txt') %>%
     sex = factor(sex, levels = c('M', 'F')),
     time = row_number(),
     n_timepoints = max(time),
-    grade_drop = factor(grade_drop, levels = c(1, 2), labels = c('yes', 'no'))) %>% 
+    grade_drop = factor(grade_drop, levels = c(1, 2), labels = c('yes', 'no'))) %>%
   ungroup() %>% 
   filter(grades %in% 1:5) %>% 
   select(id, age, sex, grades, grade_drop, time)
-
-
-df %>% 
-  group_by(grades) %>% 
-  count()
 ```
+
+## Steps 3 & 4 - Fit the model and summarize it
+
+As we saw with logistic regression, R's regression-centric statistical framework makes transition to a new type of regression easy for us to think about: almost everything is the same, we just need to tweak a few specifics.
+
+The first thing to note is that we'll need to load the `lme4` package, which contains a function to fit a multilevel model. Next, we use the `lmer()` function to fit the model, rather than the traditional `lm()` for a classic linear regression.
+
+After that, the last obvious change we need to make is that we need to tell R which parameters we want to vary and what our nesting structure is. Fortunately, that is pretty easy too. We just add it to our regression formula like this `+ (params_to_vary | vary_by_what)`. 
+
+As you can see below, the randomly varying part of our model is specified as `(1 | id)`. Because `1` is R's indicator for an intercept and `id` is our dataset's variable indicating which person we are talking about (remember each ID will have multiple timepoints), this specification will produce a regression where the slope stays constant for everyone, BUT everyone has their own special intercept (i.e. a random intercept only model).
 
 ```{r}
 library(lme4)
@@ -46,12 +72,16 @@ fit <- lmer(
 
 summary(fit)
 ```
+As you can see, the output is again quite similar to the regular `lm()` output. However, there are two twists.
 
+1. Because we have a random intercept, the intercept now has a group-level mean (under Fixed Effects) AND it has its own variance (under Random Effects).
+2. We're missing p-values! Find out how to get those below.
 
-```{r, error=TRUE}
-broom::tidy(fit)
-broom.mixed::tidy(fit)
-```
+### Where are my p-values?
+
+Multilevel models are mathematically complicated, under the hood. For reasons we wont go into here, there are many ways to compute their p-values and the `lme4` package doesn't want to make the choice for you out of an abundance of caution.
+
+To get our p-values, we can use the `lmerTest` package, which will override the `lmer()` function to include p-values. Thus, if we run our same model again, but with `lmerTest` loaded we should get what we expected.
 
 ```{r}
 library(lmerTest)
@@ -61,107 +91,33 @@ fit <- lmer(
   data = df)
 
 summary(fit)
-broom.mixed::tidy(fit)
 ```
 
-```{r}
-(0.649707040)^2 / ((0.649707040)^2 + (0.481237163)^2)
+### Where are my intraclass correlations (ICCs)?
 
+One measure of the strength of variation for a random effect in a multilevel model is the Intraclass Correlation Coefficient (ICC). These tell you the percentage of variation in the your estimate can be attributed to random variation from person to person.
+
+Unfortunately, `lmer()` doesn't compute this on its own, so we need to ask the `performance` package to do it for us.
+
+```{r}
 performance::icc(fit)
 ```
 
-```{r}
-df %>% 
-  filter(id %in% sample(id, size = 25)) %>% 
-  ggplot(aes(time, grades, group = id)) +
-  geom_jitter(alpha = .50) +
-  geom_smooth(method = 'lm', se = F, color = 'grey')
-```
 
+## Logistic multilevel models
 
+So far, we've fit just linear multilevel models, but note that the transition to a logistic version is the same as the transition from a traditional linear model to a traditional logistic one:
 
-# Logistic mixed models
+- `lm()` becomes `glm()`; `lmer()` becomes `glmer()`
+- We need to specify the family of non-linear model we are using, which is again "binomial"
 
-```{r}
+Then everything else is the same.
+
+```{r, warning=FALSE}
 fit <- glmer(
   formula = grade_drop ~ age + sex + (1 | id),
   data = df,
   family = 'binomial')
 
 summary(fit)
-broom.mixed::tidy(fit)
 ```
-
-# Bayesian models
-
-```{r, eval=FALSE}
-library(brms)
-
-sample_df <- df %>% 
-  filter(id %in% sample(id, 500))
-
-fit <- brm(
-  formula = grades ~ age + sex + (1 | id),
-  data = sample_df,
-  chains = 1,
-  prior = c(
-    set_prior('normal(0,5)', class = 'b'),
-    set_prior('cauchy(0,2)', class = 'sd')))
-```
-
-
-
-```{r, eval=FALSE}
-summary(fit)
-```
-
-
-
-
-```{r}
-broom::tidy(fit)
-```
-
-
-
-
-```{r, eval=FALSE}
-library(brms)
-
-sample_df <- df %>% 
-  filter(id %in% sample(id, 500))
-
-fit <- brm(
-  formula = grades ~ age + sex + age*sex + (1 | id),
-  data = sample_df,
-  chains = 1,
-  prior = c(
-    set_prior('normal(-3,1)', class = 'b'),
-    set_prior('cauchy(0,2)', class = 'sd')))
-
-broom::tidy(fit)
-```
-
-
-
-```{r, eval=FALSE}
-
-x <- as.data.frame(fit)
-
-
-x %>% 
-  select(starts_with('b_'), sd_id__Intercept, sigma) %>% 
-  summarise(across(.fns = mean))
-
-x %>% 
-  select(starts_with('b_'), sd_id__Intercept, sigma) %>% 
-  summarise(across(.fns = sd))
-
-x %>% 
-  select(starts_with('b_'), sd_id__Intercept, sigma) %>%
-  mutate(effect_of_sex = b_sexF*1 + `b_age:sexF`*1*9) %>% 
-  summarise(
-    effect_of_sex = mean(effect_of_sex),
-    p = sum(effect_of_sex < 0)/n())
-```
-

@@ -1,39 +1,63 @@
 # Linear Regression
 
-Starter code!
+Linear regression is the bread and butter of statistical analysis. Unsurprisingly then, it is also the bread and butter of R's statistical analysis framework. That is, most of the R ecosystem uses linear regression as a kind of template. So, even things that are not regressions are specified like them (see the last section, where we use a regression-like formula to specify the variable in our t-tests). 
+
+For that reason, getting comfortable with linear regression will tend to automatically make you comfortable with a lot of other tasks in R too! To see this, try to compare this section to the next one on logistic regression. Even though those models are fit with totally different distributions and assumptions, to you the user, they will look and feel basically the same.
+
+Note, the steps to conducting a linear regression are the same as for the basic hypothesis tests in the last chapter.
+
+## Steps 1 & 2 - Load and clean the data
+
+To maximize comparability with the last chapter, we'll stick to the same dataset and cleaning procedure. To make it so you don't have to flip back and forth between those chapters, though, we'll re-describe the process here...
+
+In this case, we'll use an ABCD dataset containing KSADS diagnostic information for a large number of patients. This dataset includes a number of interesting variables, including whether the child has been bullied, what their average grades are in school, and how many times they've been hospitalized. We start by copy/pasting our custom `read_abcd_quietly()` function from the **Working with ABCD** section of this textbook, then use it to load the dataset.
 
 ```{r}
 library(tidyverse)
 
-df <- read_delim('data/abcd_lpksad01.txt') %>% 
-  filter(row_number() != 1) %>% 
-  type_convert()
+read_abcd_quietly <- function(file_path){
+  suppressMessages(
+    expr = read_delim(file_path, delim = '\t') %>% 
+      filter(row_number() != 1) %>% 
+      type_convert())
+}
 
+df <- read_abcd_quietly('data/abcd_lpksad01.txt')
+```
 
+During the cleaning process, we'll rename our key variables to make things a little easier to follow. Additionally, this is a longitudinal dataset, so each patient appears in it multiple times. We'll code which timepoint a patient belongs to, based on the dates of their visits. In this case though, all of our analyses will be cross-sectional. So once we have computed our `time` variable, we'll simply filter the first one for each patient, resulting in a cross-sectional (baseline) version of the dataset for analysis.
 
+```{r}
 df <- df %>% 
   arrange(src_subject_id) %>% 
   select(
     id = src_subject_id, 
-    age = interview_age,
-    sex, 
+    sex,
+    age = interview_age, 
     is_bullied = kbi_p_c_bully_l,
+    num_hospitalizations = kbi_ss_c_mental_health_p_l,
     grades = kbi_p_grades_in_school_l) %>% 
   group_by(id) %>% 
-  arrange(age) %>% 
-  mutate(
-    time = row_number(),
-    n_timepoints = max(time),
-    is_bullied = ifelse(
-        test = is_bullied %in% c(1, 2),
-        yes = is_bullied,
-        no = NA) %>% 
-      factor(levels = c(1, 2), labels = c('yes', 'no'))) %>% 
+  mutate(n_timepoints = n()) %>% 
   ungroup() %>% 
-  filter(time == 1) %>%
-  filter(grades %in% 1:5) %>% 
-  select(id, age, sex, is_bullied, grades)
+  filter(n_timepoints == 3) %>% 
+  mutate(
+    grades = ifelse(
+      test = grades == 6 | grades == -1,
+      yes = NA,
+      no = grades),
+    too_kool_4_skool = case_when(
+      grades == 1 ~ 'nerds',
+      grades == 2 | grades == 3 ~ 'besties',
+      grades > 3 ~ 'teen movie cool kids')) %>% 
+  group_by(id) %>% 
+  arrange(age) %>% 
+  mutate(time = row_number()) %>% 
+  filter(time <= 2) %>% 
+  ungroup()
 ```
+
+Also, to simplify our upcoming analyses, we'll round all the ages to the nearest year (from below, with the `floor()` function) and convert the sex of the patient to a factor variable. This will make out output clearer.
 
 ```{r}
 df <- df %>% 
@@ -42,44 +66,35 @@ df <- df %>%
     sex = factor(sex, levels = c('M', 'F'), ordered = F))
 ```
 
+## Steps 3 & 4 - Fit the model and summarize it
+
+Like with basic hypothsis testing in the last section, we first fit a model and save its attributes (results) to an object, usually named `fit`. The linear regression function is `lm()` for "linear model" and it takes two main arguments:
+
+- The formula for the regression, specified like this - `Outcome ~ Predictor1 + Predictor2 + ...`. 
+- The data you want to analyze
+
+Importantly, R makes it easy to specify interaction terms too. You just need to do the multiplication of your interaction variables in the formula argument. R will handle everything under the hood for you, including dummy coding and the inclusion of lower order terms (i.e., the formula `y ~ x*z` will produce `y ~ x + z + x*z` for you automatically).
+
 ```{r}
 fit <- lm(
   formula = grades ~ age*is_bullied + sex,
   data = df)
 
-# fit$coefficients
-# 
-# fit$model
-# 
-# fit$fitted.values
-
 summary(fit)
 ```
+Here we can see the results of our regression on full display, but perhaps with some labels that are new to you. That's okay, they correspond to all of the traditional regression table objects: estimate is the slope of each term on the left, the standard error comes next, then the test statistic (slope/standard error), and its associated p-value. Note, that when numbers get really small, R will return them in scientific notation. So, the number `<2e-16` means really, really, really small.
 
+Lastly, below the main table, you can see the R-sqauared value, the model F-statistic, its degrees of freedom, and their associated p-value.
+
+### Broom can help export the results
+
+If you're like many people, you're running a regression with the intention of publishing the results. This summary is nice, but it is hard to get into Excel or other spreadsheet programs to build a publication-ready table.
+
+To solve that, we can again use the `broom::tidy` method to get a dataframe-based depiction of our results. On it's own, that might not seem important, but it makes the results much easier to export to a csv.
 
 ```{r}
-broom::tidy(fit)
-broom::glance(fit)
-broom::augment(fit)
-
 my_results <- broom::tidy(fit)
 
 write_csv(my_results, 'my_results.csv')
-```
-
-
-```{r}
-df %>% 
-  group_by(age) %>% 
-  count()
-
-df %>% 
-  group_by(age) %>% 
-  nest() %>% 
-  mutate(
-    fit = map(data, ~ lm(grades ~ sex + is_bullied, data = .x)),
-    results = map(fit, broom::tidy)) %>% 
-  unnest(results) %>% 
-  select(-data, -fit)
 ```
 

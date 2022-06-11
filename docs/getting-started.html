@@ -201,17 +201,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="3.9.2" data-path="basic-r.html"><a href="basic-r.html#official-coding-conventions"><i class="fa fa-check"></i><b>3.9.2</b> Official coding conventions</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="4" data-path="data-wrangling-and-joining-merging.html"><a href="data-wrangling-and-joining-merging.html"><i class="fa fa-check"></i><b>4</b> Data Wrangling and Joining / Merging</a>
+<li class="chapter" data-level="4" data-path="multilevel-models.html"><a href="multilevel-models.html"><i class="fa fa-check"></i><b>4</b> Multilevel Models</a>
 <ul>
-<li class="chapter" data-level="4.1" data-path="data-wrangling-and-joining-merging.html"><a href="data-wrangling-and-joining-merging.html#base-r"><i class="fa fa-check"></i><b>4.1</b> Base R</a></li>
-<li class="chapter" data-level="4.2" data-path="data-wrangling-and-joining-merging.html"><a href="data-wrangling-and-joining-merging.html#the-new-way-dplyr"><i class="fa fa-check"></i><b>4.2</b> The new way: <code>dplyr</code></a></li>
-<li class="chapter" data-level="4.3" data-path="data-wrangling-and-joining-merging.html"><a href="data-wrangling-and-joining-merging.html#the-only-data-verbs-youll-ever-need"><i class="fa fa-check"></i><b>4.3</b> The only data verbs you’ll ever need</a>
+<li class="chapter" data-level="4.1" data-path="multilevel-models.html"><a href="multilevel-models.html#steps-1-2---import-and-clean-the-data"><i class="fa fa-check"></i><b>4.1</b> Steps 1 &amp; 2 - Import and clean the data</a></li>
+<li class="chapter" data-level="4.2" data-path="multilevel-models.html"><a href="multilevel-models.html#steps-3-4---fit-the-model-and-summarize-it"><i class="fa fa-check"></i><b>4.2</b> Steps 3 &amp; 4 - Fit the model and summarize it</a>
 <ul>
-<li class="chapter" data-level="4.3.1" data-path="data-wrangling-and-joining-merging.html"><a href="data-wrangling-and-joining-merging.html#rename"><i class="fa fa-check"></i><b>4.3.1</b> <code>rename()</code></a></li>
-<li class="chapter" data-level="4.3.2" data-path="data-wrangling-and-joining-merging.html"><a href="data-wrangling-and-joining-merging.html#select"><i class="fa fa-check"></i><b>4.3.2</b> <code>select()</code></a></li>
-<li class="chapter" data-level="4.3.3" data-path="data-wrangling-and-joining-merging.html"><a href="data-wrangling-and-joining-merging.html#mutate"><i class="fa fa-check"></i><b>4.3.3</b> <code>mutate()</code></a></li>
-<li class="chapter" data-level="4.3.4" data-path="data-wrangling-and-joining-merging.html"><a href="data-wrangling-and-joining-merging.html#group_by-and-summarize"><i class="fa fa-check"></i><b>4.3.4</b> <code>group_by()</code> and <code>summarize()</code></a></li>
+<li class="chapter" data-level="4.2.1" data-path="multilevel-models.html"><a href="multilevel-models.html#where-are-my-p-values"><i class="fa fa-check"></i><b>4.2.1</b> Where are my p-values?</a></li>
+<li class="chapter" data-level="4.2.2" data-path="multilevel-models.html"><a href="multilevel-models.html#where-are-my-intraclass-correlations-iccs"><i class="fa fa-check"></i><b>4.2.2</b> Where are my intraclass correlations (ICCs)?</a></li>
 </ul></li>
+<li class="chapter" data-level="4.3" data-path="multilevel-models.html"><a href="multilevel-models.html#logistic-multilevel-models"><i class="fa fa-check"></i><b>4.3</b> Logistic multilevel models</a></li>
 </ul></li>
 </ul>
 
@@ -253,7 +251,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <blockquote>
 <p><strong>HINT</strong>: Depending on your operating system, the downloads page can be kind of intimidating. What you are looking for is the most updated version of R, which as of today (2021-12-01) is R 4.1.2. If you find that you want something to take you through the process at a more step-by-step pace, this tutorial (<a href="https://www.datacamp.com/community/tutorials/installing-R-windows-mac-ubuntu"><code>https://www.datacamp.com/community/tutorials/installing-R-windows-mac-ubuntu</code></a>) should have an answer for each operating system.</p>
 </blockquote>
-<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-13"></span>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-2"></span>
 <img src="images/cran_download_instruction.png" alt="https://cran.r-project.org/" width="80%" />
 <p class="caption">
 Figure 2.1: <a href="https://cran.r-project.org/" class="uri">https://cran.r-project.org/</a>
@@ -264,7 +262,7 @@ Figure 2.1: <a href="https://cran.r-project.org/" class="uri">https://cran.r-pro
 <h3><span class="header-section-number">2.2.2</span> Step 2 - Download and install the RStudio IDE</h3>
 <p>Several years ago, writing code in R was especially difficult because there was so much to keep track of and it was all hidden behind the code. The RStudio IDE fixed that for us by allowing us to continue coding in R, but this time with a collection of useful windows that keep track of what’s happening in our code (e.g., what datasets do we have loaded? what plots have we generated?).</p>
 <p><strong>After you installed R</strong>, installing the RStudio IDE should be fairly straightforward. Just go to their Downloads page (<a href="https://www.rstudio.com/products/rstudio/download/"><code>https://www.rstudio.com/products/rstudio/download/</code></a>) and choose the <strong>Desktop Version</strong></p>
-<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-14"></span>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-3"></span>
 <img src="images/rstudio_download_instruction.png" alt="https://www.rstudio.com/products/rstudio/download/" width="80%" />
 <p class="caption">
 Figure 2.2: <a href="https://www.rstudio.com/products/rstudio/download/" class="uri">https://www.rstudio.com/products/rstudio/download/</a>
@@ -284,7 +282,7 @@ Figure 2.2: <a href="https://www.rstudio.com/products/rstudio/download/" class="
 <li>If you get an error message while installing, don’t worry! That’s pretty common and you’ve probably still done everything right. Just remind me in class and we will make sure to troubleshoot it for you.</li>
 </ul></li>
 </ol>
-<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-15"></span>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-4"></span>
 <img src="images/package_install_instructions.png" alt="The RStudio IDE" width="80%" />
 <p class="caption">
 Figure 2.3: The RStudio IDE
@@ -307,7 +305,7 @@ Figure 2.3: The RStudio IDE
 <div id="the-lower-right-pane" class="section level3" number="2.3.3">
 <h3><span class="header-section-number">2.3.3</span> The lower right pane</h3>
 <p>There are many tabs in the lower right pane and you’ll use most of them on a daily basis. The files tab shows you all the files in your current working directory (the file that R is paying attention to right now). The plots pane shows your plots, assuming you haven’t told R to send them somewhere else. Lastly, the help pane will show you R’s (very useful) help documentation, anytime you put a <code>?</code> in front of a command (e.g., <code>?lm()</code> brings up the help file for the <code>lm()</code> command).</p>
-<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-16"></span>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-5"></span>
 <img src="images/rstudio.png" alt="The RStudio IDE" width="80%" />
 <p class="caption">
 Figure 2.4: The RStudio IDE
@@ -331,14 +329,14 @@ Figure 2.4: The RStudio IDE
 <li>Navigate to File &gt;&gt; New Project (sometimes this takes a few seconds to load after you click on it)</li>
 <li>Select New Directory</li>
 <li>Select New Project</li>
-<li>In the Directory Name text box, write the name for your project. In this case, a good name might be something like “Red Wine Practice.”
+<li>In the Directory Name text box, write the name for your project. In this case, a good name might be something like “Red Wine Practice”.
 <ul>
 <li>Note, you can change the directory you want your project folder too, but it’s not necessary for this example.</li>
 <li>Leave all the remaining boxes (Create git repository, Use renv with this project) <strong>unchecked</strong>.</li>
 </ul></li>
 <li>Click Create Project</li>
 </ol>
-<p>With your project now created, you should now see “Red Wine Practice” (or whatever you named your project in the top of your RStudio application window). Moreover, if you look to the Files pane on the lower right, you should see a file called <code>Red Wine Practice.Rproj</code>. Lastly, you should notice that your working directory is now called “Red Wine Practice.”</p>
+<p>With your project now created, you should now see “Red Wine Practice” (or whatever you named your project in the top of your RStudio application window). Moreover, if you look to the Files pane on the lower right, you should see a file called <code>Red Wine Practice.Rproj</code>. Lastly, you should notice that your working directory is now called “Red Wine Practice”.</p>
 <p>You can double-check this by typing <code>getwd()</code> (short for “get working directory”) into the R Console on the bottom left and hit ENTER.</p>
 </div>
 <div id="step-3---get-the-data-into-your-project-folder" class="section level3" number="2.4.3">
@@ -346,7 +344,7 @@ Figure 2.4: The RStudio IDE
 <p>The quickest way to get your data into your project folder, is simply to copy/paste the <code>winequality-red.csv</code> you downloaded in Step 1 into your Red Wine Practice folder.</p>
 <p>Where is that practice folder? Again, you can get the full path for your project folder simply by typing <code>getwd()</code> into the R console on the lower left and hitting ENTER.</p>
 <p>To check whether your copy/paste operation worked, your can type <code>list.files()</code> into the R console. If it worked, you should see it listed along with your <code>Red Wine Practice.Rproj</code></p>
-<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-17"></span>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-6"></span>
 <img src="images/rproj_data_import.png" alt="Checking the copy/paste operation worked with `list.files()`" width="100%" />
 <p class="caption">
 Figure 2.5: Checking the copy/paste operation worked with <code>list.files()</code>
@@ -362,10 +360,10 @@ Figure 2.5: Checking the copy/paste operation worked with <code>list.files()</co
 <li><strong>NOTE</strong>: You might get a message asking if you want to install some packages. Press OK / Yes - you <em>do</em> want to install them.</li>
 </ul></li>
 <li>With the new notebook file opened, press CTRL+S to save the file under a different name. You can use whatever name you want. For this example, I will use <code>main.Rmd</code> to remind myself this is my main analysis file.</li>
-<li>Inside your newly saved file, change the title from “R Notebook” to something more descriptive like “My first wine analysis.”</li>
+<li>Inside your newly saved file, change the title from “R Notebook” to something more descriptive like “My first wine analysis”.</li>
 <li>Lastly, RStudio gave us a bunch of boilerplate code. We won’t need that today, so delete everything below the second <code>---</code> at the top of the page, right under <code>output: html_notebook</code>. Your final document should then look something like the following.</li>
 </ol>
-<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-18"></span>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-7"></span>
 <img src="images/rmarkdown_setup.png" alt="What your Rmarkdown file should look like before we start coding" width="80%" />
 <p class="caption">
 Figure 2.6: What your Rmarkdown file should look like before we start coding
@@ -379,7 +377,7 @@ Figure 2.6: What your Rmarkdown file should look like before we start coding
 <li>Anywhere below line 4, type a note to yourself like “This is where I imported the data.”</li>
 <li>Move your curser to a line below that note you just wrote (e.g., line 8). Then, press CTRL+ALT+I. This will create a grey codeblock.</li>
 </ol>
-<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-19"></span>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-8"></span>
 <img src="images/code_block.png" alt="Adding a note to yourself and a grey code block" width="80%" />
 <p class="caption">
 Figure 2.7: Adding a note to yourself and a grey code block
@@ -397,7 +395,7 @@ Figure 2.7: Adding a note to yourself and a grey code block
 <div id="step-7---look-inside-the-data" class="section level3" number="2.4.7">
 <h3><span class="header-section-number">2.4.7</span> Step 7 - Look inside the data</h3>
 <p>Make a new code block a few lines down from the last one. Then type just the name of your imported data and run the block. You should see a preview of your dataset. To scroll through the other variables in the dataset, press the right-facing triangle on the right side of the preview.</p>
-<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-22"></span>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-11"></span>
 <img src="images/data_view.png" alt="Preview of the data" width="80%" />
 <p class="caption">
 Figure 2.8: Preview of the data
@@ -407,10 +405,10 @@ Figure 2.8: Preview of the data
 <div id="step-8---make-a-histogram" class="section level3" number="2.4.8">
 <h3><span class="header-section-number">2.4.8</span> Step 8 - Make a histogram</h3>
 <p>I think I’m most interested in the final variable in the dataset, <code>quality</code>. In this case, that is the quality of the wine - rated by professionals on a scale of 1 to 10. Let’s see what the distribution looks like. For that we can use the <code>hist()</code> command (short for “histogram”).</p>
-<p>But what should we give our <code>hist()</code> command? We unfortunately can’t give it the whole dataset. After all, we only want a histogram of one variable. How do we specify that variable? We use the “selection operator,” which we write as a <code>$</code>-symbol, like below.</p>
+<p>But what should we give our <code>hist()</code> command? We unfortunately can’t give it the whole dataset. After all, we only want a histogram of one variable. How do we specify that variable? We use the “selection operator”, which we write as a <code>$</code>-symbol, like below.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="getting-started.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(my_data<span class="sc">$</span>quality)</span></code></pre></div>
-<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-23"></span>
-<img src="_main_files/figure-html/unnamed-chunk-23-1.png" alt="Histogram of wine quality ratings" width="80%" />
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-12"></span>
+<img src="_main_files/figure-html/unnamed-chunk-12-1.png" alt="Histogram of wine quality ratings" width="80%" />
 <p class="caption">
 Figure 2.9: Histogram of wine quality ratings
 </p>
@@ -421,7 +419,7 @@ Figure 2.9: Histogram of wine quality ratings
 <p>Now that we have a sense of what our outcome variable (<code>quality</code>) looks like, let’s see if we can investigate some of the chemical characteristics in wine associated with that outcome.</p>
 <p>The ones that stick out to me are <code>pH</code> (acidity) and <code>alcohol</code> content because they seem like things that would really affect the taste. Let’s use those as our predictors</p>
 <p>To run a regression, we need just a few things (out of order):
-- The <code>lm()</code> command, which is short for “linear model.” This is how R will know we want a regression.
+- The <code>lm()</code> command, which is short for “linear model”. This is how R will know we want a regression.
 - Our data, named <code>my_data</code>
 - A regression formula, which tells R what the outcome variable and it’s predictors are
 - The assignment operator again (<code>&lt;-</code>), which tells us where to store the results

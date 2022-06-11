@@ -1,15 +1,42 @@
 # Basic hypthothesis tests
 
-Starter code!
+So far, we have used R to manipulate our data and to provide some summary statistics, including visualizations of those statistics. In this section, we'll start conducting our first statistical inference tests.
+
+## Not your grandfather's statistical tests
+
+Experience has shown that it is worthwhile to take a moment to describe the R statistical inference process to users who come from other platforms (e.g., SPSS, SAS). In those other platforms, the statistical inference process is all about getting test results printed to the screen. In practice, that process looks like (a) importing some data, (b) cleaning it, then (c) applying some test and receiving output on the screen. If your only goal is to produce statistical output, this is a totally natural workflow and it makes sense those platforms use it.
+
+In contrast, R has broader goals. It is a full-service programming language capable of interacting with your operating system, scraping web data from servers across the world, and even developing web apps. Because of this, the data analysis process is focused on producing a **named object** that represents the results of an analysis, which can then be incorporated into a broader coding pipeline.
+
+If that sounds complicated, don't worry, it just involves one more step than what you are used to. In R, you analysis workflow looks like this:
+
+1. Import data
+2. Clean data
+3. Use a pre-existing function to produce an analysis object for your (e.g., run a statistical test and save everything about the results)
+4. Extract a summary of the results of the analysis (the one new step).
+
+## Steps 1 & 2 - Load and clean data
+
+In this case, we'll use an ABCD dataset containing KSADS diagnostic information for a large number of patients. This dataset includes a number of interesting variables, including whether the child has been bullied, what their average grades are in school, and how many times they've been hospitalized. We start by copy/pasting our custom `read_abcd_quietly()` function from the **Working with ABCD** section of this textbook, then use it to load the dataset.
+
 
 ```{r}
 library(tidyverse)
 
-df <- read_delim('data/abcd_lpksad01.txt') %>% 
-  filter(row_number() != 1) %>% 
-  type_convert()
+read_abcd_quietly <- function(file_path){
+  suppressMessages(
+    expr = read_delim(file_path, delim = '\t') %>% 
+      filter(row_number() != 1) %>% 
+      type_convert())
+}
+
+df <- read_abcd_quietly('data/abcd_lpksad01.txt')
+```
+
+During the cleaning process, we'll rename our key variables to make things a little easier to follow. Additionally, this is a longitudinal dataset, so each patient appears in it multiple times. We'll code which timepoint a patient belongs to, based on the dates of their visits. In this case though, all of our analyses will be cross-sectional. So once we have computed our `time` variable, we'll simply filter the first one for each patient, resulting in a cross-sectional (baseline) version of the dataset for analysis.
 
 
+```{r}
 df <- df %>% 
   arrange(src_subject_id) %>% 
   select(
@@ -36,9 +63,9 @@ df <- df %>%
   mutate(time = row_number()) %>% 
   filter(time <= 2) %>% 
   ungroup()
-
-df
 ```
+
+As a bit of practice with factor variables, we'll also convert the `is_bullied` variable to a factor. This will make it easier to use the upcoming tests.
 
 ```{r}
 df <- df %>% 
@@ -52,46 +79,104 @@ df <- df %>%
 df
 ```
 
+## Steps 3 & 4 - Create and unpack analysis objects
+
+### Independant samples t-test
+
+To see how the analysis process works in R, we'll start with the familiar independent samples t-test. Like all future analyses we'll conduct, we'll use a pre-existing function to do the work for us. These functions (generally!) take two arguments: 
+  
+  - the dataset you want to analyze
+  - a formula describing the variables we want to use in our analysis. This is almost always the first argument the function takes and almost always follows the form `DEPENDANT VARIABLE ~ INDEPENDANT_VARIABLES`. 
+  
+In this case, let's ask whether a patient's average grades differ by whether they were bullied. To do that, we call the `t.test` function on our data and we save the results to an object called `fit`. You can name the object anything you want, but it is customary to name it `fit`, after "fitted model."
+
+
 ```{r}
-ind_samples_df <- df %>% 
-  filter(time == 1) %>% 
-  pivot_wider(
-    id_cols = 'id',
-    names_from = 'is_bullied',
-    values_from = 'grades')
-
-t.test(
-  x = ind_samples_df$no, # grades of kids not bullied
-  y = ind_samples_df$yes) # grades of kids yes bullied
-
-round(2.2e-16, digits = 10)
+fit <- t.test(grades ~ is_bullied, data = df)
 ```
 
-```{r}
-paired_samples_df <- df %>% 
-  pivot_wider(
-    id_cols = 'id',
-    names_from = 'time',
-    names_glue = 'grades_at_{time}',
-    values_from = 'grades')
+If you're like most new R users, this is where you might get confused. Where are the results?
 
-t.test(
-  x = paired_samples_df$grades_at_1,
-  y = paired_samples_df$grades_at_2,
-  paired = T)
+Don't worry, nothing has gone wrong. The results are saved in the `fit` object now. All we need to do is get them out.
+
+For simple tests that don't involve a lot of complex mathematical tricks (e.g., SEM), you can often just call the fitted object by itself, like so.
+
+```{r}
+fit
+```
+This is fine for a t-test because there is not much to them. Here, we have all the information we need, including a p-value.
+
+For more complex analyses though (e.g., even regression), you'll want to use a helper function to summarize your results. R has the built in `summary()` function, which will work for almost all analyses, but unfortunately not t-tests.
+
+```{r}
+summary(fit)
 ```
 
+Instead, we'll use the `tidy()` function from the `broom` package. This gives us a one-line dataframe with the results of the t-test.
+
 ```{r}
-cor(
+broom::tidy(fit)
+```
+
+This is great for generating tables and modifying the output for publication.
+
+```{r}
+fit %>% 
+  broom::tidy() %>% 
+  select(t = statistic, p = p.value) %>% 
+  round(3)
+```
+
+
+### Paired t-tests
+
+Paired t-tests can be conducted using a similar process. To demonstrate a longitudinal result though, we'll first filter (retain) only patients who had non-missing grades for at least two timepoints. 
+
+Once that's done, all we need to do to make the test a paired one is to set the `paired` argument to true.
+
+```{r}
+complete_data_df <- df %>% 
+  group_by(id) %>% 
+  filter(all(!is.na(grades)) & n() == 2)
+
+fit <- t.test(grades ~ time, data = complete_data_df, paired = T)
+
+fit
+```
+
+Again, we can also call `broom::tidy()` to get the results as a dataframe.
+
+```{r}
+broom::tidy(fit)
+```
+
+### Correlation
+
+Correlation is computed using the `cor()` function. It is similar to t-tests in R, but asks that you explicitly tell it which columns you want. It also requires that all of its variables are numeric, so we'll coerce our `is_bullied` variable to a numeric one to make sure `cor()` plays nice.
+
+Note that with `cor()`, we can easily specify how we want to handle missing data and which kind of correlation we want. Remember, to see all of the special tricks you can do with a function, place a `?` in front of it and then run that line.
+
+```{r}
+fit <- cor(
   x = as.numeric(df$is_bullied),
   y = df$grades,
   use = 'complete.obs',
   method = 'spearman')
 
-cor.test(
+fit
+```
+
+At this point, you've probably noticed you're missing the p-value you probably wanted. For a variety of unimportant (but admittedly irritating) historical reasons, we use a different function for that: `cor.test()`. Luckily though, it works the same way as all of the others.
+
+```{r}
+fit <- cor.test(
   x = as.numeric(df$is_bullied),
   y = df$grades,
   method = 'pearson')
+
+fit
+
+broom::tidy(fit)
 ```
 
 

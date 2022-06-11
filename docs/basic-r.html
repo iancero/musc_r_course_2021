@@ -32,7 +32,7 @@
   
   <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon" />
 <link rel="prev" href="getting-started.html"/>
-<link rel="next" href="data-wrangling-and-joining-merging.html"/>
+<link rel="next" href="multilevel-models.html"/>
 <script src="libs/header-attrs-2.11/header-attrs.js"></script>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
@@ -201,17 +201,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="3.9.2" data-path="basic-r.html"><a href="basic-r.html#official-coding-conventions"><i class="fa fa-check"></i><b>3.9.2</b> Official coding conventions</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="4" data-path="data-wrangling-and-joining-merging.html"><a href="data-wrangling-and-joining-merging.html"><i class="fa fa-check"></i><b>4</b> Data Wrangling and Joining / Merging</a>
+<li class="chapter" data-level="4" data-path="multilevel-models.html"><a href="multilevel-models.html"><i class="fa fa-check"></i><b>4</b> Multilevel Models</a>
 <ul>
-<li class="chapter" data-level="4.1" data-path="data-wrangling-and-joining-merging.html"><a href="data-wrangling-and-joining-merging.html#base-r"><i class="fa fa-check"></i><b>4.1</b> Base R</a></li>
-<li class="chapter" data-level="4.2" data-path="data-wrangling-and-joining-merging.html"><a href="data-wrangling-and-joining-merging.html#the-new-way-dplyr"><i class="fa fa-check"></i><b>4.2</b> The new way: <code>dplyr</code></a></li>
-<li class="chapter" data-level="4.3" data-path="data-wrangling-and-joining-merging.html"><a href="data-wrangling-and-joining-merging.html#the-only-data-verbs-youll-ever-need"><i class="fa fa-check"></i><b>4.3</b> The only data verbs you’ll ever need</a>
+<li class="chapter" data-level="4.1" data-path="multilevel-models.html"><a href="multilevel-models.html#steps-1-2---import-and-clean-the-data"><i class="fa fa-check"></i><b>4.1</b> Steps 1 &amp; 2 - Import and clean the data</a></li>
+<li class="chapter" data-level="4.2" data-path="multilevel-models.html"><a href="multilevel-models.html#steps-3-4---fit-the-model-and-summarize-it"><i class="fa fa-check"></i><b>4.2</b> Steps 3 &amp; 4 - Fit the model and summarize it</a>
 <ul>
-<li class="chapter" data-level="4.3.1" data-path="data-wrangling-and-joining-merging.html"><a href="data-wrangling-and-joining-merging.html#rename"><i class="fa fa-check"></i><b>4.3.1</b> <code>rename()</code></a></li>
-<li class="chapter" data-level="4.3.2" data-path="data-wrangling-and-joining-merging.html"><a href="data-wrangling-and-joining-merging.html#select"><i class="fa fa-check"></i><b>4.3.2</b> <code>select()</code></a></li>
-<li class="chapter" data-level="4.3.3" data-path="data-wrangling-and-joining-merging.html"><a href="data-wrangling-and-joining-merging.html#mutate"><i class="fa fa-check"></i><b>4.3.3</b> <code>mutate()</code></a></li>
-<li class="chapter" data-level="4.3.4" data-path="data-wrangling-and-joining-merging.html"><a href="data-wrangling-and-joining-merging.html#group_by-and-summarize"><i class="fa fa-check"></i><b>4.3.4</b> <code>group_by()</code> and <code>summarize()</code></a></li>
+<li class="chapter" data-level="4.2.1" data-path="multilevel-models.html"><a href="multilevel-models.html#where-are-my-p-values"><i class="fa fa-check"></i><b>4.2.1</b> Where are my p-values?</a></li>
+<li class="chapter" data-level="4.2.2" data-path="multilevel-models.html"><a href="multilevel-models.html#where-are-my-intraclass-correlations-iccs"><i class="fa fa-check"></i><b>4.2.2</b> Where are my intraclass correlations (ICCs)?</a></li>
 </ul></li>
+<li class="chapter" data-level="4.3" data-path="multilevel-models.html"><a href="multilevel-models.html#logistic-multilevel-models"><i class="fa fa-check"></i><b>4.3</b> Logistic multilevel models</a></li>
 </ul></li>
 </ul>
 
@@ -284,7 +282,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="basic-r.html#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">is.double</span>(b)</span></code></pre></div>
 <pre><code>## [1] TRUE</code></pre>
 <p><strong>Integers</strong></p>
-<p>Integers must have an <code>L</code> after them. That is how R knows that you don’t want a double, but instead want a “long-capable integer.”</p>
+<p>Integers must have an <code>L</code> after them. That is how R knows that you don’t want a double, but instead want a “long-capable integer”.</p>
 <div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="basic-r.html#cb18-1" aria-hidden="true" tabindex="-1"></a>c <span class="ot">&lt;-</span> 1L</span>
 <span id="cb18-2"><a href="basic-r.html#cb18-2" aria-hidden="true" tabindex="-1"></a>d <span class="ot">&lt;-</span> <span class="dv">1</span></span>
 <span id="cb18-3"><a href="basic-r.html#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="fu">is.integer</span>(c)</span></code></pre></div>
@@ -456,7 +454,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <pre><code>##      [,1] [,2] [,3]
 ## [1,]    1    2    3
 ## [2,]    3    5    7</code></pre>
-<p>Sometimes I want special vectors, direct sequences of numbers. There are two ways to do this. If all I want is a integer sequence (made of doubles), then I use the “<code>&lt;first number&gt;:&lt;last number&gt;</code>.”</p>
+<p>Sometimes I want special vectors, direct sequences of numbers. There are two ways to do this. If all I want is a integer sequence (made of doubles), then I use the “<code>&lt;first number&gt;:&lt;last number&gt;</code>”.</p>
 <div class="sourceCode" id="cb80"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb80-1"><a href="basic-r.html#cb80-1" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span><span class="sc">:</span><span class="dv">5</span></span></code></pre></div>
 <pre><code>## [1] 1 2 3 4 5</code></pre>
 <div class="sourceCode" id="cb82"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb82-1"><a href="basic-r.html#cb82-1" aria-hidden="true" tabindex="-1"></a><span class="dv">5</span><span class="sc">:</span><span class="dv">1</span></span></code></pre></div>
@@ -475,8 +473,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <pre><code>## [1] 0.0 0.3 0.6 0.9 1.2</code></pre>
 <p>But they <strong>must</strong> be equal lengths.</p>
 <div class="sourceCode" id="cb92"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb92-1"><a href="basic-r.html#cb92-1" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span><span class="sc">:</span><span class="dv">5</span> <span class="sc">/</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">4</span></span></code></pre></div>
-<pre><code>## Warning in 1:5/1:4: longer object length is not a multiple of shorter object
-## length</code></pre>
+<pre><code>## Warning in 1:5/1:4: longer object length is not a multiple of shorter object length</code></pre>
 <pre><code>## [1] 1 1 1 1 5</code></pre>
 <p>To access the elements of a vector, I put a number OR booleans in brackets <code>[]</code>.</p>
 <div class="sourceCode" id="cb95"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb95-1"><a href="basic-r.html#cb95-1" aria-hidden="true" tabindex="-1"></a>my_vec <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&#39;apple&#39;</span>, <span class="st">&#39;orange&#39;</span>, <span class="st">&#39;banana&#39;</span>, <span class="st">&#39;pair&#39;</span>)</span>
@@ -599,7 +596,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <div id="function-parameters" class="section level3" number="3.6.2">
 <h3><span class="header-section-number">3.6.2</span> Function parameters</h3>
-<p>In addition to the data they take as input, most functions have additional <em>parameters</em> (sometimes called “arguments,” but they mean the same thing). Looking at its help file, the <code>sum()</code> function has two parameters:</p>
+<p>In addition to the data they take as input, most functions have additional <em>parameters</em> (sometimes called “arguments”, but they mean the same thing). Looking at its help file, the <code>sum()</code> function has two parameters:</p>
 <ul>
 <li><code>...</code>, the numbers you want to sum</li>
 <li><code>na.rm = FALSE</code>, which tells <code>sum()</code> whether you want to remove (‘rm’) missing values (‘na’) before summing.</li>
@@ -680,7 +677,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
         </div>
       </div>
 <a href="getting-started.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="data-wrangling-and-joining-merging.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="multilevel-models.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

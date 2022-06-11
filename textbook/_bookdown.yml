@@ -10,11 +10,11 @@ rmd_files:
 - basic_r_coding.Rmd
 # - abcd_specifics.Rmd
 # - visualization.Rmd
-- data_wrangling.Rmd
+# - data_wrangling.Rmd
 # - basic_hypothesis_tests.Rmd
 # - linear_regression.Rmd
 # - logistic_regression.Rmd
-# - intro_to_machine_learning.Rmd
+- intro_to_machine_learning.Rmd
 # - multilevel_models.Rmd
 # - structural_equation_modeling.Rmd
 # - strings.Rmd

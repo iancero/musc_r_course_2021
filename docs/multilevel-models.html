@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>10 Multilevel Models | R Notebook</title>
+  <title>4 Multilevel Models | An Organic R Textbook</title>
   <meta name="description" content="This is the organic textbook accompanying Cero’s 2021 course on statistical programming with R" />
   <meta name="generator" content="bookdown 0.24 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="10 Multilevel Models | R Notebook" />
+  <meta property="og:title" content="4 Multilevel Models | An Organic R Textbook" />
   <meta property="og:type" content="book" />
   <meta property="og:url" content="https://iancero.github.io/musc_r_course_2021" />
   
@@ -16,7 +16,7 @@
   <meta name="github-repo" content="iancero/musc_r_course_2021" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="10 Multilevel Models | R Notebook" />
+  <meta name="twitter:title" content="4 Multilevel Models | An Organic R Textbook" />
   
   <meta name="twitter:description" content="This is the organic textbook accompanying Cero’s 2021 course on statistical programming with R" />
   
@@ -31,8 +31,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon" />
-<link rel="prev" href="intro-to-machine-learning.html"/>
-<link rel="next" href="logistic-mixed-models.html"/>
+<link rel="prev" href="basic-r.html"/>
+
 <script src="libs/header-attrs-2.11/header-attrs.js"></script>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
@@ -201,29 +201,16 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="3.9.2" data-path="basic-r.html"><a href="basic-r.html#official-coding-conventions"><i class="fa fa-check"></i><b>3.9.2</b> Official coding conventions</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="4" data-path="working-with-abcd.html"><a href="working-with-abcd.html"><i class="fa fa-check"></i><b>4</b> Working with ABCD</a>
+<li class="chapter" data-level="4" data-path="multilevel-models.html"><a href="multilevel-models.html"><i class="fa fa-check"></i><b>4</b> Multilevel Models</a>
 <ul>
-<li class="chapter" data-level="4.1" data-path="working-with-abcd.html"><a href="working-with-abcd.html#importing-abcd-datafiles"><i class="fa fa-check"></i><b>4.1</b> Importing ABCD datafiles</a>
+<li class="chapter" data-level="4.1" data-path="multilevel-models.html"><a href="multilevel-models.html#steps-1-2---import-and-clean-the-data"><i class="fa fa-check"></i><b>4.1</b> Steps 1 &amp; 2 - Import and clean the data</a></li>
+<li class="chapter" data-level="4.2" data-path="multilevel-models.html"><a href="multilevel-models.html#steps-3-4---fit-the-model-and-summarize-it"><i class="fa fa-check"></i><b>4.2</b> Steps 3 &amp; 4 - Fit the model and summarize it</a>
 <ul>
-<li class="chapter" data-level="4.1.1" data-path="working-with-abcd.html"><a href="working-with-abcd.html#whats-different-about-abcd"><i class="fa fa-check"></i><b>4.1.1</b> What’s different about ABCD?</a></li>
-<li class="chapter" data-level="4.1.2" data-path="working-with-abcd.html"><a href="working-with-abcd.html#walking-through-abcd-data-importation"><i class="fa fa-check"></i><b>4.1.2</b> Walking through ABCD data importation</a></li>
-<li class="chapter" data-level="4.1.3" data-path="working-with-abcd.html"><a href="working-with-abcd.html#copypaste-able-code"><i class="fa fa-check"></i><b>4.1.3</b> Copy/paste-able code</a></li>
+<li class="chapter" data-level="4.2.1" data-path="multilevel-models.html"><a href="multilevel-models.html#where-are-my-p-values"><i class="fa fa-check"></i><b>4.2.1</b> Where are my p-values?</a></li>
+<li class="chapter" data-level="4.2.2" data-path="multilevel-models.html"><a href="multilevel-models.html#where-are-my-intraclass-correlations-iccs"><i class="fa fa-check"></i><b>4.2.2</b> Where are my intraclass correlations (ICCs)?</a></li>
 </ul></li>
+<li class="chapter" data-level="4.3" data-path="multilevel-models.html"><a href="multilevel-models.html#logistic-multilevel-models"><i class="fa fa-check"></i><b>4.3</b> Logistic multilevel models</a></li>
 </ul></li>
-<li class="chapter" data-level="5" data-path="visualization.html"><a href="visualization.html"><i class="fa fa-check"></i><b>5</b> Visualization?</a></li>
-<li class="chapter" data-level="6" data-path="basic-hypthothesis-tests.html"><a href="basic-hypthothesis-tests.html"><i class="fa fa-check"></i><b>6</b> Basic hypthothesis tests</a></li>
-<li class="chapter" data-level="7" data-path="linear-regression.html"><a href="linear-regression.html"><i class="fa fa-check"></i><b>7</b> Linear Regression</a></li>
-<li class="chapter" data-level="8" data-path="logistic-regression.html"><a href="logistic-regression.html"><i class="fa fa-check"></i><b>8</b> Logistic Regression</a></li>
-<li class="chapter" data-level="9" data-path="intro-to-machine-learning.html"><a href="intro-to-machine-learning.html"><i class="fa fa-check"></i><b>9</b> Intro to machine learning</a></li>
-<li class="chapter" data-level="10" data-path="multilevel-models.html"><a href="multilevel-models.html"><i class="fa fa-check"></i><b>10</b> Multilevel Models</a></li>
-<li class="chapter" data-level="11" data-path="logistic-mixed-models.html"><a href="logistic-mixed-models.html"><i class="fa fa-check"></i><b>11</b> Logistic mixed models</a></li>
-<li class="chapter" data-level="12" data-path="bayesian-models.html"><a href="bayesian-models.html"><i class="fa fa-check"></i><b>12</b> Bayesian models</a></li>
-<li class="chapter" data-level="13" data-path="structural-equation-modeling.html"><a href="structural-equation-modeling.html"><i class="fa fa-check"></i><b>13</b> Structural Equation Modeling</a></li>
-<li class="chapter" data-level="14" data-path="strings-should-you-care.html"><a href="strings-should-you-care.html"><i class="fa fa-check"></i><b>14</b> Strings, should you care?</a></li>
-<li class="chapter" data-level="15" data-path="join-the-datasets.html"><a href="join-the-datasets.html"><i class="fa fa-check"></i><b>15</b> Join the datasets</a></li>
-<li class="chapter" data-level="16" data-path="extract-some-information.html"><a href="extract-some-information.html"><i class="fa fa-check"></i><b>16</b> Extract some information</a></li>
-<li class="chapter" data-level="17" data-path="string-interpolation.html"><a href="string-interpolation.html"><i class="fa fa-check"></i><b>17</b> String interpolation</a></li>
-<li class="chapter" data-level="18" data-path="sentiment-analysis.html"><a href="sentiment-analysis.html"><i class="fa fa-check"></i><b>18</b> Sentiment analysis</a></li>
 </ul>
 
       </nav>
@@ -233,7 +220,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <div class="body-inner">
         <div class="book-header" role="navigation">
           <h1>
-            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">R Notebook</a>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">An Organic R Textbook</a>
           </h1>
         </div>
 
@@ -241,58 +228,65 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="multilevel-models" class="section level1" number="10">
-<h1><span class="header-section-number">10</span> Multilevel Models</h1>
-<div class="sourceCode" id="cb224"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb224-1"><a href="multilevel-models.html#cb224-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb224-2"><a href="multilevel-models.html#cb224-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb224-3"><a href="multilevel-models.html#cb224-3" aria-hidden="true" tabindex="-1"></a>read_abcd <span class="ot">&lt;-</span> <span class="cf">function</span>(abcd_path){</span>
-<span id="cb224-4"><a href="multilevel-models.html#cb224-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">suppressMessages</span>({</span>
-<span id="cb224-5"><a href="multilevel-models.html#cb224-5" aria-hidden="true" tabindex="-1"></a>    abcd_path <span class="sc">%&gt;%</span> </span>
-<span id="cb224-6"><a href="multilevel-models.html#cb224-6" aria-hidden="true" tabindex="-1"></a>      <span class="fu">read_delim</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb224-7"><a href="multilevel-models.html#cb224-7" aria-hidden="true" tabindex="-1"></a>      <span class="fu">filter</span>(<span class="fu">row_number</span>() <span class="sc">!=</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb224-8"><a href="multilevel-models.html#cb224-8" aria-hidden="true" tabindex="-1"></a>      <span class="fu">type_convert</span>()  </span>
-<span id="cb224-9"><a href="multilevel-models.html#cb224-9" aria-hidden="true" tabindex="-1"></a>  })</span>
-<span id="cb224-10"><a href="multilevel-models.html#cb224-10" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb224-11"><a href="multilevel-models.html#cb224-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb224-12"><a href="multilevel-models.html#cb224-12" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">read_abcd</span>(<span class="st">&#39;data/abcd_lpksad01.txt&#39;</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb224-13"><a href="multilevel-models.html#cb224-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(</span>
-<span id="cb224-14"><a href="multilevel-models.html#cb224-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">id =</span> src_subject_id, </span>
-<span id="cb224-15"><a href="multilevel-models.html#cb224-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">age =</span> interview_age,</span>
-<span id="cb224-16"><a href="multilevel-models.html#cb224-16" aria-hidden="true" tabindex="-1"></a>    sex, </span>
-<span id="cb224-17"><a href="multilevel-models.html#cb224-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">grade_drop =</span> kbi_p_c_drop_in_grades_l,</span>
-<span id="cb224-18"><a href="multilevel-models.html#cb224-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">grades =</span> kbi_p_grades_in_school_l) <span class="sc">%&gt;%</span> </span>
-<span id="cb224-19"><a href="multilevel-models.html#cb224-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(id) <span class="sc">%&gt;%</span> </span>
-<span id="cb224-20"><a href="multilevel-models.html#cb224-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(age) <span class="sc">%&gt;%</span> </span>
-<span id="cb224-21"><a href="multilevel-models.html#cb224-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb224-22"><a href="multilevel-models.html#cb224-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">age =</span> <span class="fu">floor</span>(age <span class="sc">/</span> <span class="dv">12</span>),</span>
-<span id="cb224-23"><a href="multilevel-models.html#cb224-23" aria-hidden="true" tabindex="-1"></a>    <span class="at">sex =</span> <span class="fu">factor</span>(sex, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">&#39;M&#39;</span>, <span class="st">&#39;F&#39;</span>)),</span>
-<span id="cb224-24"><a href="multilevel-models.html#cb224-24" aria-hidden="true" tabindex="-1"></a>    <span class="at">time =</span> <span class="fu">row_number</span>(),</span>
-<span id="cb224-25"><a href="multilevel-models.html#cb224-25" aria-hidden="true" tabindex="-1"></a>    <span class="at">n_timepoints =</span> <span class="fu">max</span>(time),</span>
-<span id="cb224-26"><a href="multilevel-models.html#cb224-26" aria-hidden="true" tabindex="-1"></a>    <span class="at">grade_drop =</span> <span class="fu">factor</span>(grade_drop, <span class="at">levels =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>), <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">&#39;yes&#39;</span>, <span class="st">&#39;no&#39;</span>))) <span class="sc">%&gt;%</span> </span>
-<span id="cb224-27"><a href="multilevel-models.html#cb224-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb224-28"><a href="multilevel-models.html#cb224-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(grades <span class="sc">%in%</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb224-29"><a href="multilevel-models.html#cb224-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(id, age, sex, grades, grade_drop, time)</span>
-<span id="cb224-30"><a href="multilevel-models.html#cb224-30" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb224-31"><a href="multilevel-models.html#cb224-31" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb224-32"><a href="multilevel-models.html#cb224-32" aria-hidden="true" tabindex="-1"></a>df <span class="sc">%&gt;%</span> </span>
-<span id="cb224-33"><a href="multilevel-models.html#cb224-33" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(grades) <span class="sc">%&gt;%</span> </span>
-<span id="cb224-34"><a href="multilevel-models.html#cb224-34" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>()</span></code></pre></div>
-<pre><code>## # A tibble: 5 x 2
-## # Groups:   grades [5]
-##   grades     n
-##    &lt;dbl&gt; &lt;int&gt;
-## 1      1 12511
-## 2      2  8738
-## 3      3  2859
-## 4      4   509
-## 5      5   154</code></pre>
-<div class="sourceCode" id="cb226"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb226-1"><a href="multilevel-models.html#cb226-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lme4)</span>
-<span id="cb226-2"><a href="multilevel-models.html#cb226-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb226-3"><a href="multilevel-models.html#cb226-3" aria-hidden="true" tabindex="-1"></a>fit <span class="ot">&lt;-</span> <span class="fu">lmer</span>(</span>
-<span id="cb226-4"><a href="multilevel-models.html#cb226-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> grades <span class="sc">~</span> age <span class="sc">+</span> sex <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">|</span> id),</span>
-<span id="cb226-5"><a href="multilevel-models.html#cb226-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> df)</span>
-<span id="cb226-6"><a href="multilevel-models.html#cb226-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb226-7"><a href="multilevel-models.html#cb226-7" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(fit)</span></code></pre></div>
+<div id="multilevel-models" class="section level1" number="4">
+<h1><span class="header-section-number">4</span> Multilevel Models</h1>
+<p>In a multilevel model, we try to account not only for group-level variation, but individual variation as well. As a reminder, the way that we do this is by proposing:</p>
+<ol style="list-style-type: decimal">
+<li><p>There is an overall slope and intercept for our regression model, just like in a traditional linear regression.</p></li>
+<li><p>But, there might be some variation from person to person or day to day in the value of that <strong>slope</strong>, <strong>intercept</strong>, or <strong>both</strong>.</p>
+<ul>
+<li>You can think of this like it being generally true that sleep loss leads to decreased mood the next day, but for some people it is worse than others (<strong>variable slopes</strong>).</li>
+<li>Alternatively, you might think the damage done by sleep loss is roughly the same from person to person - or perhaps that an intervention is roughly as effective for all people - but that different people start with varying degrees of sleep lost (<strong>variable intercepts</strong>).</li>
+<li>Lastly, you might think <strong>both</strong>.</li>
+</ul></li>
+</ol>
+<p>The trick to remember is that we are just specifying a traditional regression, <em>plus</em> allowing some of its parameters to be slightly different from person to person.</p>
+<div id="steps-1-2---import-and-clean-the-data" class="section level2" number="4.1">
+<h2><span class="header-section-number">4.1</span> Steps 1 &amp; 2 - Import and clean the data</h2>
+<p>Again to maximize comparability with previous chapters on regression techniques, we’ll use the same KSADS ABCD dataset.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="multilevel-models.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-2"><a href="multilevel-models.html#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="multilevel-models.html#cb1-3" aria-hidden="true" tabindex="-1"></a>read_abcd_quietly <span class="ot">&lt;-</span> <span class="cf">function</span>(file_path){</span>
+<span id="cb1-4"><a href="multilevel-models.html#cb1-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">suppressMessages</span>(</span>
+<span id="cb1-5"><a href="multilevel-models.html#cb1-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">expr =</span> <span class="fu">read_delim</span>(file_path, <span class="at">delim =</span> <span class="st">&#39;</span><span class="sc">\t</span><span class="st">&#39;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb1-6"><a href="multilevel-models.html#cb1-6" aria-hidden="true" tabindex="-1"></a>      <span class="fu">filter</span>(<span class="fu">row_number</span>() <span class="sc">!=</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb1-7"><a href="multilevel-models.html#cb1-7" aria-hidden="true" tabindex="-1"></a>      <span class="fu">type_convert</span>())</span>
+<span id="cb1-8"><a href="multilevel-models.html#cb1-8" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1-9"><a href="multilevel-models.html#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-10"><a href="multilevel-models.html#cb1-10" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">read_abcd_quietly</span>(<span class="st">&#39;data/abcd_lpksad01.txt&#39;</span>)</span></code></pre></div>
+<p>But along the way, it is important to note that this is a <strong>longitudinal</strong> dataset with many participants providing multiple data points to us. You can thus think of those data points as providing multiple pieces of information for each person, which we can use to estimate (for example) their own personal intercept in a multilevel model.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="multilevel-models.html#cb2-1" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> df <span class="sc">%&gt;%</span> </span>
+<span id="cb2-2"><a href="multilevel-models.html#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(</span>
+<span id="cb2-3"><a href="multilevel-models.html#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">id =</span> src_subject_id, </span>
+<span id="cb2-4"><a href="multilevel-models.html#cb2-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">age =</span> interview_age,</span>
+<span id="cb2-5"><a href="multilevel-models.html#cb2-5" aria-hidden="true" tabindex="-1"></a>    sex, </span>
+<span id="cb2-6"><a href="multilevel-models.html#cb2-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">grade_drop =</span> kbi_p_c_drop_in_grades_l,</span>
+<span id="cb2-7"><a href="multilevel-models.html#cb2-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">grades =</span> kbi_p_grades_in_school_l) <span class="sc">%&gt;%</span> </span>
+<span id="cb2-8"><a href="multilevel-models.html#cb2-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(id) <span class="sc">%&gt;%</span> </span>
+<span id="cb2-9"><a href="multilevel-models.html#cb2-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(age) <span class="sc">%&gt;%</span> </span>
+<span id="cb2-10"><a href="multilevel-models.html#cb2-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb2-11"><a href="multilevel-models.html#cb2-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">age =</span> <span class="fu">floor</span>(age <span class="sc">/</span> <span class="dv">12</span>),</span>
+<span id="cb2-12"><a href="multilevel-models.html#cb2-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">sex =</span> <span class="fu">factor</span>(sex, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">&#39;M&#39;</span>, <span class="st">&#39;F&#39;</span>)),</span>
+<span id="cb2-13"><a href="multilevel-models.html#cb2-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">time =</span> <span class="fu">row_number</span>(),</span>
+<span id="cb2-14"><a href="multilevel-models.html#cb2-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">n_timepoints =</span> <span class="fu">max</span>(time),</span>
+<span id="cb2-15"><a href="multilevel-models.html#cb2-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">grade_drop =</span> <span class="fu">factor</span>(grade_drop, <span class="at">levels =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>), <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">&#39;yes&#39;</span>, <span class="st">&#39;no&#39;</span>))) <span class="sc">%&gt;%</span></span>
+<span id="cb2-16"><a href="multilevel-models.html#cb2-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb2-17"><a href="multilevel-models.html#cb2-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(grades <span class="sc">%in%</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb2-18"><a href="multilevel-models.html#cb2-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(id, age, sex, grades, grade_drop, time)</span></code></pre></div>
+</div>
+<div id="steps-3-4---fit-the-model-and-summarize-it" class="section level2" number="4.2">
+<h2><span class="header-section-number">4.2</span> Steps 3 &amp; 4 - Fit the model and summarize it</h2>
+<p>As we saw with logistic regression, R’s regression-centric statistical framework makes transition to a new type of regression easy for us to think about: almost everything is the same, we just need to tweak a few specifics.</p>
+<p>The first thing to note is that we’ll need to load the <code>lme4</code> package, which contains a function to fit a multilevel model. Next, we use the <code>lmer()</code> function to fit the model, rather than the traditional <code>lm()</code> for a classic linear regression.</p>
+<p>After that, the last obvious change we need to make is that we need to tell R which parameters we want to vary and what our nesting structure is. Fortunately, that is pretty easy too. We just add it to our regression formula like this <code>+ (params_to_vary | vary_by_what)</code>.</p>
+<p>As you can see below, the randomly varying part of our model is specified as <code>(1 | id)</code>. Because <code>1</code> is R’s indicator for an intercept and <code>id</code> is our dataset’s variable indicating which person we are talking about (remember each ID will have multiple timepoints), this specification will produce a regression where the slope stays constant for everyone, BUT everyone has their own special intercept (i.e. a random intercept only model).</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="multilevel-models.html#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lme4)</span>
+<span id="cb3-2"><a href="multilevel-models.html#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="multilevel-models.html#cb3-3" aria-hidden="true" tabindex="-1"></a>fit <span class="ot">&lt;-</span> <span class="fu">lmer</span>(</span>
+<span id="cb3-4"><a href="multilevel-models.html#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> grades <span class="sc">~</span> age <span class="sc">+</span> sex <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">|</span> id),</span>
+<span id="cb3-5"><a href="multilevel-models.html#cb3-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> df)</span>
+<span id="cb3-6"><a href="multilevel-models.html#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-7"><a href="multilevel-models.html#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(fit)</span></code></pre></div>
 <pre><code>## Linear mixed model fit by REML. t-tests use Satterthwaite&#39;s method [&#39;lmerModLmerTest&#39;]
 ## Formula: grades ~ age + sex + (1 | id)
 ##    Data: df
@@ -321,31 +315,22 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ##      (Intr) age   
 ## age  -0.975       
 ## sexF -0.160  0.008</code></pre>
-<div class="sourceCode" id="cb228"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb228-1"><a href="multilevel-models.html#cb228-1" aria-hidden="true" tabindex="-1"></a>broom<span class="sc">::</span><span class="fu">tidy</span>(fit)</span></code></pre></div>
-<pre><code>## # A tibble: 5 x 8
-##   effect   group    term            estimate std.error statistic     df    p.value
-##   &lt;chr&gt;    &lt;chr&gt;    &lt;chr&gt;              &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;  &lt;dbl&gt;      &lt;dbl&gt;
-## 1 fixed    &lt;NA&gt;     (Intercept)       1.65     0.0446      37.1  20184.  2.35e-291
-## 2 fixed    &lt;NA&gt;     age               0.0112   0.00385      2.91 18878.  3.57e-  3
-## 3 fixed    &lt;NA&gt;     sexF             -0.201    0.0142     -14.1  10128.  1.18e- 44
-## 4 ran_pars id       sd__(Intercept)   0.647   NA           NA       NA  NA        
-## 5 ran_pars Residual sd__Observation   0.480   NA           NA       NA  NA</code></pre>
-<div class="sourceCode" id="cb230"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb230-1"><a href="multilevel-models.html#cb230-1" aria-hidden="true" tabindex="-1"></a>broom.mixed<span class="sc">::</span><span class="fu">tidy</span>(fit)</span></code></pre></div>
-<pre><code>## # A tibble: 5 x 8
-##   effect   group    term            estimate std.error statistic     df    p.value
-##   &lt;chr&gt;    &lt;chr&gt;    &lt;chr&gt;              &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;  &lt;dbl&gt;      &lt;dbl&gt;
-## 1 fixed    &lt;NA&gt;     (Intercept)       1.65     0.0446      37.1  20184.  2.35e-291
-## 2 fixed    &lt;NA&gt;     age               0.0112   0.00385      2.91 18878.  3.57e-  3
-## 3 fixed    &lt;NA&gt;     sexF             -0.201    0.0142     -14.1  10128.  1.18e- 44
-## 4 ran_pars id       sd__(Intercept)   0.647   NA           NA       NA  NA        
-## 5 ran_pars Residual sd__Observation   0.480   NA           NA       NA  NA</code></pre>
-<div class="sourceCode" id="cb232"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb232-1"><a href="multilevel-models.html#cb232-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lmerTest)</span>
-<span id="cb232-2"><a href="multilevel-models.html#cb232-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb232-3"><a href="multilevel-models.html#cb232-3" aria-hidden="true" tabindex="-1"></a>fit <span class="ot">&lt;-</span> <span class="fu">lmer</span>(</span>
-<span id="cb232-4"><a href="multilevel-models.html#cb232-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> grades <span class="sc">~</span> age <span class="sc">+</span> sex <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">|</span> id),</span>
-<span id="cb232-5"><a href="multilevel-models.html#cb232-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> df)</span>
-<span id="cb232-6"><a href="multilevel-models.html#cb232-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb232-7"><a href="multilevel-models.html#cb232-7" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(fit)</span></code></pre></div>
+<p>As you can see, the output is again quite similar to the regular <code>lm()</code> output. However, there are two twists.</p>
+<ol style="list-style-type: decimal">
+<li>Because we have a random intercept, the intercept now has a group-level mean (under Fixed Effects) AND it has its own variance (under Random Effects).</li>
+<li>We’re missing p-values! Find out how to get those below.</li>
+</ol>
+<div id="where-are-my-p-values" class="section level3" number="4.2.1">
+<h3><span class="header-section-number">4.2.1</span> Where are my p-values?</h3>
+<p>Multilevel models are mathematically complicated, under the hood. For reasons we wont go into here, there are many ways to compute their p-values and the <code>lme4</code> package doesn’t want to make the choice for you out of an abundance of caution.</p>
+<p>To get our p-values, we can use the <code>lmerTest</code> package, which will override the <code>lmer()</code> function to include p-values. Thus, if we run our same model again, but with <code>lmerTest</code> loaded we should get what we expected.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="multilevel-models.html#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lmerTest)</span>
+<span id="cb5-2"><a href="multilevel-models.html#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="multilevel-models.html#cb5-3" aria-hidden="true" tabindex="-1"></a>fit <span class="ot">&lt;-</span> <span class="fu">lmer</span>(</span>
+<span id="cb5-4"><a href="multilevel-models.html#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> grades <span class="sc">~</span> age <span class="sc">+</span> sex <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">|</span> id),</span>
+<span id="cb5-5"><a href="multilevel-models.html#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> df)</span>
+<span id="cb5-6"><a href="multilevel-models.html#cb5-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-7"><a href="multilevel-models.html#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(fit)</span></code></pre></div>
 <pre><code>## Linear mixed model fit by REML. t-tests use Satterthwaite&#39;s method [&#39;lmerModLmerTest&#39;]
 ## Formula: grades ~ age + sex + (1 | id)
 ##    Data: df
@@ -374,37 +359,74 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ##      (Intr) age   
 ## age  -0.975       
 ## sexF -0.160  0.008</code></pre>
-<div class="sourceCode" id="cb234"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb234-1"><a href="multilevel-models.html#cb234-1" aria-hidden="true" tabindex="-1"></a>broom.mixed<span class="sc">::</span><span class="fu">tidy</span>(fit)</span></code></pre></div>
-<pre><code>## # A tibble: 5 x 8
-##   effect   group    term            estimate std.error statistic     df    p.value
-##   &lt;chr&gt;    &lt;chr&gt;    &lt;chr&gt;              &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;  &lt;dbl&gt;      &lt;dbl&gt;
-## 1 fixed    &lt;NA&gt;     (Intercept)       1.65     0.0446      37.1  20184.  2.35e-291
-## 2 fixed    &lt;NA&gt;     age               0.0112   0.00385      2.91 18878.  3.57e-  3
-## 3 fixed    &lt;NA&gt;     sexF             -0.201    0.0142     -14.1  10128.  1.18e- 44
-## 4 ran_pars id       sd__(Intercept)   0.647   NA           NA       NA  NA        
-## 5 ran_pars Residual sd__Observation   0.480   NA           NA       NA  NA</code></pre>
-<div class="sourceCode" id="cb236"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb236-1"><a href="multilevel-models.html#cb236-1" aria-hidden="true" tabindex="-1"></a>(<span class="fl">0.649707040</span>)<span class="sc">^</span><span class="dv">2</span> <span class="sc">/</span> ((<span class="fl">0.649707040</span>)<span class="sc">^</span><span class="dv">2</span> <span class="sc">+</span> (<span class="fl">0.481237163</span>)<span class="sc">^</span><span class="dv">2</span>)</span></code></pre></div>
-<pre><code>## [1] 0.6457301</code></pre>
-<div class="sourceCode" id="cb238"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb238-1"><a href="multilevel-models.html#cb238-1" aria-hidden="true" tabindex="-1"></a>performance<span class="sc">::</span><span class="fu">icc</span>(fit)</span></code></pre></div>
+</div>
+<div id="where-are-my-intraclass-correlations-iccs" class="section level3" number="4.2.2">
+<h3><span class="header-section-number">4.2.2</span> Where are my intraclass correlations (ICCs)?</h3>
+<p>One measure of the strength of variation for a random effect in a multilevel model is the Intraclass Correlation Coefficient (ICC). These tell you the percentage of variation in the your estimate can be attributed to random variation from person to person.</p>
+<p>Unfortunately, <code>lmer()</code> doesn’t compute this on its own, so we need to ask the <code>performance</code> package to do it for us.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="multilevel-models.html#cb7-1" aria-hidden="true" tabindex="-1"></a>performance<span class="sc">::</span><span class="fu">icc</span>(fit)</span></code></pre></div>
 <pre><code>## # Intraclass Correlation Coefficient
 ## 
 ##      Adjusted ICC: 0.645
 ##   Conditional ICC: 0.635</code></pre>
-<div class="sourceCode" id="cb240"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb240-1"><a href="multilevel-models.html#cb240-1" aria-hidden="true" tabindex="-1"></a>df <span class="sc">%&gt;%</span> </span>
-<span id="cb240-2"><a href="multilevel-models.html#cb240-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(id <span class="sc">%in%</span> <span class="fu">sample</span>(id, <span class="at">size =</span> <span class="dv">25</span>)) <span class="sc">%&gt;%</span> </span>
-<span id="cb240-3"><a href="multilevel-models.html#cb240-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(time, grades, <span class="at">group =</span> id)) <span class="sc">+</span></span>
-<span id="cb240-4"><a href="multilevel-models.html#cb240-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_jitter</span>(<span class="at">alpha =</span> .<span class="dv">50</span>) <span class="sc">+</span></span>
-<span id="cb240-5"><a href="multilevel-models.html#cb240-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">&#39;lm&#39;</span>, <span class="at">se =</span> F, <span class="at">color =</span> <span class="st">&#39;grey&#39;</span>)</span></code></pre></div>
-<pre><code>## `geom_smooth()` using formula &#39;y ~ x&#39;</code></pre>
-<p><img src="_main_files/figure-html/unnamed-chunk-111-1.png" width="672" /></p>
+</div>
+</div>
+<div id="logistic-multilevel-models" class="section level2" number="4.3">
+<h2><span class="header-section-number">4.3</span> Logistic multilevel models</h2>
+<p>So far, we’ve fit just linear multilevel models, but note that the transition to a logistic version is the same as the transition from a traditional linear model to a traditional logistic one:</p>
+<ul>
+<li><code>lm()</code> becomes <code>glm()</code>; <code>lmer()</code> becomes <code>glmer()</code></li>
+<li>We need to specify the family of non-linear model we are using, which is again “binomial”</li>
+</ul>
+<p>Then everything else is the same.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="multilevel-models.html#cb9-1" aria-hidden="true" tabindex="-1"></a>fit <span class="ot">&lt;-</span> <span class="fu">glmer</span>(</span>
+<span id="cb9-2"><a href="multilevel-models.html#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> grade_drop <span class="sc">~</span> age <span class="sc">+</span> sex <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">|</span> id),</span>
+<span id="cb9-3"><a href="multilevel-models.html#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> df,</span>
+<span id="cb9-4"><a href="multilevel-models.html#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">family =</span> <span class="st">&#39;binomial&#39;</span>)</span>
+<span id="cb9-5"><a href="multilevel-models.html#cb9-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-6"><a href="multilevel-models.html#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(fit)</span></code></pre></div>
+<pre><code>## Generalized linear mixed model fit by maximum likelihood (Laplace Approximation) [
+## glmerMod]
+##  Family: binomial  ( logit )
+## Formula: grade_drop ~ age + sex + (1 | id)
+##    Data: df
+## 
+##      AIC      BIC   logLik deviance df.resid 
+##  20086.6  20119.0 -10039.3  20078.6    24440 
+## 
+## Scaled residuals: 
+##     Min      1Q  Median      3Q     Max 
+## -3.0384  0.2134  0.2559  0.3115  1.0890 
+## 
+## Random effects:
+##  Groups Name        Variance Std.Dev.
+##  id     (Intercept) 2.064    1.437   
+## Number of obs: 24444, groups:  id, 10275
+## 
+## Fixed effects:
+##             Estimate Std. Error z value Pr(&gt;|z|)    
+## (Intercept)  5.87861    0.26782  21.950   &lt;2e-16 ***
+## age         -0.33012    0.02241 -14.728   &lt;2e-16 ***
+## sexF         0.46215    0.05188   8.908   &lt;2e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Correlation of Fixed Effects:
+##      (Intr) age   
+## age  -0.985       
+## sexF -0.049 -0.023
+## optimizer (Nelder_Mead) convergence code: 0 (OK)
+## Model failed to converge with max|grad| = 0.00490794 (tol = 0.002, component 1)</code></pre>
+
+</div>
 </div>
             </section>
 
           </div>
         </div>
       </div>
-<a href="intro-to-machine-learning.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="logistic-mixed-models.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="basic-r.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
@@ -458,20 +480,6 @@ gitbook.start({
 });
 </script>
 
-<!-- dynamically load mathjax for compatibility with self-contained -->
-<script>
-  (function () {
-    var script = document.createElement("script");
-    script.type = "text/javascript";
-    var src = "true";
-    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
-    if (location.protocol !== "file:")
-      if (/^https?:/.test(src))
-        src = src.replace(/^https?:/, '');
-    script.src = src;
-    document.getElementsByTagName("head")[0].appendChild(script);
-  })();
-</script>
 </body>
 
 </html>

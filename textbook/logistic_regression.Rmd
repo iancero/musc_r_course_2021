@@ -1,15 +1,29 @@
 # Logistic Regression
 
-Starter code!
+In this chapter, we'll see the advantage of R's linear regression-centric statistical analysis style (i.e., in which basically everything works the same way as a linear regression). Specifically, we'll switch to a different form of statistical model, with different assumptions and observe that almost everything is the same.
+
+This has the advantage that we need to relearn very little from model to model, and that we can feel more confident that we got our new model (in this case a logistic one) right on the first try.
+
+## Steps 1 & 2 - Import and clean data
+
+To maximize comparability with the regression and hypotehsis testing chapters, we'll again use the KSADS ABCD dataset. We can again import that dataset with our custom functions from earlier chapters.
 
 ```{r}
 library(tidyverse)
 
-df <- read_delim('data/abcd_lpksad01.txt') %>% 
-  filter(row_number() != 1) %>% 
-  type_convert()
+read_abcd_quietly <- function(file_path){
+  suppressMessages(
+    expr = read_delim(file_path, delim = '\t') %>% 
+      filter(row_number() != 1) %>% 
+      type_convert())
+}
 
+df <- read_abcd_quietly('data/abcd_lpksad01.txt')
+```
 
+With the dataset loaded, we can now engage in some basic cleanup - the same as in previous chapters. 
+
+```{r}
 df <- df %>% 
   arrange(src_subject_id) %>% 
   select(
@@ -33,19 +47,57 @@ df <- df %>%
 df
 ```
 
+One difference, though, is that we'll need a dichotomous variable to analyze in our logistic regression. Here, we turn our `num_hosp` variable (i.e., the number of times a given patient has been hospitalized since last interview) into a dichotomous one, `ever_hosp` (i.e., has the patient been hospitalized at all since the past interview?).
+
 ```{r}
 df <- df %>% 
   mutate(ever_hosp = num_hosp > 0)
 ```
+
+## Steps 3 & 4 - Fit the model and summarize it
+
+To fit a logistic regression, we follow roughly the same steps as a linear one, with just a few changes. 
+
+First, we need to use `glm()` instead of the regular `lm()`. This is because we are fitting a "generalized linear model" (the family logistic regression belong to) instead of a traditional "general linear model." 
+
+The second change is that we need to tell R which kind of GLM we want to fit (there are many). We do this by telling it what we think the outcome distribution is like (e.g., normal, binomial, etc). In this case, the family of distributions that logistic regressions use is the "binomial" one, so to get a logistic regression we simply feed the argument `'binomial'` to the `family` parameter. 
 
 ```{r}
 fit <- glm(
   formula = ever_hosp ~ sex + age,
   data = df,
   family = 'binomial')
+```
 
+Once the model is fit, we can ask for a summary the same way that we would with a linear regression and we'll see that the table we get is essentially the same.
+
+```{r}
 summary(fit)
+```
 
+### Where are my odds ratios?
+
+Most research scientists are used to thinking about logistic regression results in terms of odds ratios. Unfortunately, R won't give you odds ratios by default. You need to compute them. Fortunately, it is really easy, once you remember that odds ratios are equal to:
+
+$$
+OR = e^b =  \exp(b)
+$$
+
+Thus, the quickest way to get them is to extract your coefficients from your fit object, then use `exp()` on them.
+
+```{r}
+my_odds_ratios <- fit %>% 
+  coef() %>% 
+  exp() %>% 
+  round(digits = 2)
+
+my_odds_ratios
+```
+
+If you are in the process of creating a regression table, though, you might prefer to use `broom::tidy()` to get a dataframe of your `fit` object, then modify that with `mutate()`. This will make your results easier to export in .csv format.
+If all you want are the numbers, 
+
+```{r}
 results <- fit %>% 
   broom::tidy() %>% 
   mutate(or = exp(estimate)) %>% 
@@ -53,9 +105,17 @@ results <- fit %>%
   mutate(across(where(is.numeric), .fns = ~ round(.x, 3)))
 
 results
-
-write_csv(results, 'logistic_results')
 ```
+
+```{r, eval=FALSE}
+write_csv(results, 'logistic_results.csv')
+```
+
+## Plotting predicted values
+
+One question that has come up in the past is how to produce a plot of predicted values for a regression, including logistic ones.
+
+This is possible by mixing tricks from `broom` and `ggplot` together, like so.
 
 ```{r}
 predicted_vals <- fit %>%
@@ -63,46 +123,11 @@ predicted_vals <- fit %>%
   select(sex, age, log_odds = .fitted) %>% 
   mutate(odds = exp(log_odds), p = odds/(1 + odds)) %>% 
   unique() 
- 
-ggplot(predicted_vals, aes(x = age, y = log_odds, color = sex)) +
-  geom_point() +
-  geom_line()
 
 ggplot(predicted_vals, aes(x = age, y = p, color = sex)) +
   geom_point() +
   geom_line()
 ```
-
-
-```{r}
-df %>% 
-  group_by(sex, age, ever_hosp) %>% 
-  count()
-```
-
-
-
-
-```{r}
-read_abcd <- function(abcd_path){
-  suppressMessages({
-    abcd_path %>% 
-      read_delim() %>% 
-      filter(row_number() != 1) %>% 
-      type_convert()  
-  })
-}
-
-
-df <- list.files('data', pattern = 'abcd_', full.names = T) %>% 
-  map(read_abcd) %>% 
-  reduce(~ inner_join(.x, .y, by = c('subjectkey', 'interview_age')))
-```
-
-
-
-
-
 
 
 
