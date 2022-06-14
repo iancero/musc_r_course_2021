@@ -36,7 +36,7 @@
 \IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
 \IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
 \hypersetup{
-  pdftitle={An Organic R Textbook},
+  pdftitle={Squeglia Lab:},
   pdfauthor={Ian Cero, PhD MStat},
   hidelinks,
   pdfcreator={LaTeX via pandoc}}
@@ -115,7 +115,14 @@
 \usepackage[]{natbib}
 \bibliographystyle{apalike}
 
-\title{An Organic R Textbook}
+\title{Squeglia Lab:}
+\usepackage{etoolbox}
+\makeatletter
+\providecommand{\subtitle}[1]{% add subtitle to \maketitle
+  \apptocmd{\@title}{\par {\large #1 \par}}{}{}
+}
+\makeatother
+\subtitle{Organic R Textbook}
 \author{Ian Cero, PhD MStat}
 \date{2022}
 
@@ -1594,6 +1601,3169 @@ Whenever possible, try to use single-quotes (\texttt{\textquotesingle{}}) for ch
 \subsection{Official coding conventions}\label{official-coding-conventions}}
 
 Coding conventions are so important, that many people have tried to publish some. You can think of these like stlye guides that many people agreed to use. The one most relevant to our own work here is Hadley Wickham's guide at \href{https://style.tidyverse.org/}{\textbf{https://style.tidyverse.org/}}.
+
+\hypertarget{working-with-abcd}{%
+\chapter{Working with ABCD}\label{working-with-abcd}}
+
+In this section, we'll add specific content for the ABCD dataset issues as we uncover them over time.
+
+\hypertarget{importing-abcd-datafiles}{%
+\section{Importing ABCD datafiles}\label{importing-abcd-datafiles}}
+
+One of the trickiest parts of working with the ABCD dataset is just getting the data into R. Under most non-ABCD circumstances, getting a file into R is as simple as loading the \texttt{tidyverse} and telling the \texttt{read\_csv()} function where to look for your data.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(tidyverse)}
+
+\NormalTok{wine\_df }\OtherTok{\textless{}{-}} \FunctionTok{read\_csv}\NormalTok{(}\StringTok{\textquotesingle{}data/winequality{-}red.csv\textquotesingle{}}\NormalTok{)}
+
+\FunctionTok{head}\NormalTok{(wine\_df)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 6 x 12
+##   `fixed acidity` `volatile acidity` `citric acid`
+##             <dbl>              <dbl>         <dbl>
+## 1             7.4               0.7           0   
+## 2             7.8               0.88          0   
+## 3             7.8               0.76          0.04
+## 4            11.2               0.28          0.56
+## 5             7.4               0.7           0   
+## 6             7.4               0.66          0   
+## # ... with 9 more variables: residual sugar <dbl>,
+## #   chlorides <dbl>, free sulfur dioxide <dbl>,
+## #   total sulfur dioxide <dbl>, density <dbl>, pH <dbl>,
+## #   sulphates <dbl>, alcohol <dbl>, quality <dbl>
+\end{verbatim}
+
+\hypertarget{whats-different-about-abcd}{%
+\subsection{What's different about ABCD?}\label{whats-different-about-abcd}}
+
+There are a few things that are unique about ABCD datasets that make them a little bit harder to import than normal:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  They are tab-delimited, rather than comma delimited. This means that when they were being saved, the variables in the file were seperated by a tab (specifically, they were separated by the symbol ``\textbackslash t''), rather than a comma (``,''). In principle, there is nothing wrong with this. It is just a little unusual and so we need to use a special import function to deal with it (specifically, \texttt{read\_delim()}.
+\item
+  The more complex problem is that ABCD datasets have - in an effort to be helpful - have variable names in the first row of data and variable descriptions in the second row. This confuses R, which is expecting the variable names to be in the first row only, then the data to start in the second row.
+\end{enumerate}
+
+\hypertarget{walking-through-abcd-data-importation}{%
+\subsection{Walking through ABCD data importation}\label{walking-through-abcd-data-importation}}
+
+We'll do this in a few steps. If you're just looking to copy/paste the code, then skip to the end of this section. If you're looking for information about why we are doing what we are doing, then keep reading.
+
+First, notice that we need to use the \texttt{read\_delim()} command, rather than the usual \texttt{read\_csv()}. This tells R we are expecting a delimited file. We also tell that function we are expecting the delimeter to be a tab (\texttt{delim\ =\ \textquotesingle{}\textbackslash{}t\textquotesingle{}}), which we could figure out by opening the raw data in a basic text editor, like Notepad, and looking at it.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{abcd\_df }\OtherTok{\textless{}{-}} \FunctionTok{read\_delim}\NormalTok{(}\StringTok{\textquotesingle{}data/abcd\_screen02.txt\textquotesingle{}}\NormalTok{, }\AttributeTok{delim =} \StringTok{\textquotesingle{}}\SpecialCharTok{\textbackslash{}t}\StringTok{\textquotesingle{}}\NormalTok{)}
+
+\FunctionTok{head}\NormalTok{(abcd\_df)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 6 x 41
+##   collection_id abcd_screen02_id dataset_id subjectkey      
+##   <chr>         <chr>            <chr>      <chr>           
+## 1 collection_id abcd_screen02_id dataset_id The NDAR Global~
+## 2 2573          6579             47156      NDAR_INV0CZBUV4C
+## 3 2573          6581             47156      NDAR_INV0D4C1R8X
+## 4 2573          6588             47156      NDAR_INV0DKWEM1A
+## 5 2573          6594             47156      NDAR_INV0E350J5D
+## 6 2573          6609             47156      NDAR_INV0FM9MUTU
+## # ... with 37 more variables: src_subject_id <chr>,
+## #   interview_date <chr>, interview_age <chr>, sex <chr>,
+## #   eventname <chr>, scrn2_select_language___1 <chr>,
+## #   scrn_braces_v2 <chr>, scrn_future_braces <chr>,
+## #   scrn_bracesdate_v2 <chr>, scrn_bracescallback_v2 <chr>,
+## #   scrn_nr_hair_v2 <chr>, scrn_nr_hair_metal_v2 <chr>,
+## #   scrn_nr_hair_remove <chr>, ...
+\end{verbatim}
+
+We made some progress, but unfortunately, we've got these variable descriptors stuck in the top row of our data now. To get rid of them, we can re-assign the value of \texttt{abcd\_df} to be a version of itself without it's first row.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{abcd\_df }\OtherTok{\textless{}{-}}\NormalTok{ abcd\_df }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{filter}\NormalTok{(}\FunctionTok{row\_number}\NormalTok{() }\SpecialCharTok{!=} \DecValTok{1}\NormalTok{)}
+  
+\FunctionTok{head}\NormalTok{(abcd\_df)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 6 x 41
+##   collection_id abcd_screen02_id dataset_id subjectkey      
+##   <chr>         <chr>            <chr>      <chr>           
+## 1 2573          6579             47156      NDAR_INV0CZBUV4C
+## 2 2573          6581             47156      NDAR_INV0D4C1R8X
+## 3 2573          6588             47156      NDAR_INV0DKWEM1A
+## 4 2573          6594             47156      NDAR_INV0E350J5D
+## 5 2573          6609             47156      NDAR_INV0FM9MUTU
+## 6 2573          6630             47156      NDAR_INV0HFHMCFZ
+## # ... with 37 more variables: src_subject_id <chr>,
+## #   interview_date <chr>, interview_age <chr>, sex <chr>,
+## #   eventname <chr>, scrn2_select_language___1 <chr>,
+## #   scrn_braces_v2 <chr>, scrn_future_braces <chr>,
+## #   scrn_bracesdate_v2 <chr>, scrn_bracescallback_v2 <chr>,
+## #   scrn_nr_hair_v2 <chr>, scrn_nr_hair_metal_v2 <chr>,
+## #   scrn_nr_hair_remove <chr>, ...
+\end{verbatim}
+
+That helped, but R still thinks that all of our variables are character strings. We need to tell R that some of our variables might be numbers and that we want it to guess which ones those are. We can do that with the very handy \texttt{type\_convert()} function.
+
+This function isn't perfectly accurate at guessing what your underlying data types are, but after testing it on several ABCD datasets, it has yet to make a mistake. So, although the safest practice is technically to double-check every column in your dataset, it is should be safe to assume \texttt{type\_convert()} is almost always right.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{abcd\_df }\OtherTok{\textless{}{-}} \FunctionTok{type\_convert}\NormalTok{(abcd\_df)}
+
+\FunctionTok{head}\NormalTok{(abcd\_df)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 6 x 41
+##   collection_id abcd_screen02_id dataset_id subjectkey      
+##           <dbl>            <dbl>      <dbl> <chr>           
+## 1          2573             6579      47156 NDAR_INV0CZBUV4C
+## 2          2573             6581      47156 NDAR_INV0D4C1R8X
+## 3          2573             6588      47156 NDAR_INV0DKWEM1A
+## 4          2573             6594      47156 NDAR_INV0E350J5D
+## 5          2573             6609      47156 NDAR_INV0FM9MUTU
+## 6          2573             6630      47156 NDAR_INV0HFHMCFZ
+## # ... with 37 more variables: src_subject_id <chr>,
+## #   interview_date <chr>, interview_age <dbl>, sex <chr>,
+## #   eventname <chr>, scrn2_select_language___1 <dbl>,
+## #   scrn_braces_v2 <dbl>, scrn_future_braces <dbl>,
+## #   scrn_bracesdate_v2 <chr>, scrn_bracescallback_v2 <dbl>,
+## #   scrn_nr_hair_v2 <dbl>, scrn_nr_hair_metal_v2 <dbl>,
+## #   scrn_nr_hair_remove <dbl>, ...
+\end{verbatim}
+
+\hypertarget{copypaste-able-code}{%
+\subsection{Copy/paste-able code}\label{copypaste-able-code}}
+
+Putting it all together, we can import an ABCD dataset like so.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{abcd\_df }\OtherTok{\textless{}{-}} \FunctionTok{read\_delim}\NormalTok{(}\StringTok{\textquotesingle{}data/abcd\_screen02.txt\textquotesingle{}}\NormalTok{, }\AttributeTok{delim =} \StringTok{\textquotesingle{}}\SpecialCharTok{\textbackslash{}t}\StringTok{\textquotesingle{}}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{filter}\NormalTok{(}\FunctionTok{row\_number}\NormalTok{() }\SpecialCharTok{!=} \DecValTok{1}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{type\_convert}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{a-general-purpose-abcd-dataset-import-function}{%
+\section{A general-purpose ABCD dataset import function}\label{a-general-purpose-abcd-dataset-import-function}}
+
+If that's easy for your to remember, then feel free to type those three lines every time. On the other hand, if you have \textbf{multiple datasets} you need to import, it is safer to make a \textbf{function} that can repeat the process for you several times in \textbf{exactly the same way each time}.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{read\_abcd }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(file\_path)\{}
+  \FunctionTok{read\_delim}\NormalTok{(file\_path, }\AttributeTok{delim =} \StringTok{\textquotesingle{}}\SpecialCharTok{\textbackslash{}t}\StringTok{\textquotesingle{}}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%} 
+    \FunctionTok{filter}\NormalTok{(}\FunctionTok{row\_number}\NormalTok{() }\SpecialCharTok{!=} \DecValTok{1}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%} 
+    \FunctionTok{type\_convert}\NormalTok{()}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+With this function, we can now load three different datasets according to exactly the same rules each time.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{df1 }\OtherTok{\textless{}{-}} \FunctionTok{read\_abcd}\NormalTok{(}\StringTok{\textquotesingle{}data/abcd\_lpds01.txt\textquotesingle{}}\NormalTok{)}
+\NormalTok{df2 }\OtherTok{\textless{}{-}} \FunctionTok{read\_abcd}\NormalTok{(}\StringTok{\textquotesingle{}data/abcd\_lpmh01.txt\textquotesingle{}}\NormalTok{)}
+\NormalTok{df3 }\OtherTok{\textless{}{-}} \FunctionTok{read\_abcd}\NormalTok{(}\StringTok{\textquotesingle{}data/abcd\_lpsaiq01.txt\textquotesingle{}}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{getting-rid-of-import-messages}{%
+\subsection{Getting rid of import messages}\label{getting-rid-of-import-messages}}
+
+Although import messages are useful for understanding whether your data have made it into R, they are much less helpful (even overwhelming) when you are importing several datasets at once. To handle this, we can modify our \texttt{read\_abcd()} function to suppress import messages.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{read\_abcd\_quietly }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(file\_path)\{}
+  \FunctionTok{suppressMessages}\NormalTok{(}
+    \AttributeTok{expr =} \FunctionTok{read\_delim}\NormalTok{(file\_path, }\AttributeTok{delim =} \StringTok{\textquotesingle{}}\SpecialCharTok{\textbackslash{}t}\StringTok{\textquotesingle{}}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%} 
+      \FunctionTok{filter}\NormalTok{(}\FunctionTok{row\_number}\NormalTok{() }\SpecialCharTok{!=} \DecValTok{1}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%} 
+      \FunctionTok{type\_convert}\NormalTok{())}
+\NormalTok{\}}
+
+\NormalTok{abcd\_df }\OtherTok{\textless{}{-}} \FunctionTok{read\_abcd\_quietly}\NormalTok{(}\StringTok{\textquotesingle{}data/abcd\_lpds01.txt\textquotesingle{}}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{importing-a-whole-folder-of-abcd-datasets}{%
+\section{Importing a whole folder of ABCD datasets}\label{importing-a-whole-folder-of-abcd-datasets}}
+
+One of the great advantages of a large data repository is the ability to incorporate multiple datasets in a single analysis. But this introduces a new problem for how to get all of those datasets into R to perform such an analysis.
+
+\hypertarget{as-easy-strategy-that-unfortunately-wont-scale}{%
+\subsection{As easy strategy that unfortunately won't scale}\label{as-easy-strategy-that-unfortunately-wont-scale}}
+
+A first guess that most people use is simply to import them all explicitly, like we did above. This is a great approach for a small number of files, but would not work for importing more than that (e.g., for ``high-dimensional'' analyses, like machine learning).
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# This is the same example as above}
+
+\NormalTok{df1 }\OtherTok{\textless{}{-}} \FunctionTok{read\_abcd}\NormalTok{(}\StringTok{\textquotesingle{}data/abcd\_lpds01.txt\textquotesingle{}}\NormalTok{)}
+\NormalTok{df2 }\OtherTok{\textless{}{-}} \FunctionTok{read\_abcd}\NormalTok{(}\StringTok{\textquotesingle{}data/abcd\_lpmh01.txt\textquotesingle{}}\NormalTok{)}
+\NormalTok{df3 }\OtherTok{\textless{}{-}} \FunctionTok{read\_abcd}\NormalTok{(}\StringTok{\textquotesingle{}data/abcd\_lpsaiq01.txt\textquotesingle{}}\NormalTok{)}
+
+\CommentTok{\# ... }
+
+\NormalTok{df100 }\OtherTok{\textless{}{-}} \FunctionTok{read\_abcd}\NormalTok{(}\StringTok{\textquotesingle{}data/abcd\_lpksad01.txt\textquotesingle{}}\NormalTok{)}
+
+\CommentTok{\# Imagine how hard it would be to type out }
+\CommentTok{\# 100 dataset names (correctly)!}
+\end{Highlighting}
+\end{Shaded}
+
+Instead, we can simply tell R that we want to import an entire folder of datasets, which in this case we named the \texttt{many\_datasets} folder. Note, this trick uses functions from the \texttt{purrr} package of the \texttt{tidyverse}. These functions are a little trick and we cover them at various points later in this textbook. For now, all you need to know is that they take a list of objects (in this case, filenames) and perform the same process for each one.
+
+The first step is to get a list of files inside your folder of interest. Also, make sure to use \texttt{full.names\ =\ T} to get the file \textbf{path} in addition to each file's name.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{files\_to\_import }\OtherTok{\textless{}{-}} \FunctionTok{list.files}\NormalTok{(}
+  \AttributeTok{path =} \StringTok{\textquotesingle{}data/many\_datasets\textquotesingle{}}\NormalTok{, }
+  \AttributeTok{full.names =}\NormalTok{ T)}
+
+\NormalTok{files\_to\_import}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "data/many_datasets/abcd_lpds01.txt"            
+## [2] "data/many_datasets/abcd_lpksad01.txt"          
+## [3] "data/many_datasets/abcd_lpmh01.txt"            
+## [4] "data/many_datasets/abcd_lpohstbi01.txt"        
+## [5] "data/many_datasets/abcd_lpsaiq01.txt"          
+## [6] "data/many_datasets/abcd_medhxss01.txt"         
+## [7] "data/many_datasets/abcd_screen02.txt"          
+## [8] "data/many_datasets/abcd_socdev_child_emr01.txt"
+\end{verbatim}
+
+The second step is to get the names we want to assign to each dataset, once it is imported into R. We use a few tricks here, including the \texttt{map\_chr()} function from \texttt{purrr} and the \texttt{str\_extract()} function from the \texttt{stringr} package. Both of these functions are again covered later in the textbook, but are mentioned here in case you simply want to copy/paste code in a hurry and explore the details later.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{df\_names }\OtherTok{\textless{}{-}} \FunctionTok{map\_chr}\NormalTok{(}
+  \AttributeTok{.x =}\NormalTok{ files\_to\_import, }
+  \AttributeTok{.f =} \SpecialCharTok{\textasciitilde{}} \FunctionTok{str\_extract}\NormalTok{(.x, }\StringTok{\textquotesingle{}abcd\_[}\SpecialCharTok{\textbackslash{}\textbackslash{}}\StringTok{w|}\SpecialCharTok{\textbackslash{}\textbackslash{}}\StringTok{d]*\textquotesingle{}}\NormalTok{))}
+
+\NormalTok{df\_names}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "abcd_lpds01"             "abcd_lpksad01"          
+## [3] "abcd_lpmh01"             "abcd_lpohstbi01"        
+## [5] "abcd_lpsaiq01"           "abcd_medhxss01"         
+## [7] "abcd_screen02"           "abcd_socdev_child_emr01"
+\end{verbatim}
+
+The final step has two parts we execute simultaneously: importing each file on the list (the \texttt{files\_to\_import} list) and assigning the imported file to an R object (using the \texttt{df\_names} list we just made).
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{my\_datasets }\OtherTok{\textless{}{-}} \FunctionTok{map}\NormalTok{(files\_to\_import, read\_abcd\_quietly) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{set\_names}\NormalTok{(df\_names)}
+\end{Highlighting}
+\end{Shaded}
+
+With this process completed, we can now import an entire folder of datasets and store them in a single object (\texttt{my\_datasets}). Whenever we want to reference a specific one, we can just use the \texttt{\$} operator to access it.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{head}\NormalTok{(my\_datasets}\SpecialCharTok{$}\NormalTok{abcd\_lpds01)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 6 x 160
+##   collection_id abcd_lpds01_id dataset_id subjectkey      
+##           <dbl>          <dbl>      <dbl> <chr>           
+## 1          2573          61501      47217 NDAR_INV1FW43D9V
+## 2          2573          61535      47217 NDAR_INV1KZTEZF5
+## 3          2573          61646      47217 NDAR_INV1LC5DBRK
+## 4          2573          64616      47217 NDAR_INV4AYYAKWZ
+## 5          2573          64701      47217 NDAR_INV4JZNJZVZ
+## 6          2573          64711      47217 NDAR_INV4KKHGHCL
+## # ... with 156 more variables: src_subject_id <chr>,
+## #   interview_age <dbl>, interview_date <chr>, sex <chr>,
+## #   eventname <chr>, demo_l_p_select_language___1 <dbl>,
+## #   demo_prim_l <dbl>, demo_brthdat_v2_l <dbl>,
+## #   demo_ed_v2_l <dbl>, demo_gender_id_v2_l <dbl>,
+## #   demo_nat_lang_l <dbl>, demo_nat_lang_2_l <dbl>,
+## #   demo_dual_lang_v2_l <dbl>, ...
+\end{verbatim}
+
+Or
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{head}\NormalTok{(my\_datasets}\SpecialCharTok{$}\NormalTok{abcd\_medhxss01)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 6 x 34
+##   collection_id abcd_medhxss01_id dataset_id subjectkey     
+##           <dbl>             <dbl>      <dbl> <chr>          
+## 1          2573             32816      47391 NDAR_INV0EWGP0~
+## 2          2573             32821      47391 NDAR_INV0F82C6~
+## 3          2573             32831      47391 NDAR_INV0G2N59~
+## 4          2573             32837      47391 NDAR_INV0GPKYM~
+## 5          2573             32839      47391 NDAR_INV0GVW93~
+## 6          2573             32843      47391 NDAR_INV0GZM9U~
+## # ... with 30 more variables: src_subject_id <chr>,
+## #   interview_date <chr>, interview_age <dbl>, sex <chr>,
+## #   eventname <chr>, medhx_ss_4b_p <dbl>,
+## #   medhx_ss_5b_p <dbl>, medhx_ss_6a_times_p <dbl>,
+## #   medhx_ss_6b_times_p <dbl>, medhx_ss_6c_times_p <dbl>,
+## #   medhx_ss_6d_times_p <dbl>, medhx_ss_6e_times_p <dbl>,
+## #   medhx_ss_6f_times_p <dbl>, ...
+\end{verbatim}
+
+\hypertarget{visualization}{%
+\chapter{Visualization}\label{visualization}}
+
+Perhaps R's single greatest advantage over other software packages is its ability to produce publication-ready figures quickly. Although there are multiple approaches to doing so, by far the most popular is to use \texttt{ggplot2}, which is a sub-package of the \texttt{tidyverse}.
+
+\hypertarget{overview}{%
+\section{Overview}\label{overview}}
+
+The ``gg'' in \texttt{ggplot} stands for ``Grammar of Graphics'' and is a key concept for understanding how \texttt{ggplot} works. In short, the designers of this package argue that making any 2D figure (and maybe 3D ones too!) involves a set of rules - a ``grammar'' - that describes how to go from the data to the picture. In what follows, we'll build up that grammmar and see how we can add ``words'' (figure elements, like points and color) to a basic plot to make it more complex.
+
+We start by importing a basic cancer dataset. Note that in this case, we are importing a \texttt{.sav} file from SPSS, so we need to use the \texttt{haven::read\_spss()} function, instead of \texttt{read\_abcd()} or \texttt{read\_csv()}.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(tidyverse)}
+
+\NormalTok{my\_data }\OtherTok{\textless{}{-}}\NormalTok{ haven}\SpecialCharTok{::}\FunctionTok{read\_spss}\NormalTok{(}\StringTok{\textquotesingle{}data/cancer.sav\textquotesingle{}}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{ggplot-mappings}{%
+\section{\texorpdfstring{\texttt{ggplot} Mappings}{ggplot Mappings}}\label{ggplot-mappings}}
+
+The first step to producing a plot is to call the \texttt{ggplot()} function, which takes two arguments: the dataset that you want to plot from and a \texttt{mapping}. The first argument is obvious, but what is a mapping? In short, it is a set of instructions for how \texttt{ggplot} should turn columns of your dataset into features of your plot. In our case, we just tell it that we want the \texttt{AGE} variable to represent our x-axis and \texttt{WEIGHIN} to represent our y-axis.
+
+We save the result to an object \texttt{p} (for ``plot''), which we will add pieces to as we go. To see how our plot looks for far, we just call it on a line all by itself.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{p }\OtherTok{\textless{}{-}} \FunctionTok{ggplot}\NormalTok{(}\AttributeTok{data =}\NormalTok{ my\_data, }\AttributeTok{mapping =} \FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ AGE, }\AttributeTok{y =}\NormalTok{ WEIGHIN))}
+
+\NormalTok{p}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{_main_files/figure-latex/unnamed-chunk-88-1.pdf}
+
+So far, it doesn't look like much, but that's because all we've done is specify our data an our axes. Still, we can see that we've made some progress. The x-axes looks to include some age-like numbers from 20 - 80. Likewise, the y-axis looks like it includes some weight-like numbers, from 120 - 250. We got at least that right.
+
+\hypertarget{adding-geoms-to-the-plot}{%
+\section{Adding geoms to the plot}\label{adding-geoms-to-the-plot}}
+
+Now we need to add some \texttt{geoms} (``geometric objects'', like points) to our plot.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{p }\SpecialCharTok{+} \FunctionTok{geom\_point}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{_main_files/figure-latex/unnamed-chunk-89-1.pdf}
+
+Our plot now has some real content to it. We can easily see the (weakly positive) relationship between age and weight, represented by these points. There are many other geoms you can add, some of which will make more and less sense.
+
+For example, we can connect adjacent points in the dataset with \texttt{geom\_line()}. This would make a lot of sense for longitudinal data, but makes less sense here.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{p }\SpecialCharTok{+} 
+  \FunctionTok{geom\_point}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{geom\_line}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{_main_files/figure-latex/unnamed-chunk-90-1.pdf}
+
+A more appropriate geom to add might be \texttt{geom\_smooth()}, which will give us a smoothed line intended to summarize the relationship between our X and Y axes.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{p }\SpecialCharTok{+}
+  \FunctionTok{geom\_point}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{geom\_smooth}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## `geom_smooth()` using method = 'loess' and formula 'y ~ x'
+\end{verbatim}
+
+\includegraphics{_main_files/figure-latex/unnamed-chunk-91-1.pdf}
+
+To give some quick examples, here are some other geoms that could be applied even to this relatively small dataset. Note that depending on the geom, which might need to specify our aesthetic mappings differently.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{ggplot}\NormalTok{(my\_data, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ STAGE)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_bar}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{_main_files/figure-latex/unnamed-chunk-92-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{ggplot}\NormalTok{(my\_data, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ STAGE, }\AttributeTok{y =}\NormalTok{ AGE, }\AttributeTok{group =}\NormalTok{ STAGE)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_boxplot}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{_main_files/figure-latex/unnamed-chunk-92-2.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{ggplot}\NormalTok{(my\_data, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ WEIGHIN)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_density}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{_main_files/figure-latex/unnamed-chunk-92-3.pdf}
+
+\hypertarget{geom-options-and-mappings}{%
+\section{Geom Options and Mappings}\label{geom-options-and-mappings}}
+
+At this point, it is important to mention that all geoms have a variety of options you can apply to them. For example, if I want to increase or decrease my points, I can change the size of them, like so. At the same time, I could also change their color.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{p }\SpecialCharTok{+} 
+  \FunctionTok{geom\_point}\NormalTok{(}\AttributeTok{size =} \DecValTok{5}\NormalTok{, }\AttributeTok{color =} \StringTok{\textquotesingle{}blue\textquotesingle{}}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{_main_files/figure-latex/unnamed-chunk-93-1.pdf}
+
+But the real power of \texttt{ggplot} comes from the fact that you can force your geoms to react to your data by feeding them their own \textbf{mapping} (see earlier section for description of what mapppings are). For example, I might want the size of all points to remain large, but have the color of the points change by the stage of cancer the patient is in. To achieve that, I feed the \texttt{STAGE} variable to the \texttt{mapping} argument of \texttt{geom\_point()}, like so.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{p }\SpecialCharTok{+}
+  \FunctionTok{geom\_point}\NormalTok{(}
+    \AttributeTok{mapping =} \FunctionTok{aes}\NormalTok{(}\AttributeTok{color =} \FunctionTok{factor}\NormalTok{(STAGE)),}
+    \AttributeTok{size =} \DecValTok{5}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{_main_files/figure-latex/unnamed-chunk-94-1.pdf}
+
+Conveniently, whenever you feed a mapping to a geom (i.e., tell \texttt{ggplot} to react to a feature of your dataset), it will automatically create a legend for you.
+
+\hypertarget{saving-plots}{%
+\section{Saving plots}\label{saving-plots}}
+
+Once you are satisfied with your plot, you can save it with the convenient \texttt{ggsave()} function. This function will guess which kind of image you want to save (e.g., \texttt{.png}, \texttt{.jpg}), based on the output file name you give it.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{ggsave}\NormalTok{(}\AttributeTok{filename =} \StringTok{\textquotesingle{}my\_plot.png\textquotesingle{}}\NormalTok{, }\AttributeTok{plot =}\NormalTok{ p)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Saving 6.5 x 4.5 in image
+\end{verbatim}
+
+\hypertarget{other-features-to-look-for}{%
+\section{Other features to look for}\label{other-features-to-look-for}}
+
+The \texttt{ggplot2} package is a large collection of functions, that is designed to be as flexible as possible. For this reason, there are too many of them to cover in just one introductory chapter. However, the documentation on ggplot - which you can again reach with the \texttt{?} operator - is rich and should help you continually expand you \texttt{ggplot} skills. To highlight the kind of options you might want to investigate for creating a publication-ready figure, we leave the example below. This example shows a few things (e.g., changing themes, adding a line of best fit, colored dots forced to grey scale), including how few lines of code can produce a high quality figure.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{ggplot}\NormalTok{(}\AttributeTok{data =}\NormalTok{ my\_data, }\AttributeTok{mapping =} \FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ AGE, }\AttributeTok{y =}\NormalTok{ WEIGHIN)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_point}\NormalTok{(}
+    \AttributeTok{mapping =} \FunctionTok{aes}\NormalTok{(}\AttributeTok{color =} \FunctionTok{factor}\NormalTok{(STAGE)), }
+    \AttributeTok{size =} \DecValTok{5}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{geom\_smooth}\NormalTok{(}
+    \AttributeTok{method =} \StringTok{\textquotesingle{}lm\textquotesingle{}}\NormalTok{, }
+    \AttributeTok{se =}\NormalTok{ F, }
+    \AttributeTok{color =} \StringTok{\textquotesingle{}black\textquotesingle{}}\NormalTok{, }
+    \AttributeTok{linetype =} \DecValTok{2}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{scale\_color\_grey}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{theme\_bw}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}
+    \AttributeTok{x =} \StringTok{\textquotesingle{}Age at baseline\textquotesingle{}}\NormalTok{,}
+    \AttributeTok{y =} \StringTok{\textquotesingle{}Weight at baseline\textquotesingle{}}\NormalTok{,}
+    \AttributeTok{color =} \StringTok{\textquotesingle{}Cancer stage\textquotesingle{}}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## `geom_smooth()` using formula 'y ~ x'
+\end{verbatim}
+
+\includegraphics{_main_files/figure-latex/unnamed-chunk-96-1.pdf}
+
+\hypertarget{data-wrangling}{%
+\chapter{Data Wrangling}\label{data-wrangling}}
+
+If rapid publication-ready figures is R's greatest advantage over other software packages, then rapid data manipulation is a close second.
+
+\hypertarget{base-r}{%
+\section{Base R}\label{base-r}}
+
+As we already covered in an earlier chapter, R's base packages make quick work of performing the same operation for every item in a list of numbers.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{my\_vec }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\DecValTok{5}\NormalTok{, }\DecValTok{4}\NormalTok{, }\DecValTok{3}\NormalTok{, }\DecValTok{7}\NormalTok{)}
+\NormalTok{my\_roots }\OtherTok{\textless{}{-}} \FunctionTok{sqrt}\NormalTok{(my\_vec)}
+\end{Highlighting}
+\end{Shaded}
+
+To achieve the same thing in Python, you would need a much wordier list comprehension.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{my\_vec }\OperatorTok{=}\NormalTok{ [}\DecValTok{5}\NormalTok{, }\DecValTok{4}\NormalTok{, }\DecValTok{3}\NormalTok{, }\DecValTok{7}\NormalTok{]}
+\NormalTok{my\_roots }\OperatorTok{=}\NormalTok{ [sqrt(num) }\ControlFlowTok{for}\NormalTok{ num }\KeywordTok{in}\NormalTok{ my\_vec]}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{the-new-way-dplyr}{%
+\section{\texorpdfstring{The new way: \texttt{dplyr}}{The new way: dplyr}}\label{the-new-way-dplyr}}
+
+Although the base R packages are effective on their own, they suffer from a few drawbacks. For one, they are not always consistent with one another. Moreover, data manipulation almost always involves several steps and the base R approach is not especially useful for making data manipulation pipelines.
+
+To solve these and many other problems, the \texttt{dplyr} (pronounced ``DEE-ply-er'') packages was developed with a consistent set of human-readable functions that always (a) take a dataframe as their first argument and (b) return a dataframe as their output. Together, this allows you to string them together in a convenient human-readable pipeline.
+
+Like \texttt{ggplot}, the \texttt{dplyr} package is ``opinionated.'' It thinks that data manipulation should almost always be done a certain way. Specifically, if you are working with ``rectangular'' data - that is, data that can be cleanly expressed in the form of a spreadsheet - then you'll be able to accomplish almost all of your data manipulation with the following ``verbs'' (functions).
+
+\hypertarget{the-only-data-verbs-youll-ever-need}{%
+\section{The only data verbs you'll ever need}\label{the-only-data-verbs-youll-ever-need}}
+
+For simplicity, we'll again use the cancer dataset from the visualization chapter. We do this because, although an ABCD dataset would be more topical, they are often very large, which would make it hard to eye-ball whether our data manipulation went according to plan.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(tidyverse)}
+
+\NormalTok{my\_data }\OtherTok{\textless{}{-}}\NormalTok{ haven}\SpecialCharTok{::}\FunctionTok{read\_spss}\NormalTok{(}\StringTok{\textquotesingle{}data/cancer.sav\textquotesingle{}}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{rename}{%
+\subsection{\texorpdfstring{\texttt{rename()}}{rename()}}\label{rename}}
+
+The cancer dataset is great the way it is, simple and organized. But it has one feature we might want to change right away, which is its naming conventions.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{names}\NormalTok{(my\_data)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "ID"       "TRT"      "AGE"      "WEIGHIN"  "STAGE"   
+## [6] "TOTALCIN" "TOTALCW2" "TOTALCW4" "TOTALCW6"
+\end{verbatim}
+
+To rename any one of these variables, simply call the \texttt{rename()} function, and tell it which old variable you want to give which new name. Don't forget to save your result into an object too, so that your changes don't disappear into nowhere.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{my\_data }\OtherTok{\textless{}{-}}\NormalTok{ my\_data }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{rename}\NormalTok{(}\AttributeTok{subject\_id =}\NormalTok{ ID, }\AttributeTok{condition =}\NormalTok{ TRT)}
+
+\FunctionTok{names}\NormalTok{(my\_data)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "subject_id" "condition"  "AGE"        "WEIGHIN"   
+## [5] "STAGE"      "TOTALCIN"   "TOTALCW2"   "TOTALCW4"  
+## [9] "TOTALCW6"
+\end{verbatim}
+
+This is great if we just want to change a few variable names, but sometimes we want to change all of them in a particular way. For that, we can use \texttt{rename\_with()}, which will apply a function to every variable name. For example, we might want to turn all of the variable names to lowercase. To achieve that, we just feed the \texttt{tolower()} function, which turns anything it comes across into lowercase, to the \texttt{rename\_with()} function. Now all of our variable names are in the same case and we are less likely to make a mistake later.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{my\_data }\OtherTok{\textless{}{-}}\NormalTok{ my\_data }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{rename\_with}\NormalTok{(tolower)}
+
+\FunctionTok{names}\NormalTok{(my\_data)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "subject_id" "condition"  "age"        "weighin"   
+## [5] "stage"      "totalcin"   "totalcw2"   "totalcw4"  
+## [9] "totalcw6"
+\end{verbatim}
+
+\hypertarget{select}{%
+\subsection{\texorpdfstring{\texttt{select()}}{select()}}\label{select}}
+
+This verb allows you to retain only a subset of variables. You can do this by naming them explicitly\ldots{}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{my\_data }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{select}\NormalTok{(subject\_id, condition, age)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 25 x 3
+##    subject_id condition   age
+##         <dbl>     <dbl> <dbl>
+##  1          1         0    52
+##  2          5         0    77
+##  3          6         0    60
+##  4          9         0    61
+##  5         11         0    59
+##  6         15         0    69
+##  7         21         0    67
+##  8         26         0    56
+##  9         31         0    61
+## 10         35         0    51
+## # ... with 15 more rows
+\end{verbatim}
+
+\ldots{} or by using one of \texttt{dplyr}'s ``select helper'' functions, like \texttt{starts\_with()} and \texttt{ends\_with()}.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{my\_data }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{select}\NormalTok{(}\FunctionTok{starts\_with}\NormalTok{(}\StringTok{\textquotesingle{}total\textquotesingle{}}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 25 x 4
+##    totalcin totalcw2 totalcw4 totalcw6
+##       <dbl>    <dbl>    <dbl>    <dbl>
+##  1        6        6        6        7
+##  2        9        6       10        9
+##  3        7        9       17       19
+##  4        6        7        9        3
+##  5        6        7       16       13
+##  6        6        6        6       11
+##  7        6       11       11       10
+##  8        6       11       15       15
+##  9        6        9        6        8
+## 10        6        4        8        7
+## # ... with 15 more rows
+\end{verbatim}
+
+\hypertarget{mutate}{%
+\subsection{\texorpdfstring{\texttt{mutate()}}{mutate()}}\label{mutate}}
+
+Assuming we have selected our major variables of interest, we can now use \texttt{mutate()} to change existing columns or make new ones. For example, if we wanted to compute the average of \texttt{totalcw2}, \texttt{totalcw4}, and \texttt{totalcw6}, we could do it like this.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{my\_data }\OtherTok{\textless{}{-}}\NormalTok{ my\_data }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{meanc =}\NormalTok{ (totalcw2 }\SpecialCharTok{+}\NormalTok{ totalcw4 }\SpecialCharTok{+}\NormalTok{ totalcw6)}\SpecialCharTok{/}\DecValTok{3}\NormalTok{)}
+
+\NormalTok{my\_data }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{select}\NormalTok{(subject\_id, meanc) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{head}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 6 x 2
+##   subject_id meanc
+##        <dbl> <dbl>
+## 1          1  6.33
+## 2          5  8.33
+## 3          6 15   
+## 4          9  6.33
+## 5         11 12   
+## 6         15  7.67
+\end{verbatim}
+
+\hypertarget{group_by-and-summarize}{%
+\subsection{\texorpdfstring{\texttt{group\_by()} and \texttt{summarize()}}{group\_by() and summarize()}}\label{group_by-and-summarize}}
+
+These two verbs are technically distinct, but are almost always used in combination. To explain, \texttt{group\_by()} tells R to do whatever comes NEXT separately for each group. In turn, \texttt{summarize()} is like \texttt{mutate()} in that it makes new columns; however, it makes new columns by \textbf{aggregating} information across rows in a given group. Thus, when using \texttt{summarize()} to make a new column, you will also end up with just one row per group, like so.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{my\_data }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{group\_by}\NormalTok{(condition, stage) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{summarise}\NormalTok{(}\AttributeTok{ave\_weight =} \FunctionTok{mean}\NormalTok{(weighin))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## `summarise()` has grouped output by 'condition'. You can
+## override using the `.groups` argument.
+\end{verbatim}
+
+\begin{verbatim}
+## # A tibble: 8 x 3
+## # Groups:   condition [2]
+##   condition stage ave_weight
+##       <dbl> <dbl>      <dbl>
+## 1         0     1       180.
+## 2         0     2       155.
+## 3         0     3       158 
+## 4         0     4       143.
+## 5         1     0       182.
+## 6         1     1       179.
+## 7         1     2       196.
+## 8         1     4       209.
+\end{verbatim}
+
+As you can see, we can group by multiple variables at the same time and quickly get the kind of information we would need for a demographics table - in this case, the average weight of subjects by both condition and cancer stage.
+
+\hypertarget{basic-hypthothesis-tests}{%
+\chapter{Basic hypthothesis tests}\label{basic-hypthothesis-tests}}
+
+So far, we have used R to manipulate our data and to provide some summary statistics, including visualizations of those statistics. In this section, we'll start conducting our first statistical inference tests.
+
+\hypertarget{not-your-grandfathers-statistical-tests}{%
+\section{Not your grandfather's statistical tests}\label{not-your-grandfathers-statistical-tests}}
+
+Experience has shown that it is worthwhile to take a moment to describe the R statistical inference process to users who come from other platforms (e.g., SPSS, SAS). In those other platforms, the statistical inference process is all about getting test results printed to the screen. In practice, that process looks like (a) importing some data, (b) cleaning it, then (c) applying some test and receiving output on the screen. If your only goal is to produce statistical output, this is a totally natural workflow and it makes sense those platforms use it.
+
+In contrast, R has broader goals. It is a full-service programming language capable of interacting with your operating system, scraping web data from servers across the world, and even developing web apps. Because of this, the data analysis process is focused on producing a \textbf{named object} that represents the results of an analysis, which can then be incorporated into a broader coding pipeline.
+
+If that sounds complicated, don't worry, it just involves one more step than what you are used to. In R, you analysis workflow looks like this:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Import data
+\item
+  Clean data
+\item
+  Use a pre-existing function to produce an analysis object for your (e.g., run a statistical test and save everything about the results)
+\item
+  Extract a summary of the results of the analysis (the one new step).
+\end{enumerate}
+
+\hypertarget{steps-1-2---load-and-clean-data}{%
+\section{Steps 1 \& 2 - Load and clean data}\label{steps-1-2---load-and-clean-data}}
+
+In this case, we'll use an ABCD dataset containing KSADS diagnostic information for a large number of patients. This dataset includes a number of interesting variables, including whether the child has been bullied, what their average grades are in school, and how many times they've been hospitalized. We start by copy/pasting our custom \texttt{read\_abcd\_quietly()} function from the \textbf{Working with ABCD} section of this textbook, then use it to load the dataset.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(tidyverse)}
+
+\NormalTok{read\_abcd\_quietly }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(file\_path)\{}
+  \FunctionTok{suppressMessages}\NormalTok{(}
+    \AttributeTok{expr =} \FunctionTok{read\_delim}\NormalTok{(file\_path, }\AttributeTok{delim =} \StringTok{\textquotesingle{}}\SpecialCharTok{\textbackslash{}t}\StringTok{\textquotesingle{}}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%} 
+      \FunctionTok{filter}\NormalTok{(}\FunctionTok{row\_number}\NormalTok{() }\SpecialCharTok{!=} \DecValTok{1}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%} 
+      \FunctionTok{type\_convert}\NormalTok{())}
+\NormalTok{\}}
+
+\NormalTok{df }\OtherTok{\textless{}{-}} \FunctionTok{read\_abcd\_quietly}\NormalTok{(}\StringTok{\textquotesingle{}data/abcd\_lpksad01.txt\textquotesingle{}}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+During the cleaning process, we'll rename our key variables to make things a little easier to follow. Additionally, this is a longitudinal dataset, so each patient appears in it multiple times. We'll code which timepoint a patient belongs to, based on the dates of their visits. In this case though, all of our analyses will be cross-sectional. So once we have computed our \texttt{time} variable, we'll simply filter the first one for each patient, resulting in a cross-sectional (baseline) version of the dataset for analysis.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{df }\OtherTok{\textless{}{-}}\NormalTok{ df }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{arrange}\NormalTok{(src\_subject\_id) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{select}\NormalTok{(}
+    \AttributeTok{id =}\NormalTok{ src\_subject\_id, }
+    \AttributeTok{age =}\NormalTok{ interview\_age, }
+    \AttributeTok{is\_bullied =}\NormalTok{ kbi\_p\_c\_bully\_l,}
+    \AttributeTok{num\_hospitalizations =}\NormalTok{ kbi\_ss\_c\_mental\_health\_p\_l,}
+    \AttributeTok{grades =}\NormalTok{ kbi\_p\_grades\_in\_school\_l) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{group\_by}\NormalTok{(id) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{n\_timepoints =} \FunctionTok{n}\NormalTok{()) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{ungroup}\NormalTok{() }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{filter}\NormalTok{(n\_timepoints }\SpecialCharTok{==} \DecValTok{3}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{mutate}\NormalTok{(}
+    \AttributeTok{grades =} \FunctionTok{ifelse}\NormalTok{(}
+      \AttributeTok{test =}\NormalTok{ grades }\SpecialCharTok{==} \DecValTok{6} \SpecialCharTok{|}\NormalTok{ grades }\SpecialCharTok{==} \SpecialCharTok{{-}}\DecValTok{1}\NormalTok{,}
+      \AttributeTok{yes =} \ConstantTok{NA}\NormalTok{,}
+      \AttributeTok{no =}\NormalTok{ grades),}
+    \AttributeTok{too\_kool\_4\_skool =} \FunctionTok{case\_when}\NormalTok{(}
+\NormalTok{      grades }\SpecialCharTok{==} \DecValTok{1} \SpecialCharTok{\textasciitilde{}} \StringTok{\textquotesingle{}nerds\textquotesingle{}}\NormalTok{,}
+\NormalTok{      grades }\SpecialCharTok{==} \DecValTok{2} \SpecialCharTok{|}\NormalTok{ grades }\SpecialCharTok{==} \DecValTok{3} \SpecialCharTok{\textasciitilde{}} \StringTok{\textquotesingle{}besties\textquotesingle{}}\NormalTok{,}
+\NormalTok{      grades }\SpecialCharTok{\textgreater{}} \DecValTok{3} \SpecialCharTok{\textasciitilde{}} \StringTok{\textquotesingle{}teen movie cool kids\textquotesingle{}}\NormalTok{)) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{group\_by}\NormalTok{(id) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{arrange}\NormalTok{(age) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{time =} \FunctionTok{row\_number}\NormalTok{()) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{filter}\NormalTok{(time }\SpecialCharTok{\textless{}=} \DecValTok{2}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{ungroup}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+As a bit of practice with factor variables, we'll also convert the \texttt{is\_bullied} variable to a factor. This will make it easier to use the upcoming tests.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{df }\OtherTok{\textless{}{-}}\NormalTok{ df }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{mutate}\NormalTok{(}
+    \AttributeTok{is\_bullied =} \FunctionTok{ifelse}\NormalTok{(}
+        \AttributeTok{test =}\NormalTok{ is\_bullied }\SpecialCharTok{\%in\%} \FunctionTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{, }\DecValTok{2}\NormalTok{),}
+        \AttributeTok{yes =}\NormalTok{ is\_bullied,}
+        \AttributeTok{no =} \ConstantTok{NA}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%} 
+      \FunctionTok{factor}\NormalTok{(}\AttributeTok{levels =} \FunctionTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{, }\DecValTok{2}\NormalTok{), }\AttributeTok{labels =} \FunctionTok{c}\NormalTok{(}\StringTok{\textquotesingle{}yes\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}no\textquotesingle{}}\NormalTok{)))}
+
+\NormalTok{df}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 12,070 x 8
+##    id                 age is_bullied num_hospitaliza~ grades
+##    <chr>            <dbl> <fct>                 <dbl>  <dbl>
+##  1 NDAR_INV06DE9Y0L   117 no                        0      1
+##  2 NDAR_INV13BCLD41   117 no                        0      2
+##  3 NDAR_INV88HZ7ZCH   117 no                        0      1
+##  4 NDAR_INVA0NWYU17   117 no                        0      1
+##  5 NDAR_INVBZZ8KWTC   117 no                        0      2
+##  6 NDAR_INVCYVYJKMV   117 no                        0      2
+##  7 NDAR_INVFBEG8E1Z   117 no                        0     NA
+##  8 NDAR_INVH2NBUFF1   117 no                        0      2
+##  9 NDAR_INVH8J67ZNJ   117 yes                       0      2
+## 10 NDAR_INVHD5LEW4G   117 no                        0      1
+## # ... with 12,060 more rows, and 3 more variables:
+## #   n_timepoints <int>, too_kool_4_skool <chr>, time <int>
+\end{verbatim}
+
+\hypertarget{steps-3-4---create-and-unpack-analysis-objects}{%
+\section{Steps 3 \& 4 - Create and unpack analysis objects}\label{steps-3-4---create-and-unpack-analysis-objects}}
+
+\hypertarget{independant-samples-t-test}{%
+\subsection{Independant samples t-test}\label{independant-samples-t-test}}
+
+To see how the analysis process works in R, we'll start with the familiar independent samples t-test. Like all future analyses we'll conduct, we'll use a pre-existing function to do the work for us. These functions (generally!) take two arguments:
+
+\begin{itemize}
+\tightlist
+\item
+  the dataset you want to analyze
+\item
+  a formula describing the variables we want to use in our analysis. This is almost always the first argument the function takes and almost always follows the form \texttt{DEPENDANT\ VARIABLE\ \textasciitilde{}\ INDEPENDANT\_VARIABLES}.
+\end{itemize}
+
+In this case, let's ask whether a patient's average grades differ by whether they were bullied. To do that, we call the \texttt{t.test} function on our data and we save the results to an object called \texttt{fit}. You can name the object anything you want, but it is customary to name it \texttt{fit}, after ``fitted model.''
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{fit }\OtherTok{\textless{}{-}} \FunctionTok{t.test}\NormalTok{(grades }\SpecialCharTok{\textasciitilde{}}\NormalTok{ is\_bullied, }\AttributeTok{data =}\NormalTok{ df)}
+\end{Highlighting}
+\end{Shaded}
+
+If you're like most new R users, this is where you might get confused. Where are the results?
+
+Don't worry, nothing has gone wrong. The results are saved in the \texttt{fit} object now. All we need to do is get them out.
+
+For simple tests that don't involve a lot of complex mathematical tricks (e.g., SEM), you can often just call the fitted object by itself, like so.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{fit}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+##  Welch Two Sample t-test
+## 
+## data:  grades by is_bullied
+## t = 13.131, df = 2243.2, p-value < 2.2e-16
+## alternative hypothesis: true difference in means between group yes and group no is not equal to 0
+## 95 percent confidence interval:
+##  0.2487967 0.3361517
+## sample estimates:
+## mean in group yes  mean in group no 
+##          1.872532          1.580058
+\end{verbatim}
+
+This is fine for a t-test because there is not much to them. Here, we have all the information we need, including a p-value.
+
+For more complex analyses though (e.g., even regression), you'll want to use a helper function to summarize your results. R has the built in \texttt{summary()} function, which will work for almost all analyses, but unfortunately not t-tests.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{summary}\NormalTok{(fit)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##             Length Class  Mode     
+## statistic   1      -none- numeric  
+## parameter   1      -none- numeric  
+## p.value     1      -none- numeric  
+## conf.int    2      -none- numeric  
+## estimate    2      -none- numeric  
+## null.value  1      -none- numeric  
+## stderr      1      -none- numeric  
+## alternative 1      -none- character
+## method      1      -none- character
+## data.name   1      -none- character
+\end{verbatim}
+
+Instead, we'll use the \texttt{tidy()} function from the \texttt{broom} package. This gives us a one-line dataframe with the results of the t-test.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{broom}\SpecialCharTok{::}\FunctionTok{tidy}\NormalTok{(fit)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 1 x 10
+##   estimate estimate1 estimate2 statistic  p.value parameter
+##      <dbl>     <dbl>     <dbl>     <dbl>    <dbl>     <dbl>
+## 1    0.292      1.87      1.58      13.1 5.28e-38     2243.
+## # ... with 4 more variables: conf.low <dbl>,
+## #   conf.high <dbl>, method <chr>, alternative <chr>
+\end{verbatim}
+
+This is great for generating tables and modifying the output for publication.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{fit }\SpecialCharTok{\%\textgreater{}\%} 
+\NormalTok{  broom}\SpecialCharTok{::}\FunctionTok{tidy}\NormalTok{() }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{select}\NormalTok{(}\AttributeTok{t =}\NormalTok{ statistic, }\AttributeTok{p =}\NormalTok{ p.value) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{round}\NormalTok{(}\DecValTok{3}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 1 x 2
+##       t     p
+##   <dbl> <dbl>
+## 1  13.1     0
+\end{verbatim}
+
+\hypertarget{paired-t-tests}{%
+\subsection{Paired t-tests}\label{paired-t-tests}}
+
+Paired t-tests can be conducted using a similar process. To demonstrate a longitudinal result though, we'll first filter (retain) only patients who had non-missing grades for at least two timepoints.
+
+Once that's done, all we need to do to make the test a paired one is to set the \texttt{paired} argument to true.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{complete\_data\_df }\OtherTok{\textless{}{-}}\NormalTok{ df }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{group\_by}\NormalTok{(id) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{filter}\NormalTok{(}\FunctionTok{all}\NormalTok{(}\SpecialCharTok{!}\FunctionTok{is.na}\NormalTok{(grades)) }\SpecialCharTok{\&} \FunctionTok{n}\NormalTok{() }\SpecialCharTok{==} \DecValTok{2}\NormalTok{)}
+
+\NormalTok{fit }\OtherTok{\textless{}{-}} \FunctionTok{t.test}\NormalTok{(grades }\SpecialCharTok{\textasciitilde{}}\NormalTok{ time, }\AttributeTok{data =}\NormalTok{ complete\_data\_df, }\AttributeTok{paired =}\NormalTok{ T)}
+
+\NormalTok{fit}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+##  Paired t-test
+## 
+## data:  grades by time
+## t = 1.0065, df = 5459, p-value = 0.3142
+## alternative hypothesis: true difference in means is not equal to 0
+## 95 percent confidence interval:
+##  -0.01406087  0.04373120
+## sample estimates:
+## mean of the differences 
+##              0.01483516
+\end{verbatim}
+
+Again, we can also call \texttt{broom::tidy()} to get the results as a dataframe.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{broom}\SpecialCharTok{::}\FunctionTok{tidy}\NormalTok{(fit)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 1 x 8
+##   estimate statistic p.value parameter conf.low conf.high
+##      <dbl>     <dbl>   <dbl>     <dbl>    <dbl>     <dbl>
+## 1   0.0148      1.01   0.314      5459  -0.0141    0.0437
+## # ... with 2 more variables: method <chr>,
+## #   alternative <chr>
+\end{verbatim}
+
+\hypertarget{correlation}{%
+\subsection{Correlation}\label{correlation}}
+
+Correlation is computed using the \texttt{cor()} function. It is similar to t-tests in R, but asks that you explicitly tell it which columns you want. It also requires that all of its variables are numeric, so we'll coerce our \texttt{is\_bullied} variable to a numeric one to make sure \texttt{cor()} plays nice.
+
+Note that with \texttt{cor()}, we can easily specify how we want to handle missing data and which kind of correlation we want. Remember, to see all of the special tricks you can do with a function, place a \texttt{?} in front of it and then run that line.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{fit }\OtherTok{\textless{}{-}} \FunctionTok{cor}\NormalTok{(}
+  \AttributeTok{x =} \FunctionTok{as.numeric}\NormalTok{(df}\SpecialCharTok{$}\NormalTok{is\_bullied),}
+  \AttributeTok{y =}\NormalTok{ df}\SpecialCharTok{$}\NormalTok{grades,}
+  \AttributeTok{use =} \StringTok{\textquotesingle{}complete.obs\textquotesingle{}}\NormalTok{,}
+  \AttributeTok{method =} \StringTok{\textquotesingle{}spearman\textquotesingle{}}\NormalTok{)}
+
+\NormalTok{fit}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] -0.1271988
+\end{verbatim}
+
+At this point, you've probably noticed you're missing the p-value you probably wanted. For a variety of unimportant (but admittedly irritating) historical reasons, we use a different function for that: \texttt{cor.test()}. Luckily though, it works the same way as all of the others.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{fit }\OtherTok{\textless{}{-}} \FunctionTok{cor.test}\NormalTok{(}
+  \AttributeTok{x =} \FunctionTok{as.numeric}\NormalTok{(df}\SpecialCharTok{$}\NormalTok{is\_bullied),}
+  \AttributeTok{y =}\NormalTok{ df}\SpecialCharTok{$}\NormalTok{grades,}
+  \AttributeTok{method =} \StringTok{\textquotesingle{}pearson\textquotesingle{}}\NormalTok{)}
+
+\NormalTok{fit}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+##  Pearson's product-moment correlation
+## 
+## data:  as.numeric(df$is_bullied) and df$grades
+## t = -14.926, df = 11389, p-value < 2.2e-16
+## alternative hypothesis: true correlation is not equal to 0
+## 95 percent confidence interval:
+##  -0.1564845 -0.1204603
+## sample estimates:
+##        cor 
+## -0.1385182
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{broom}\SpecialCharTok{::}\FunctionTok{tidy}\NormalTok{(fit)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 1 x 8
+##   estimate statistic  p.value parameter conf.low conf.high
+##      <dbl>     <dbl>    <dbl>     <int>    <dbl>     <dbl>
+## 1   -0.139     -14.9 6.56e-50     11389   -0.156    -0.120
+## # ... with 2 more variables: method <chr>,
+## #   alternative <chr>
+\end{verbatim}
+
+\hypertarget{linear-regression}{%
+\chapter{Linear Regression}\label{linear-regression}}
+
+Linear regression is the bread and butter of statistical analysis. Unsurprisingly then, it is also the bread and butter of R's statistical analysis framework. That is, most of the R ecosystem uses linear regression as a kind of template. So, even things that are not regressions are specified like them (see the last section, where we use a regression-like formula to specify the variable in our t-tests).
+
+For that reason, getting comfortable with linear regression will tend to automatically make you comfortable with a lot of other tasks in R too! To see this, try to compare this section to the next one on logistic regression. Even though those models are fit with totally different distributions and assumptions, to you the user, they will look and feel basically the same.
+
+Note, the steps to conducting a linear regression are the same as for the basic hypothesis tests in the last chapter.
+
+\hypertarget{steps-1-2---load-and-clean-the-data}{%
+\section{Steps 1 \& 2 - Load and clean the data}\label{steps-1-2---load-and-clean-the-data}}
+
+To maximize comparability with the last chapter, we'll stick to the same dataset and cleaning procedure. To make it so you don't have to flip back and forth between those chapters, though, we'll re-describe the process here\ldots{}
+
+In this case, we'll use an ABCD dataset containing KSADS diagnostic information for a large number of patients. This dataset includes a number of interesting variables, including whether the child has been bullied, what their average grades are in school, and how many times they've been hospitalized. We start by copy/pasting our custom \texttt{read\_abcd\_quietly()} function from the \textbf{Working with ABCD} section of this textbook, then use it to load the dataset.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(tidyverse)}
+
+\NormalTok{read\_abcd\_quietly }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(file\_path)\{}
+  \FunctionTok{suppressMessages}\NormalTok{(}
+    \AttributeTok{expr =} \FunctionTok{read\_delim}\NormalTok{(file\_path, }\AttributeTok{delim =} \StringTok{\textquotesingle{}}\SpecialCharTok{\textbackslash{}t}\StringTok{\textquotesingle{}}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%} 
+      \FunctionTok{filter}\NormalTok{(}\FunctionTok{row\_number}\NormalTok{() }\SpecialCharTok{!=} \DecValTok{1}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%} 
+      \FunctionTok{type\_convert}\NormalTok{())}
+\NormalTok{\}}
+
+\NormalTok{df }\OtherTok{\textless{}{-}} \FunctionTok{read\_abcd\_quietly}\NormalTok{(}\StringTok{\textquotesingle{}data/abcd\_lpksad01.txt\textquotesingle{}}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+During the cleaning process, we'll rename our key variables to make things a little easier to follow. Additionally, this is a longitudinal dataset, so each patient appears in it multiple times. We'll code which timepoint a patient belongs to, based on the dates of their visits. In this case though, all of our analyses will be cross-sectional. So once we have computed our \texttt{time} variable, we'll simply filter the first one for each patient, resulting in a cross-sectional (baseline) version of the dataset for analysis.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{df }\OtherTok{\textless{}{-}}\NormalTok{ df }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{arrange}\NormalTok{(src\_subject\_id) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{select}\NormalTok{(}
+    \AttributeTok{id =}\NormalTok{ src\_subject\_id, }
+\NormalTok{    sex,}
+    \AttributeTok{age =}\NormalTok{ interview\_age, }
+    \AttributeTok{is\_bullied =}\NormalTok{ kbi\_p\_c\_bully\_l,}
+    \AttributeTok{num\_hospitalizations =}\NormalTok{ kbi\_ss\_c\_mental\_health\_p\_l,}
+    \AttributeTok{grades =}\NormalTok{ kbi\_p\_grades\_in\_school\_l) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{group\_by}\NormalTok{(id) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{n\_timepoints =} \FunctionTok{n}\NormalTok{()) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{ungroup}\NormalTok{() }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{filter}\NormalTok{(n\_timepoints }\SpecialCharTok{==} \DecValTok{3}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{mutate}\NormalTok{(}
+    \AttributeTok{grades =} \FunctionTok{ifelse}\NormalTok{(}
+      \AttributeTok{test =}\NormalTok{ grades }\SpecialCharTok{==} \DecValTok{6} \SpecialCharTok{|}\NormalTok{ grades }\SpecialCharTok{==} \SpecialCharTok{{-}}\DecValTok{1}\NormalTok{,}
+      \AttributeTok{yes =} \ConstantTok{NA}\NormalTok{,}
+      \AttributeTok{no =}\NormalTok{ grades),}
+    \AttributeTok{too\_kool\_4\_skool =} \FunctionTok{case\_when}\NormalTok{(}
+\NormalTok{      grades }\SpecialCharTok{==} \DecValTok{1} \SpecialCharTok{\textasciitilde{}} \StringTok{\textquotesingle{}nerds\textquotesingle{}}\NormalTok{,}
+\NormalTok{      grades }\SpecialCharTok{==} \DecValTok{2} \SpecialCharTok{|}\NormalTok{ grades }\SpecialCharTok{==} \DecValTok{3} \SpecialCharTok{\textasciitilde{}} \StringTok{\textquotesingle{}besties\textquotesingle{}}\NormalTok{,}
+\NormalTok{      grades }\SpecialCharTok{\textgreater{}} \DecValTok{3} \SpecialCharTok{\textasciitilde{}} \StringTok{\textquotesingle{}teen movie cool kids\textquotesingle{}}\NormalTok{)) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{group\_by}\NormalTok{(id) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{arrange}\NormalTok{(age) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{time =} \FunctionTok{row\_number}\NormalTok{()) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{filter}\NormalTok{(time }\SpecialCharTok{\textless{}=} \DecValTok{2}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{ungroup}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+Also, to simplify our upcoming analyses, we'll round all the ages to the nearest year (from below, with the \texttt{floor()} function) and convert the sex of the patient to a factor variable. This will make out output clearer.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{df }\OtherTok{\textless{}{-}}\NormalTok{ df }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{mutate}\NormalTok{(}
+    \AttributeTok{age =} \FunctionTok{floor}\NormalTok{(age}\SpecialCharTok{/}\DecValTok{12}\NormalTok{),}
+    \AttributeTok{sex =} \FunctionTok{factor}\NormalTok{(sex, }\AttributeTok{levels =} \FunctionTok{c}\NormalTok{(}\StringTok{\textquotesingle{}M\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}F\textquotesingle{}}\NormalTok{), }\AttributeTok{ordered =}\NormalTok{ F))}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{steps-3-4---fit-the-model-and-summarize-it}{%
+\section{Steps 3 \& 4 - Fit the model and summarize it}\label{steps-3-4---fit-the-model-and-summarize-it}}
+
+Like with basic hypothsis testing in the last section, we first fit a model and save its attributes (results) to an object, usually named \texttt{fit}. The linear regression function is \texttt{lm()} for ``linear model'' and it takes two main arguments:
+
+\begin{itemize}
+\tightlist
+\item
+  The formula for the regression, specified like this - \texttt{Outcome\ \textasciitilde{}\ Predictor1\ +\ Predictor2\ +\ ...}.
+\item
+  The data you want to analyze
+\end{itemize}
+
+Importantly, R makes it easy to specify interaction terms too. You just need to do the multiplication of your interaction variables in the formula argument. R will handle everything under the hood for you, including dummy coding and the inclusion of lower order terms (i.e., the formula \texttt{y\ \textasciitilde{}\ x*z} will produce \texttt{y\ \textasciitilde{}\ x\ +\ z\ +\ x*z} for you automatically).
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{fit }\OtherTok{\textless{}{-}} \FunctionTok{lm}\NormalTok{(}
+  \AttributeTok{formula =}\NormalTok{ grades }\SpecialCharTok{\textasciitilde{}}\NormalTok{ age}\SpecialCharTok{*}\NormalTok{is\_bullied }\SpecialCharTok{+}\NormalTok{ sex,}
+  \AttributeTok{data =}\NormalTok{ df)}
+
+\FunctionTok{summary}\NormalTok{(fit)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## lm(formula = grades ~ age * is_bullied + sex, data = df)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -0.7295 -0.5309 -0.5192  0.4691  3.4808 
+## 
+## Coefficients:
+##                  Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)     1.7744384  0.1011702  17.539   <2e-16 ***
+## age            -0.0050832  0.0090995  -0.559    0.576    
+## is_bullied      0.0039272  0.0135917   0.289    0.773    
+## sexF           -0.1928057  0.0142466 -13.533   <2e-16 ***
+## age:is_bullied -0.0003888  0.0011983  -0.324    0.746    
+## ---
+## Signif. codes:  
+## 0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 0.7594 on 11389 degrees of freedom
+##   (676 observations deleted due to missingness)
+## Multiple R-squared:  0.01596,    Adjusted R-squared:  0.01562 
+## F-statistic: 46.19 on 4 and 11389 DF,  p-value: < 2.2e-16
+\end{verbatim}
+
+Here we can see the results of our regression on full display, but perhaps with some labels that are new to you. That's okay, they correspond to all of the traditional regression table objects: estimate is the slope of each term on the left, the standard error comes next, then the test statistic (slope/standard error), and its associated p-value. Note, that when numbers get really small, R will return them in scientific notation. So, the number \texttt{\textless{}2e-16} means really, really, really small.
+
+Lastly, below the main table, you can see the R-sqauared value, the model F-statistic, its degrees of freedom, and their associated p-value.
+
+\hypertarget{broom-can-help-export-the-results}{%
+\subsection{Broom can help export the results}\label{broom-can-help-export-the-results}}
+
+If you're like many people, you're running a regression with the intention of publishing the results. This summary is nice, but it is hard to get into Excel or other spreadsheet programs to build a publication-ready table.
+
+To solve that, we can again use the \texttt{broom::tidy} method to get a dataframe-based depiction of our results. On it's own, that might not seem important, but it makes the results much easier to export to a csv.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{my\_results }\OtherTok{\textless{}{-}}\NormalTok{ broom}\SpecialCharTok{::}\FunctionTok{tidy}\NormalTok{(fit)}
+
+\FunctionTok{write\_csv}\NormalTok{(my\_results, }\StringTok{\textquotesingle{}my\_results.csv\textquotesingle{}}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{logistic-regression}{%
+\chapter{Logistic Regression}\label{logistic-regression}}
+
+In this chapter, we'll see the advantage of R's linear regression-centric statistical analysis style (i.e., in which basically everything works the same way as a linear regression). Specifically, we'll switch to a different form of statistical model, with different assumptions and observe that almost everything is the same.
+
+This has the advantage that we need to relearn very little from model to model, and that we can feel more confident that we got our new model (in this case a logistic one) right on the first try.
+
+\hypertarget{steps-1-2---import-and-clean-data}{%
+\section{Steps 1 \& 2 - Import and clean data}\label{steps-1-2---import-and-clean-data}}
+
+To maximize comparability with the regression and hypotehsis testing chapters, we'll again use the KSADS ABCD dataset. We can again import that dataset with our custom functions from earlier chapters.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(tidyverse)}
+
+\NormalTok{read\_abcd\_quietly }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(file\_path)\{}
+  \FunctionTok{suppressMessages}\NormalTok{(}
+    \AttributeTok{expr =} \FunctionTok{read\_delim}\NormalTok{(file\_path, }\AttributeTok{delim =} \StringTok{\textquotesingle{}}\SpecialCharTok{\textbackslash{}t}\StringTok{\textquotesingle{}}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%} 
+      \FunctionTok{filter}\NormalTok{(}\FunctionTok{row\_number}\NormalTok{() }\SpecialCharTok{!=} \DecValTok{1}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%} 
+      \FunctionTok{type\_convert}\NormalTok{())}
+\NormalTok{\}}
+
+\NormalTok{df }\OtherTok{\textless{}{-}} \FunctionTok{read\_abcd\_quietly}\NormalTok{(}\StringTok{\textquotesingle{}data/abcd\_lpksad01.txt\textquotesingle{}}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+With the dataset loaded, we can now engage in some basic cleanup - the same as in previous chapters.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{df }\OtherTok{\textless{}{-}}\NormalTok{ df }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{arrange}\NormalTok{(src\_subject\_id) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{select}\NormalTok{(}
+    \AttributeTok{id =}\NormalTok{ src\_subject\_id, }
+    \AttributeTok{age =}\NormalTok{ interview\_age,}
+\NormalTok{    sex, }
+    \AttributeTok{num\_hosp =}\NormalTok{ kbi\_ss\_c\_mental\_health\_p\_l,}
+    \AttributeTok{grades =}\NormalTok{ kbi\_p\_grades\_in\_school\_l) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{group\_by}\NormalTok{(id) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{arrange}\NormalTok{(age) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{mutate}\NormalTok{(}
+    \AttributeTok{age =} \FunctionTok{floor}\NormalTok{(age }\SpecialCharTok{/} \DecValTok{12}\NormalTok{),}
+    \AttributeTok{sex =} \FunctionTok{factor}\NormalTok{(sex, }\AttributeTok{levels =} \FunctionTok{c}\NormalTok{(}\StringTok{\textquotesingle{}M\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}F\textquotesingle{}}\NormalTok{)),}
+    \AttributeTok{time =} \FunctionTok{row\_number}\NormalTok{(),}
+    \AttributeTok{n\_timepoints =} \FunctionTok{max}\NormalTok{(time)) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{ungroup}\NormalTok{() }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{filter}\NormalTok{(time }\SpecialCharTok{==} \DecValTok{1}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{filter}\NormalTok{(grades }\SpecialCharTok{\%in\%} \DecValTok{1}\SpecialCharTok{:}\DecValTok{5}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{select}\NormalTok{(id, age, sex, grades, num\_hosp)}
+
+\NormalTok{df}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 9,727 x 5
+##    id                 age sex   grades num_hosp
+##    <chr>            <dbl> <fct>  <dbl>    <dbl>
+##  1 NDAR_INV9XU9GFCB     9 M          1        0
+##  2 NDAR_INV029PWCFY     9 M          1        0
+##  3 NDAR_INV06DE9Y0L     9 M          1        0
+##  4 NDAR_INV0BL9EL2Y     9 F          1        0
+##  5 NDAR_INV13BCLD41     9 M          2        0
+##  6 NDAR_INV1APPZYY8     9 F          1        0
+##  7 NDAR_INV2B9KMD5C     9 F          1        0
+##  8 NDAR_INV2RYEWWRN     9 M          1        0
+##  9 NDAR_INV3NT6ML17     9 F          1        0
+## 10 NDAR_INV5FKNM21M     9 F          1        0
+## # ... with 9,717 more rows
+\end{verbatim}
+
+One difference, though, is that we'll need a dichotomous variable to analyze in our logistic regression. Here, we turn our \texttt{num\_hosp} variable (i.e., the number of times a given patient has been hospitalized since last interview) into a dichotomous one, \texttt{ever\_hosp} (i.e., has the patient been hospitalized at all since the past interview?).
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{df }\OtherTok{\textless{}{-}}\NormalTok{ df }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{ever\_hosp =}\NormalTok{ num\_hosp }\SpecialCharTok{\textgreater{}} \DecValTok{0}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{steps-3-4---fit-the-model-and-summarize-it-1}{%
+\section{Steps 3 \& 4 - Fit the model and summarize it}\label{steps-3-4---fit-the-model-and-summarize-it-1}}
+
+To fit a logistic regression, we follow roughly the same steps as a linear one, with just a few changes.
+
+First, we need to use \texttt{glm()} instead of the regular \texttt{lm()}. This is because we are fitting a ``generalized linear model'' (the family logistic regression belong to) instead of a traditional ``general linear model.''
+
+The second change is that we need to tell R which kind of GLM we want to fit (there are many). We do this by telling it what we think the outcome distribution is like (e.g., normal, binomial, etc). In this case, the family of distributions that logistic regressions use is the ``binomial'' one, so to get a logistic regression we simply feed the argument \texttt{\textquotesingle{}binomial\textquotesingle{}} to the \texttt{family} parameter.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{fit }\OtherTok{\textless{}{-}} \FunctionTok{glm}\NormalTok{(}
+  \AttributeTok{formula =}\NormalTok{ ever\_hosp }\SpecialCharTok{\textasciitilde{}}\NormalTok{ sex }\SpecialCharTok{+}\NormalTok{ age,}
+  \AttributeTok{data =}\NormalTok{ df,}
+  \AttributeTok{family =} \StringTok{\textquotesingle{}binomial\textquotesingle{}}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+Once the model is fit, we can ask for a summary the same way that we would with a linear regression and we'll see that the table we get is essentially the same.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{summary}\NormalTok{(fit)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## glm(formula = ever_hosp ~ sex + age, family = "binomial", data = df)
+## 
+## Deviance Residuals: 
+##     Min       1Q   Median       3Q      Max  
+## -0.1402  -0.0871  -0.0686  -0.0540   3.7269  
+## 
+## Coefficients:
+##             Estimate Std. Error z value Pr(>|z|)   
+## (Intercept) -10.8298     3.3850  -3.199  0.00138 **
+## sexF         -0.8932     0.4792  -1.864  0.06234 . 
+## age           0.4779     0.3146   1.519  0.12874   
+## ---
+## Signif. codes:  
+## 0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## (Dispersion parameter for binomial family taken to be 1)
+## 
+##     Null deviance: 311.95  on 9719  degrees of freedom
+## Residual deviance: 305.73  on 9717  degrees of freedom
+##   (7 observations deleted due to missingness)
+## AIC: 311.73
+## 
+## Number of Fisher Scoring iterations: 9
+\end{verbatim}
+
+\hypertarget{where-are-my-odds-ratios}{%
+\subsection{Where are my odds ratios?}\label{where-are-my-odds-ratios}}
+
+Most research scientists are used to thinking about logistic regression results in terms of odds ratios. Unfortunately, R won't give you odds ratios by default. You need to compute them. Fortunately, it is really easy, once you remember that odds ratios are equal to:
+
+\[
+OR = e^b =  \exp(b)
+\]
+
+Thus, the quickest way to get them is to extract your coefficients from your fit object, then use \texttt{exp()} on them.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{my\_odds\_ratios }\OtherTok{\textless{}{-}}\NormalTok{ fit }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{coef}\NormalTok{() }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{exp}\NormalTok{() }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{round}\NormalTok{(}\AttributeTok{digits =} \DecValTok{2}\NormalTok{)}
+
+\NormalTok{my\_odds\_ratios}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## (Intercept)        sexF         age 
+##        0.00        0.41        1.61
+\end{verbatim}
+
+If you are in the process of creating a regression table, though, you might prefer to use \texttt{broom::tidy()} to get a dataframe of your \texttt{fit} object, then modify that with \texttt{mutate()}. This will make your results easier to export in .csv format.
+If all you want are the numbers,
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{results }\OtherTok{\textless{}{-}}\NormalTok{ fit }\SpecialCharTok{\%\textgreater{}\%} 
+\NormalTok{  broom}\SpecialCharTok{::}\FunctionTok{tidy}\NormalTok{() }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{or =} \FunctionTok{exp}\NormalTok{(estimate)) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{rename}\NormalTok{(}\AttributeTok{b =}\NormalTok{ estimate) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{mutate}\NormalTok{(}\FunctionTok{across}\NormalTok{(}\FunctionTok{where}\NormalTok{(is.numeric), }\AttributeTok{.fns =} \SpecialCharTok{\textasciitilde{}} \FunctionTok{round}\NormalTok{(.x, }\DecValTok{3}\NormalTok{)))}
+
+\NormalTok{results}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 3 x 6
+##   term              b std.error statistic p.value    or
+##   <chr>         <dbl>     <dbl>     <dbl>   <dbl> <dbl>
+## 1 (Intercept) -10.8       3.38      -3.20   0.001 0    
+## 2 sexF         -0.893     0.479     -1.86   0.062 0.409
+## 3 age           0.478     0.315      1.52   0.129 1.61
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{write\_csv}\NormalTok{(results, }\StringTok{\textquotesingle{}logistic\_results.csv\textquotesingle{}}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{plotting-predicted-values}{%
+\section{Plotting predicted values}\label{plotting-predicted-values}}
+
+One question that has come up in the past is how to produce a plot of predicted values for a regression, including logistic ones.
+
+This is possible by mixing tricks from \texttt{broom} and \texttt{ggplot} together, like so.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{predicted\_vals }\OtherTok{\textless{}{-}}\NormalTok{ fit }\SpecialCharTok{\%\textgreater{}\%}
+\NormalTok{  broom}\SpecialCharTok{::}\FunctionTok{augment}\NormalTok{() }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{select}\NormalTok{(sex, age, }\AttributeTok{log\_odds =}\NormalTok{ .fitted) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{odds =} \FunctionTok{exp}\NormalTok{(log\_odds), }\AttributeTok{p =}\NormalTok{ odds}\SpecialCharTok{/}\NormalTok{(}\DecValTok{1} \SpecialCharTok{+}\NormalTok{ odds)) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{unique}\NormalTok{() }
+
+\FunctionTok{ggplot}\NormalTok{(predicted\_vals, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ age, }\AttributeTok{y =}\NormalTok{ p, }\AttributeTok{color =}\NormalTok{ sex)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_point}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{geom\_line}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{_main_files/figure-latex/unnamed-chunk-132-1.pdf}
+
+\hypertarget{introduction-to-machine-learning}{%
+\chapter{Introduction to machine learning}\label{introduction-to-machine-learning}}
+
+For many years, the field of statistics has proceeded along two different lines of development: one focused on \textbf{inference} and the other focused on \textbf{prediction}. Most readers of this particular document will have been trained in the \textbf{inference tradition}, in which the goal of a statistical analysis is to use sample information to make an inference about a broader population. However, in this chapter we will focus on the \textbf{prediction tradition}, in which our goal is to use limited sample information to build a model capable of making accurate out-of-sample predictions about new individuals we might come across.
+
+\hypertarget{wait-arent-those-the-same-thing}{%
+\section{Wait, aren't those the same thing?}\label{wait-arent-those-the-same-thing}}
+
+Often, yes, models that are good at making accurate inferences about some population parameter are also good at making predictions about new individuals from that population. The reverse is also often true: models that make accurate predictions are also probably models that can tell us something about the features of a broader population.
+
+However, these two approaches also often imply some differences too. For example, in the inference traditional, \textbf{interpretability and explainability} are key. In that tradition, we are deeply skeptical of a model with a high \(R^2\) value, but which can't be quickly explained to us. In contrast, in the prediction tradition, explainability still matters, but not nearly as much. If we can show that a model reliably produces good predictions, we are generally satisfied.
+
+\hypertarget{the-tidymodels-framework}{%
+\section{\texorpdfstring{The \texttt{tidymodels} framework}{The tidymodels framework}}\label{the-tidymodels-framework}}
+
+If your goals are different, the tools you use to achieve those goals will generally be different too. Unlike in many other chapters, where everything is just a new flavor of the same old linear regression, in this chapter we introduce a whole new modelling framework, implemented in the \texttt{tidymodels} package.
+
+This package was created out of a desire to unify (and thus simplify) the machine learning process in R, which is currently dominated by an array of diverse packages - many of which do the same thing, slightly differently. To help you get through your analysis quickly (and in a less error prone way) than sorting through a bunch of different packages, \texttt{tidymodels} will handle a lot under the hood, leaving you with a simple \textbf{baking metaphor} to guide you through the process.
+
+\hypertarget{steps-1-2---load-data-and-do-some-very-basic-cleaning}{%
+\section{Steps 1 \& 2 - Load data and do some very basic cleaning}\label{steps-1-2---load-data-and-do-some-very-basic-cleaning}}
+
+Again, we load the KSADS dataset with our custom function and do some very basic cleaning. We also load both the \texttt{tidyverse} and \texttt{tidymodels} packages because we'll be using both throughout.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(tidyverse)}
+\FunctionTok{library}\NormalTok{(tidymodels)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning: package 'tidymodels' was built under R version
+## 4.1.3
+\end{verbatim}
+
+\begin{verbatim}
+## Registered S3 method overwritten by 'tune':
+##   method                   from   
+##   required_pkgs.model_spec parsnip
+\end{verbatim}
+
+\begin{verbatim}
+## -- Attaching packages ------------------ tidymodels 0.1.4 --
+\end{verbatim}
+
+\begin{verbatim}
+## v broom        0.7.11     v rsample      0.1.1 
+## v dials        0.1.0      v tune         0.1.6 
+## v infer        1.0.0      v workflows    0.2.4 
+## v modeldata    0.1.1      v workflowsets 0.2.1 
+## v parsnip      0.2.0      v yardstick    0.0.9 
+## v recipes      0.2.0
+\end{verbatim}
+
+\begin{verbatim}
+## Warning: package 'dials' was built under R version 4.1.3
+\end{verbatim}
+
+\begin{verbatim}
+## Warning: package 'infer' was built under R version 4.1.3
+\end{verbatim}
+
+\begin{verbatim}
+## Warning: package 'modeldata' was built under R version 4.1.3
+\end{verbatim}
+
+\begin{verbatim}
+## Warning: package 'parsnip' was built under R version 4.1.3
+\end{verbatim}
+
+\begin{verbatim}
+## Warning: package 'recipes' was built under R version 4.1.3
+\end{verbatim}
+
+\begin{verbatim}
+## Warning: package 'rsample' was built under R version 4.1.3
+\end{verbatim}
+
+\begin{verbatim}
+## Warning: package 'tune' was built under R version 4.1.3
+\end{verbatim}
+
+\begin{verbatim}
+## Warning: package 'workflows' was built under R version 4.1.3
+\end{verbatim}
+
+\begin{verbatim}
+## Warning: package 'yardstick' was built under R version 4.1.3
+\end{verbatim}
+
+\begin{verbatim}
+## -- Conflicts --------------------- tidymodels_conflicts() --
+## x scales::discard() masks purrr::discard()
+## x dplyr::filter()   masks stats::filter()
+## x recipes::fixed()  masks stringr::fixed()
+## x dplyr::lag()      masks stats::lag()
+## x yardstick::spec() masks readr::spec()
+## x recipes::step()   masks stats::step()
+## x tune::tune()      masks parsnip::tune()
+## * Search for functions across packages at https://www.tidymodels.org/find/
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{read\_abcd\_quietly }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(file\_path)\{}
+  \FunctionTok{suppressMessages}\NormalTok{(}
+    \AttributeTok{expr =} \FunctionTok{read\_delim}\NormalTok{(file\_path, }\AttributeTok{delim =} \StringTok{\textquotesingle{}}\SpecialCharTok{\textbackslash{}t}\StringTok{\textquotesingle{}}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%} 
+      \FunctionTok{filter}\NormalTok{(}\FunctionTok{row\_number}\NormalTok{() }\SpecialCharTok{!=} \DecValTok{1}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%} 
+      \FunctionTok{type\_convert}\NormalTok{())}
+\NormalTok{\}}
+
+\NormalTok{df }\OtherTok{\textless{}{-}} \FunctionTok{read\_abcd\_quietly}\NormalTok{(}\StringTok{\textquotesingle{}data/abcd\_lpksad01.txt\textquotesingle{}}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{rename}\NormalTok{(}\AttributeTok{grade\_drop =}\NormalTok{ kbi\_p\_c\_drop\_in\_grades\_l) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{filter}\NormalTok{(grade\_drop }\SpecialCharTok{\%in\%} \FunctionTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{, }\DecValTok{2}\NormalTok{)) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{mutate}\NormalTok{(}
+    \AttributeTok{grade\_drop =} \FunctionTok{factor}\NormalTok{(}
+      \AttributeTok{x =}\NormalTok{ grade\_drop, }
+      \AttributeTok{levels =} \FunctionTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{, }\DecValTok{2}\NormalTok{), }
+      \AttributeTok{labels =} \FunctionTok{c}\NormalTok{(}\StringTok{\textquotesingle{}yes\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}no\textquotesingle{}}\NormalTok{))) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{group\_by}\NormalTok{(subjectkey) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{filter}\NormalTok{(interview\_age }\SpecialCharTok{==} \FunctionTok{min}\NormalTok{(interview\_age))}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{step-3---split-training-and-test-samples}{%
+\section{Step 3 - Split training and test samples}\label{step-3---split-training-and-test-samples}}
+
+Recall from above that our goal with machine learning is to make good out-of-sample predictions. To test whether our model has done that, we need to split our sample into two parts: a \textbf{training} sample that we use to fit and calibrate our model (usually 80\% of the total sample) and a smaller \textbf{test} sample we can use to evaluate how good that model is at predicting scores it has not seen before (usually 20\%). We can do this with the \texttt{initial\_split()} function.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{df\_split }\OtherTok{\textless{}{-}} \FunctionTok{initial\_split}\NormalTok{(df, }\AttributeTok{prop =}\NormalTok{ .}\DecValTok{80}\NormalTok{)}
+
+\NormalTok{df\_split}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## <Analysis/Assess/Total>
+## <8282/2071/10353>
+\end{verbatim}
+
+As we can see, this splits our data into analysis (training) and assess (test) sub-components. If we want to look at a particular sub-component, we can simply ask for it with a simple helper function. In this case, we use the well-named \texttt{training()} function to get a look at which data ended up in the training set.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{df\_split }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{training}\NormalTok{() }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{head}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 6 x 90
+## # Groups:   subjectkey [6]
+##   collection_id abcd_lpksad01_id dataset_id subjectkey      
+##           <dbl>            <dbl>      <dbl> <chr>           
+## 1          2573            28975      47218 NDAR_INV65X59CTR
+## 2          2573            26835      47218 NDAR_INV5JKLGU54
+## 3          2573            47030      47218 NDAR_INVURUR52NZ
+## 4          2573            47593      47218 NDAR_INVY04AT16M
+## 5          2573            41483      47218 NDAR_INVN2CVFJPN
+## 6          2573            22789      47218 NDAR_INV030W95VP
+## # ... with 86 more variables: src_subject_id <chr>,
+## #   interview_age <dbl>, interview_date <chr>, sex <chr>,
+## #   eventname <chr>, kbi_l_p_select_language___1 <dbl>,
+## #   kbi_p_c_live_full_time_l <dbl>,
+## #   kbi_p_c_guard_l___1 <dbl>, kbi_p_c_guard_l___2 <dbl>,
+## #   kbi_p_c_guard_l___3 <dbl>, kbi_p_c_guard_l___4 <dbl>,
+## #   kbi_p_c_guard_l___5 <dbl>, ...
+\end{verbatim}
+
+\hypertarget{step-4---build-a-data-processing-recipe}{%
+\section{Step 4 - Build a data processing recipe}\label{step-4---build-a-data-processing-recipe}}
+
+As mentioned above, the \texttt{tidymodels} framework is built around a cooking metaphor. The idea is that you start with a \textbf{recipe}, which is a set of instructions for what you want to do to process your data.
+
+We do this by extracting our data, then telling R that we want a \texttt{recipe()} and feed it a formula indicating what we want to use as our outcome variable and what we want to use as our predictors. In this case, the formula \texttt{grade\_drop\ \textasciitilde{}\ .} means ``use \texttt{grade\_drop} as the outcome and everything else you can find as a predictor.
+
+After that, we use any number of \texttt{step\_...()} functions. These are the steps in our recipe. There are dozens of helpful ones build into \texttt{tidymodels}, so make sure to browse the documentation for ones you might like.
+
+In this case, we'll use a few common ones:
+
+\begin{itemize}
+\tightlist
+\item
+  \texttt{step\_rm()} removes variables much like \texttt{select()} does. In this case, we remove variables that don't have anything that would help with predicting grade drop (e.g., the \texttt{subjectkey} is a randomly generated variable and has nothing to do with grade changes).
+\item
+  \texttt{step\_filter\_missing()} filters out variables that have too much missing data, based on a threshold we set. In this case, we want to get rid of ANY missing data.
+\item
+  \texttt{step\_nzv()} removes variables that have zero (or low) variance, indicating everyone has the same or similar scores and we wont get much information out of those variables.
+\item
+  \texttt{step\_corr()} removes variables that are highly correlated with one another because they offer little \emph{unique} information.
+\end{itemize}
+
+Once all of this is done, we call \texttt{prep()} to finalize the recipe building process.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{df\_recipe }\OtherTok{\textless{}{-}}\NormalTok{ df\_split }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{training}\NormalTok{() }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{recipe}\NormalTok{(grade\_drop }\SpecialCharTok{\textasciitilde{}}\NormalTok{ .) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{step\_rm}\NormalTok{(}\FunctionTok{ends\_with}\NormalTok{(}\StringTok{\textquotesingle{}id\textquotesingle{}}\NormalTok{) }\SpecialCharTok{|} \FunctionTok{matches}\NormalTok{(}\StringTok{\textquotesingle{}subjectkey\textquotesingle{}}\NormalTok{)) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{step\_filter\_missing}\NormalTok{(}\FunctionTok{all\_predictors}\NormalTok{(), }\AttributeTok{threshold =} \DecValTok{0}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{step\_nzv}\NormalTok{(}\FunctionTok{all\_predictors}\NormalTok{()) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{step\_corr}\NormalTok{(}\FunctionTok{all\_numeric\_predictors}\NormalTok{(), }\AttributeTok{threshold =}\NormalTok{ .}\DecValTok{50}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{prep}\NormalTok{()}
+
+\NormalTok{df\_recipe}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Recipe
+## 
+## Inputs:
+## 
+##       role #variables
+##    outcome          1
+##  predictor         89
+## 
+## Training data contained 8282 data points and 8282 incomplete rows. 
+## 
+## Operations:
+## 
+## Variables removed collection_id, abcd_lpksad01_id, da... [trained]
+## Missing value column filter removed kbi_p_c_best_friend_l... [trained]
+## Sparse, unbalanced variable filter removed kbi_p_c_guard_l___1... [trained]
+## Correlation filter on kbi_p_conflict_causes... [trained]
+\end{verbatim}
+
+The output we get is helpful here, indicating how many variables are involved in our recipe.
+
+\hypertarget{step-5---extract-the-preprocessed-data}{%
+\section{Step 5 - Extract the preprocessed data}\label{step-5---extract-the-preprocessed-data}}
+
+With our preprocessing recipe prepped, we can now \texttt{bake()} it. This means we implement the preprocessing instructions on the datasets.
+
+To do this, we say we want to take the recipe, and then bake it using our dataset of choice.
+
+We'll do this once for our training data and once for our testing data. Note, for our testing data we also filter to have only complete cases on our outcome variable as well, which will make evaluation easier later.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{df\_training }\OtherTok{\textless{}{-}}\NormalTok{ df\_recipe }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{bake}\NormalTok{(}\FunctionTok{training}\NormalTok{(df\_split))}
+
+\NormalTok{df\_testing }\OtherTok{\textless{}{-}}\NormalTok{ df\_recipe }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{bake}\NormalTok{(}\FunctionTok{testing}\NormalTok{(df\_split)) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{filter}\NormalTok{(}\FunctionTok{complete.cases}\NormalTok{(.))}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{step-6---fit-a-model}{%
+\section{Step 6 - Fit a model}\label{step-6---fit-a-model}}
+
+With our data prepped and baked, it is time to finally fit a model. In this case, we'll fit a random forest model, using the \texttt{rand\_forest()} function.
+
+Underneath the hood, \texttt{rand\_forest()} is capable of using a bunch of different ``engines'' (R packages) to do its computations, each with their own quirks. You won't notice them because \texttt{rand\_forest()} will make everything run smoothly for you. However, you do need to tell it which engine to use with \texttt{set\_engine()}. In this case, we'll tell it to use the basic \texttt{\textquotesingle{}ranger\textquotesingle{}} engine because that is a popular package.
+
+Lastly, with all the options set, we tell R to \texttt{fit()} our model, using the familiar formula / data combination of arguments, much like linear regression. The only trick here is again the use of the \texttt{.} in our formula, which means ``use everything you can find''
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{df\_ranger }\OtherTok{\textless{}{-}} \FunctionTok{rand\_forest}\NormalTok{(}\AttributeTok{trees =} \DecValTok{100}\NormalTok{, }\AttributeTok{mode =} \StringTok{\textquotesingle{}classification\textquotesingle{}}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{set\_engine}\NormalTok{(}\StringTok{\textquotesingle{}ranger\textquotesingle{}}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{fit}\NormalTok{(grade\_drop }\SpecialCharTok{\textasciitilde{}}\NormalTok{ ., }\AttributeTok{data =}\NormalTok{ df\_training)}
+
+\NormalTok{df\_ranger}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## parsnip model object
+## 
+## Ranger result
+## 
+## Call:
+##  ranger::ranger(x = maybe_data_frame(x), y = y, num.trees = ~100,      num.threads = 1, verbose = FALSE, seed = sample.int(10^5,          1), probability = TRUE) 
+## 
+## Type:                             Probability estimation 
+## Number of trees:                  100 
+## Sample size:                      8282 
+## Number of independent variables:  20 
+## Mtry:                             4 
+## Target node size:                 10 
+## Variable importance mode:         none 
+## Splitrule:                        gini 
+## OOB prediction error (Brier s.):  0.09923773
+\end{verbatim}
+
+Great! Our output gives us some information about our model. But\ldots{} it didn't give use a ton of information about how good that model is.
+
+\hypertarget{step-7---evaluate-the-model}{%
+\section{Step 7 - Evaluate the model}\label{step-7---evaluate-the-model}}
+
+To get information about how well our model did predicting new data, we need to use it to make predictions about our test data, then see how close those predictions were to the actually observed data in that test set that we set aside.
+
+To do that, we take our model, then call \texttt{predict()} on our testing data. After that, we use \texttt{bind\_cols()} to take those predictions and place them in a new dataframe, right next to the observed testing data. With all of that done, we can then use the \texttt{metrics()} function to get some performance metrics. All we need to do is tell \texttt{metrics()} which column represents the true score and which one is the prediction estimated by the model.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{df\_ranger }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{predict}\NormalTok{(df\_testing) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{bind\_cols}\NormalTok{(df\_testing) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{metrics}\NormalTok{(}\AttributeTok{truth =}\NormalTok{ grade\_drop, }\AttributeTok{estimate =}\NormalTok{ .pred\_class)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 2 x 3
+##   .metric  .estimator .estimate
+##   <chr>    <chr>          <dbl>
+## 1 accuracy binary        0.879 
+## 2 kap      binary        0.0813
+\end{verbatim}
+
+Here, we can see that our model is about 88\% accurate at predicting a grade drop for a student it has never seen before.
+
+\hypertarget{step-8---plot-your-data}{%
+\section{Step 8 - Plot your data}\label{step-8---plot-your-data}}
+
+It is also possible to plot the success of your model, using a similar pipeline. But this time instead of using \texttt{metrics()}, we ask R to give us a \texttt{roc\_curve()} and to graph it with \texttt{autoplot()}. This gives us a publication-ready figure, in just two extra lines!
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{df\_ranger }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{predict}\NormalTok{(df\_testing, }\AttributeTok{type =} \StringTok{\textquotesingle{}prob\textquotesingle{}}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{bind\_cols}\NormalTok{(df\_testing) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{roc\_curve}\NormalTok{(}\AttributeTok{truth =}\NormalTok{ grade\_drop, }\AttributeTok{estimate =}\NormalTok{ .pred\_yes) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{autoplot}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{_main_files/figure-latex/unnamed-chunk-140-1.pdf}
+
+\hypertarget{multilevel-models}{%
+\chapter{Multilevel Models}\label{multilevel-models}}
+
+In a multilevel model, we try to account not only for group-level variation, but individual variation as well. As a reminder, the way that we do this is by proposing:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  There is an overall slope and intercept for our regression model, just like in a traditional linear regression.
+\item
+  But, there might be some variation from person to person or day to day in the value of that \textbf{slope}, \textbf{intercept}, or \textbf{both}.
+
+  \begin{itemize}
+  \tightlist
+  \item
+    You can think of this like it being generally true that sleep loss leads to decreased mood the next day, but for some people it is worse than others (\textbf{variable slopes}).
+  \item
+    Alternatively, you might think the damage done by sleep loss is roughly the same from person to person - or perhaps that an intervention is roughly as effective for all people - but that different people start with varying degrees of sleep lost (\textbf{variable intercepts}).
+  \item
+    Lastly, you might think \textbf{both}.
+  \end{itemize}
+\end{enumerate}
+
+The trick to remember is that we are just specifying a traditional regression, \emph{plus} allowing some of its parameters to be slightly different from person to person.
+
+\hypertarget{steps-1-2---import-and-clean-the-data}{%
+\section{Steps 1 \& 2 - Import and clean the data}\label{steps-1-2---import-and-clean-the-data}}
+
+Again to maximize comparability with previous chapters on regression techniques, we'll use the same KSADS ABCD dataset.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(tidyverse)}
+
+\NormalTok{read\_abcd\_quietly }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(file\_path)\{}
+  \FunctionTok{suppressMessages}\NormalTok{(}
+    \AttributeTok{expr =} \FunctionTok{read\_delim}\NormalTok{(file\_path, }\AttributeTok{delim =} \StringTok{\textquotesingle{}}\SpecialCharTok{\textbackslash{}t}\StringTok{\textquotesingle{}}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%} 
+      \FunctionTok{filter}\NormalTok{(}\FunctionTok{row\_number}\NormalTok{() }\SpecialCharTok{!=} \DecValTok{1}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%} 
+      \FunctionTok{type\_convert}\NormalTok{())}
+\NormalTok{\}}
+
+\NormalTok{df }\OtherTok{\textless{}{-}} \FunctionTok{read\_abcd\_quietly}\NormalTok{(}\StringTok{\textquotesingle{}data/abcd\_lpksad01.txt\textquotesingle{}}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+But along the way, it is important to note that this is a \textbf{longitudinal} dataset with many participants providing multiple data points to us. You can thus think of those data points as providing multiple pieces of information for each person, which we can use to estimate (for example) their own personal intercept in a multilevel model.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{df }\OtherTok{\textless{}{-}}\NormalTok{ df }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{select}\NormalTok{(}
+    \AttributeTok{id =}\NormalTok{ src\_subject\_id, }
+    \AttributeTok{age =}\NormalTok{ interview\_age,}
+\NormalTok{    sex, }
+    \AttributeTok{grade\_drop =}\NormalTok{ kbi\_p\_c\_drop\_in\_grades\_l,}
+    \AttributeTok{grades =}\NormalTok{ kbi\_p\_grades\_in\_school\_l) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{group\_by}\NormalTok{(id) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{arrange}\NormalTok{(age) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{mutate}\NormalTok{(}
+    \AttributeTok{age =} \FunctionTok{floor}\NormalTok{(age }\SpecialCharTok{/} \DecValTok{12}\NormalTok{),}
+    \AttributeTok{sex =} \FunctionTok{factor}\NormalTok{(sex, }\AttributeTok{levels =} \FunctionTok{c}\NormalTok{(}\StringTok{\textquotesingle{}M\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}F\textquotesingle{}}\NormalTok{)),}
+    \AttributeTok{time =} \FunctionTok{row\_number}\NormalTok{(),}
+    \AttributeTok{n\_timepoints =} \FunctionTok{max}\NormalTok{(time),}
+    \AttributeTok{grade\_drop =} \FunctionTok{factor}\NormalTok{(}
+      \AttributeTok{x =}\NormalTok{ grade\_drop, }
+      \AttributeTok{levels =} \FunctionTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{, }\DecValTok{2}\NormalTok{), }
+      \AttributeTok{labels =} \FunctionTok{c}\NormalTok{(}\StringTok{\textquotesingle{}yes\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}no\textquotesingle{}}\NormalTok{))) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{ungroup}\NormalTok{() }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{filter}\NormalTok{(grades }\SpecialCharTok{\%in\%} \DecValTok{1}\SpecialCharTok{:}\DecValTok{5}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{select}\NormalTok{(id, age, sex, grades, grade\_drop, time)}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{steps-3-4---fit-the-model-and-summarize-it-2}{%
+\section{Steps 3 \& 4 - Fit the model and summarize it}\label{steps-3-4---fit-the-model-and-summarize-it-2}}
+
+As we saw with logistic regression, R's regression-centric statistical framework makes transition to a new type of regression easy for us to think about: almost everything is the same, we just need to tweak a few specifics.
+
+The first thing to note is that we'll need to load the \texttt{lme4} package, which contains a function to fit a multilevel model. Next, we use the \texttt{lmer()} function to fit the model, rather than the traditional \texttt{lm()} for a classic linear regression.
+
+After that, the last obvious change we need to make is that we need to tell R which parameters we want to vary and what our nesting structure is. Fortunately, that is pretty easy too. We just add it to our regression formula like this \texttt{+\ (params\_to\_vary\ \textbar{}\ vary\_by\_what)}.
+
+As you can see below, the randomly varying part of our model is specified as \texttt{(1\ \textbar{}\ id)}. Because \texttt{1} is R's indicator for an intercept and \texttt{id} is our dataset's variable indicating which person we are talking about (remember each ID will have multiple timepoints), this specification will produce a regression where the slope stays constant for everyone, BUT everyone has their own special intercept (i.e.~a random intercept only model).
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(lme4)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Loading required package: Matrix
+\end{verbatim}
+
+\begin{verbatim}
+## 
+## Attaching package: 'Matrix'
+\end{verbatim}
+
+\begin{verbatim}
+## The following objects are masked from 'package:tidyr':
+## 
+##     expand, pack, unpack
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{fit }\OtherTok{\textless{}{-}} \FunctionTok{lmer}\NormalTok{(}
+  \AttributeTok{formula =}\NormalTok{ grades }\SpecialCharTok{\textasciitilde{}}\NormalTok{ age }\SpecialCharTok{+}\NormalTok{ sex }\SpecialCharTok{+}\NormalTok{ (}\DecValTok{1} \SpecialCharTok{|}\NormalTok{ id),}
+  \AttributeTok{data =}\NormalTok{ df)}
+
+\FunctionTok{summary}\NormalTok{(fit)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Linear mixed model fit by REML ['lmerMod']
+## Formula: grades ~ age + sex + (1 | id)
+##    Data: df
+## 
+## REML criterion at convergence: 50990.9
+## 
+## Scaled residuals: 
+##     Min      1Q  Median      3Q     Max 
+## -4.3199 -0.3357 -0.1901  0.2137  5.2364 
+## 
+## Random effects:
+##  Groups   Name        Variance Std.Dev.
+##  id       (Intercept) 0.4181   0.6466  
+##  Residual             0.2304   0.4800  
+## Number of obs: 24771, groups:  id, 10301
+## 
+## Fixed effects:
+##              Estimate Std. Error t value
+## (Intercept)  1.654237   0.044601  37.089
+## age          0.011209   0.003846   2.915
+## sexF        -0.200611   0.014240 -14.088
+## 
+## Correlation of Fixed Effects:
+##      (Intr) age   
+## age  -0.975       
+## sexF -0.160  0.008
+\end{verbatim}
+
+As you can see, the output is again quite similar to the regular \texttt{lm()} output. However, there are two twists.
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Because we have a random intercept, the intercept now has a group-level mean (under Fixed Effects) AND it has its own variance (under Random Effects).
+\item
+  We're missing p-values! Find out how to get those below.
+\end{enumerate}
+
+\hypertarget{where-are-my-p-values}{%
+\subsection{Where are my p-values?}\label{where-are-my-p-values}}
+
+Multilevel models are mathematically complicated, under the hood. For reasons we wont go into here, there are many ways to compute their p-values and the \texttt{lme4} package doesn't want to make the choice for you out of an abundance of caution.
+
+To get our p-values, we can use the \texttt{lmerTest} package, which will override the \texttt{lmer()} function to include p-values. Thus, if we run our same model again, but with \texttt{lmerTest} loaded we should get what we expected.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(lmerTest)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Attaching package: 'lmerTest'
+\end{verbatim}
+
+\begin{verbatim}
+## The following object is masked _by_ '.GlobalEnv':
+## 
+##     carrots
+\end{verbatim}
+
+\begin{verbatim}
+## The following object is masked from 'package:lme4':
+## 
+##     lmer
+\end{verbatim}
+
+\begin{verbatim}
+## The following object is masked from 'package:recipes':
+## 
+##     step
+\end{verbatim}
+
+\begin{verbatim}
+## The following object is masked from 'package:stats':
+## 
+##     step
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{fit }\OtherTok{\textless{}{-}} \FunctionTok{lmer}\NormalTok{(}
+  \AttributeTok{formula =}\NormalTok{ grades }\SpecialCharTok{\textasciitilde{}}\NormalTok{ age }\SpecialCharTok{+}\NormalTok{ sex }\SpecialCharTok{+}\NormalTok{ (}\DecValTok{1} \SpecialCharTok{|}\NormalTok{ id),}
+  \AttributeTok{data =}\NormalTok{ df)}
+
+\FunctionTok{summary}\NormalTok{(fit)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Linear mixed model fit by REML. t-tests use
+##   Satterthwaite's method [lmerModLmerTest]
+## Formula: grades ~ age + sex + (1 | id)
+##    Data: df
+## 
+## REML criterion at convergence: 50990.9
+## 
+## Scaled residuals: 
+##     Min      1Q  Median      3Q     Max 
+## -4.3199 -0.3357 -0.1901  0.2137  5.2364 
+## 
+## Random effects:
+##  Groups   Name        Variance Std.Dev.
+##  id       (Intercept) 0.4181   0.6466  
+##  Residual             0.2304   0.4800  
+## Number of obs: 24771, groups:  id, 10301
+## 
+## Fixed effects:
+##               Estimate Std. Error         df t value
+## (Intercept)  1.654e+00  4.460e-02  2.018e+04  37.089
+## age          1.121e-02  3.846e-03  1.888e+04   2.915
+## sexF        -2.006e-01  1.424e-02  1.013e+04 -14.088
+##             Pr(>|t|)    
+## (Intercept)  < 2e-16 ***
+## age          0.00357 ** 
+## sexF         < 2e-16 ***
+## ---
+## Signif. codes:  
+## 0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Correlation of Fixed Effects:
+##      (Intr) age   
+## age  -0.975       
+## sexF -0.160  0.008
+\end{verbatim}
+
+\hypertarget{where-are-my-intraclass-correlations-iccs}{%
+\subsection{Where are my intraclass correlations (ICCs)?}\label{where-are-my-intraclass-correlations-iccs}}
+
+One measure of the strength of variation for a random effect in a multilevel model is the Intraclass Correlation Coefficient (ICC). These tell you the percentage of variation in the your estimate can be attributed to random variation from person to person.
+
+Unfortunately, \texttt{lmer()} doesn't compute this on its own, so we need to ask the \texttt{performance} package to do it for us.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{performance}\SpecialCharTok{::}\FunctionTok{icc}\NormalTok{(fit)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # Intraclass Correlation Coefficient
+## 
+##      Adjusted ICC: 0.645
+##   Conditional ICC: 0.635
+\end{verbatim}
+
+\hypertarget{logistic-multilevel-models}{%
+\section{Logistic multilevel models}\label{logistic-multilevel-models}}
+
+So far, we've fit just linear multilevel models, but note that the transition to a logistic version is the same as the transition from a traditional linear model to a traditional logistic one:
+
+\begin{itemize}
+\tightlist
+\item
+  \texttt{lm()} becomes \texttt{glm()}; \texttt{lmer()} becomes \texttt{glmer()}
+\item
+  We need to specify the family of non-linear model we are using, which is again ``binomial''
+\end{itemize}
+
+Then everything else is the same.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{fit }\OtherTok{\textless{}{-}} \FunctionTok{glmer}\NormalTok{(}
+  \AttributeTok{formula =}\NormalTok{ grade\_drop }\SpecialCharTok{\textasciitilde{}}\NormalTok{ age }\SpecialCharTok{+}\NormalTok{ sex }\SpecialCharTok{+}\NormalTok{ (}\DecValTok{1} \SpecialCharTok{|}\NormalTok{ id),}
+  \AttributeTok{data =}\NormalTok{ df,}
+  \AttributeTok{family =} \StringTok{\textquotesingle{}binomial\textquotesingle{}}\NormalTok{)}
+
+\FunctionTok{summary}\NormalTok{(fit)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Generalized linear mixed model fit by maximum likelihood
+##   (Laplace Approximation) [glmerMod]
+##  Family: binomial  ( logit )
+## Formula: grade_drop ~ age + sex + (1 | id)
+##    Data: df
+## 
+##      AIC      BIC   logLik deviance df.resid 
+##  20086.6  20119.0 -10039.3  20078.6    24440 
+## 
+## Scaled residuals: 
+##     Min      1Q  Median      3Q     Max 
+## -3.0384  0.2134  0.2559  0.3115  1.0890 
+## 
+## Random effects:
+##  Groups Name        Variance Std.Dev.
+##  id     (Intercept) 2.064    1.437   
+## Number of obs: 24444, groups:  id, 10275
+## 
+## Fixed effects:
+##             Estimate Std. Error z value Pr(>|z|)    
+## (Intercept)  5.87861    0.26782  21.950   <2e-16 ***
+## age         -0.33012    0.02241 -14.728   <2e-16 ***
+## sexF         0.46215    0.05188   8.908   <2e-16 ***
+## ---
+## Signif. codes:  
+## 0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Correlation of Fixed Effects:
+##      (Intr) age   
+## age  -0.985       
+## sexF -0.049 -0.023
+## optimizer (Nelder_Mead) convergence code: 0 (OK)
+## Model failed to converge with max|grad| = 0.00490794 (tol = 0.002, component 1)
+\end{verbatim}
+
+\hypertarget{structural-equation-modeling}{%
+\chapter{Structural Equation Modeling}\label{structural-equation-modeling}}
+
+Structural equation modeling (SEM) can be thought of as a series of regressions, all estimated simultaneously. This allows the relationship between some variables to provide information on the relationship between others. To get a feel for how this works, consider that if we have three variables (A, B, C) and two negative correlations (A is negatively correlated with B, B is negatively correlated with C), we know that A and C MUST be positively correlated. Thus, if I estimate all of these correlations simultaneously, I can get a more precise estimate for all of their relationships by incorporating all possible information.
+
+There are many kinds of SEMS, so we'll cover just a few of the most common ones:
+
+\begin{itemize}
+\item
+  Exploratory factor analysis (EFA), in which we ask whether some hidden factor accounts for the observed correlation between several items (usually items from the same survey scale). In the case of EFA, we also don't really have any prior knowledge as to what this hidden variable might be like, so we let the model figure it out for us.
+\item
+  Confirmatory factor analysis (CFA), which is like EFA, but we force the model to fit an \emph{a priori} idea that we have about the relationship between our observed variables and the hidden variable that explains their correlations. After we force a specific model, we then evaluate how well it fit our observed data.
+\item
+  Path models. These are often what people think of when they hear ``SEM.'' These are typically just a series of regressions (paths) connecting variables in a kind of spider web of relationships.
+\end{itemize}
+
+\hypertarget{step-1-and-2---load-data-and-clean}{%
+\section{Step 1 and 2 - Load data and clean}\label{step-1-and-2---load-data-and-clean}}
+
+Because we want to evaluate the factors underlying particular scales, we'll start by using the \texttt{diff\_emotion\_reg\_p01.txt} dataset, which includes data from an emotion regulation survey scale.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(tidyverse)}
+
+\NormalTok{read\_abcd\_quietly }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(file\_path)\{}
+  \FunctionTok{suppressMessages}\NormalTok{(}
+    \AttributeTok{expr =} \FunctionTok{read\_delim}\NormalTok{(file\_path, }\AttributeTok{delim =} \StringTok{\textquotesingle{}}\SpecialCharTok{\textbackslash{}t}\StringTok{\textquotesingle{}}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%} 
+      \FunctionTok{filter}\NormalTok{(}\FunctionTok{row\_number}\NormalTok{() }\SpecialCharTok{!=} \DecValTok{1}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%} 
+      \FunctionTok{type\_convert}\NormalTok{())}
+\NormalTok{\}}
+
+\NormalTok{df }\OtherTok{\textless{}{-}} \FunctionTok{read\_abcd\_quietly}\NormalTok{(}\StringTok{\textquotesingle{}data/diff\_emotion\_reg\_p01.txt\textquotesingle{}}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{mutate}\NormalTok{(}\FunctionTok{across}\NormalTok{(}
+    \AttributeTok{.cols =} \FunctionTok{starts\_with}\NormalTok{(}\StringTok{\textquotesingle{}ders\_\textquotesingle{}}\NormalTok{), }
+    \AttributeTok{.fns =} \SpecialCharTok{\textasciitilde{}} \FunctionTok{ifelse}\NormalTok{(.x }\SpecialCharTok{==} \DecValTok{7}\NormalTok{, }\ConstantTok{NA}\NormalTok{, .x)))}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{efa}{%
+\section{EFA}\label{efa}}
+
+\hypertarget{steps-3-4}{%
+\subsection{Steps 3 \& 4}\label{steps-3-4}}
+
+To conduct an EFA, we'll use functions from the \texttt{psych} package. This process is luckily relatively straightforward. All we need to do is select the variables we want to analyze, then feed them to the \texttt{fa()} function. The \texttt{fa()} function also wants to know what the max number of factors we want to look for is, so we'll tell it 6 (it this case, we know this scale has 6 factors because it has been extensively studied before).
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(psych)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning: package 'psych' was built under R version 4.1.3
+\end{verbatim}
+
+\begin{verbatim}
+## 
+## Attaching package: 'psych'
+\end{verbatim}
+
+\begin{verbatim}
+## The following objects are masked from 'package:scales':
+## 
+##     alpha, rescale
+\end{verbatim}
+
+\begin{verbatim}
+## The following objects are masked from 'package:ggplot2':
+## 
+##     %+%, alpha
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{ders\_df }\OtherTok{\textless{}{-}}\NormalTok{ df }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{select}\NormalTok{(}\FunctionTok{starts\_with}\NormalTok{(}\StringTok{\textquotesingle{}ders\_\textquotesingle{}}\NormalTok{) }\SpecialCharTok{\&} \FunctionTok{ends\_with}\NormalTok{(}\StringTok{\textquotesingle{}\_p\textquotesingle{}}\NormalTok{))}
+
+\NormalTok{fit }\OtherTok{\textless{}{-}} \FunctionTok{fa}\NormalTok{(ders\_df, }\AttributeTok{nfactors =} \DecValTok{6}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Loading required namespace: GPArotation
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{summary}\NormalTok{(fit)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Factor analysis with Call: fa(r = ders_df, nfactors = 6)
+## 
+## Test of the hypothesis that 6 factors are sufficient.
+## The degrees of freedom for the model is 247  and the objective function was  3.01 
+## The number of observations was  6251  with Chi Square =  18775.94  with prob <  0 
+## 
+## The root mean square of the residuals (RMSA) is  0.02 
+## The df corrected root mean square of the residuals is  0.03 
+## 
+## Tucker Lewis Index of factoring reliability =  0.837
+## RMSEA index =  0.11  and the 10 % confidence intervals are  0.108 0.111
+## BIC =  16617.04
+##  With factor correlations of 
+##      MR5  MR2  MR1  MR4  MR3  MR6
+## MR5 1.00 0.56 0.53 0.61 0.55 0.57
+## MR2 0.56 1.00 0.31 0.51 0.45 0.63
+## MR1 0.53 0.31 1.00 0.33 0.46 0.38
+## MR4 0.61 0.51 0.33 1.00 0.50 0.47
+## MR3 0.55 0.45 0.46 0.50 1.00 0.45
+## MR6 0.57 0.63 0.38 0.47 0.45 1.00
+\end{verbatim}
+
+Unfortunately, the output we get from \texttt{summary()} doesn't tell us which items load onto which factors. To get that, we need to extract them from the \texttt{fit} object directly.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{fit}\SpecialCharTok{$}\NormalTok{loadings}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Loadings:
+##                                MR5    MR2    MR1    MR4   
+## ders_attn_awareness_p                  0.953              
+## ders_clear_feelings_p                  0.902              
+## ders_emotion_overwhelm_p        0.119  0.543 -0.107  0.128
+## ders_feelings_attentive_p              0.662              
+## ders_feelings_care_p                                      
+## ders_feelings_know_p                   0.278         0.112
+## ders_upset_ack_p                0.174  0.243 -0.163  0.120
+## ders_upset_angry_p                            0.149  0.635
+## ders_upset_ashamed_p            0.169  0.129  0.546  0.271
+## ders_upset_behavior_control_p   0.224         0.228  0.303
+## ders_upset_behavior_p           0.853                     
+## ders_upset_better_p             0.311         0.161  0.112
+## ders_upset_concentrate_p        0.673                     
+## ders_upset_control_p            0.504        -0.265  0.349
+## ders_upset_depressed_p          0.138         0.218       
+## ders_upset_difficulty_p         0.262  0.272         0.366
+## ders_upset_embarrassed_p                      0.162  0.677
+## ders_upset_emotion_overwhelm_p  0.521         0.247       
+## ders_upset_esteem_p             0.200         0.489       
+## ders_upset_feel_better_p        0.345  0.130  0.416       
+## ders_upset_fixation_p           0.834                     
+## ders_upset_focus_p              0.365  0.220 -0.139  0.397
+## ders_upset_guilty_p                           0.640  0.132
+## ders_upset_irritation_p         0.231  0.108  0.548  0.130
+## ders_upset_long_time_better_p   0.606  0.136              
+## ders_upset_lose_control_p       0.657                0.106
+## ders_upset_out_control_p        0.304  0.171  0.211  0.383
+## ders_upset_time_p                                         
+## ders_upset_weak_p                             0.495       
+##                                MR3    MR6   
+## ders_attn_awareness_p                       
+## ders_clear_feelings_p                       
+## ders_emotion_overwhelm_p                    
+## ders_feelings_attentive_p                   
+## ders_feelings_care_p                   0.903
+## ders_feelings_know_p                   0.511
+## ders_upset_ack_p                0.184  0.281
+## ders_upset_angry_p                     0.185
+## ders_upset_ashamed_p                        
+## ders_upset_behavior_control_p               
+## ders_upset_behavior_p                       
+## ders_upset_better_p             0.111  0.140
+## ders_upset_concentrate_p       -0.104  0.192
+## ders_upset_control_p            0.275       
+## ders_upset_depressed_p          0.581       
+## ders_upset_difficulty_p                     
+## ders_upset_embarrassed_p               0.217
+## ders_upset_emotion_overwhelm_p              
+## ders_upset_esteem_p             0.296  0.128
+## ders_upset_feel_better_p        0.176       
+## ders_upset_fixation_p                       
+## ders_upset_focus_p              0.150       
+## ders_upset_guilty_p             0.121       
+## ders_upset_irritation_p                0.112
+## ders_upset_long_time_better_p          0.138
+## ders_upset_lose_control_p                   
+## ders_upset_out_control_p        0.109 -0.185
+## ders_upset_time_p               0.997       
+## ders_upset_weak_p               0.216       
+## 
+##                  MR5   MR2   MR1   MR4   MR3   MR6
+## SS loadings    3.977 2.845 2.105 1.718 1.723 1.426
+## Proportion Var 0.137 0.098 0.073 0.059 0.059 0.049
+## Cumulative Var 0.137 0.235 0.308 0.367 0.426 0.476
+\end{verbatim}
+
+\hypertarget{cfa}{%
+\section{CFA}\label{cfa}}
+
+\hypertarget{step-3-4}{%
+\subsection{Step 3 \& 4}\label{step-3-4}}
+
+Above, we did an exploratory factor analysis, but now we want to run a confirmatory one. To do that, we'll use the \texttt{lavaan} package, which is the most popular pacakge in R for SEM-based analyses.
+
+Like a basic regression, we'll need a model formula and some data. But unlike a basic regression, CFA and broader SEM usually have several formulas at once. To handle this, we'll write down our model as a string and save it in a \texttt{my\_model} variable to make things easier to read.
+
+After that, we just send the model to the \texttt{cfa()} function, which does the rest of the work for us. A quick call to \texttt{summary()} and we're done!
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(lavaan)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning: package 'lavaan' was built under R version 4.1.3
+\end{verbatim}
+
+\begin{verbatim}
+## This is lavaan 0.6-11
+## lavaan is FREE software! Please report any bugs.
+\end{verbatim}
+
+\begin{verbatim}
+## 
+## Attaching package: 'lavaan'
+\end{verbatim}
+
+\begin{verbatim}
+## The following object is masked from 'package:psych':
+## 
+##     cor2cov
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{my\_model }\OtherTok{\textless{}{-}} \StringTok{\textquotesingle{}}
+\StringTok{  b =\textasciitilde{} ders\_attn\_awareness\_p + ders\_clear\_feelings\_p + }
+\StringTok{    ders\_emotion\_overwhelm\_p + ders\_feelings\_attentive\_p + }
+\StringTok{    ders\_feelings\_care\_p + ders\_feelings\_know\_p + ders\_upset\_ack\_p}
+\StringTok{  }
+\StringTok{  c =\textasciitilde{} ders\_upset\_angry\_p + ders\_upset\_control\_p + }
+\StringTok{    ders\_upset\_difficulty\_p + ders\_upset\_embarrassed\_p + }
+\StringTok{    ders\_upset\_focus\_p + ders\_upset\_out\_control\_p}
+\StringTok{  }
+\StringTok{  a =\textasciitilde{} ders\_upset\_ashamed\_p + ders\_upset\_behavior\_control\_p + }
+\StringTok{    ders\_upset\_depressed\_p + ders\_upset\_esteem\_p + }
+\StringTok{    ders\_upset\_feel\_better\_p + ders\_upset\_guilty\_p + }
+\StringTok{    ders\_upset\_irritation\_p + ders\_upset\_time\_p + }
+\StringTok{    ders\_upset\_weak\_p}
+\StringTok{  }
+\StringTok{  d =\textasciitilde{} ders\_upset\_behavior\_p + ders\_upset\_better\_p + }
+\StringTok{    ders\_upset\_concentrate\_p + ders\_upset\_emotion\_overwhelm\_p + }
+\StringTok{    ders\_upset\_fixation\_p + ders\_upset\_long\_time\_better\_p + }
+\StringTok{    ders\_upset\_lose\_control\_p}
+\StringTok{\textquotesingle{}}
+
+\NormalTok{fit }\OtherTok{\textless{}{-}} \FunctionTok{cfa}\NormalTok{(}
+  \AttributeTok{model =}\NormalTok{ my\_model,}
+  \AttributeTok{data =}\NormalTok{ df)}
+
+\FunctionTok{summary}\NormalTok{(fit, }\AttributeTok{fit.measures =}\NormalTok{ T)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## lavaan 0.6-11 ended normally after 300 iterations
+## 
+##   Estimator                                         ML
+##   Optimization method                           NLMINB
+##   Number of model parameters                        64
+##                                                       
+##                                                   Used       Total
+##   Number of observations                          6147        6251
+##                                                                   
+## Model Test User Model:
+##                                                        
+##   Test statistic                              35452.539
+##   Degrees of freedom                                371
+##   P-value (Chi-square)                            0.000
+## 
+## Model Test Baseline Model:
+## 
+##   Test statistic                            184927.008
+##   Degrees of freedom                               406
+##   P-value                                        0.000
+## 
+## User Model versus Baseline Model:
+## 
+##   Comparative Fit Index (CFI)                    0.810
+##   Tucker-Lewis Index (TLI)                       0.792
+## 
+## Loglikelihood and Information Criteria:
+## 
+##   Loglikelihood user model (H0)            -877024.922
+##   Loglikelihood unrestricted model (H1)    -859298.653
+##                                                       
+##   Akaike (AIC)                             1754177.844
+##   Bayesian (BIC)                           1754608.163
+##   Sample-size adjusted Bayesian (BIC)      1754404.788
+## 
+## Root Mean Square Error of Approximation:
+## 
+##   RMSEA                                          0.124
+##   90 Percent confidence interval - lower         0.123
+##   90 Percent confidence interval - upper         0.125
+##   P-value RMSEA <= 0.05                          0.000
+## 
+## Standardized Root Mean Square Residual:
+## 
+##   SRMR                                           0.058
+## 
+## Parameter Estimates:
+## 
+##   Standard errors                             Standard
+##   Information                                 Expected
+##   Information saturated (h1) model          Structured
+## 
+## Latent Variables:
+##                    Estimate  Std.Err  z-value  P(>|z|)
+##   b =~                                                
+##     drs_ttn_wrnss_    1.000                           
+##     drs_clr_flngs_    0.928    0.011   85.836    0.000
+##     drs_mtn_vrwhl_    0.730    0.015   49.818    0.000
+##     drs_flngs_ttn_    1.071    0.017   62.857    0.000
+##     drs_flngs_cr_p    0.985    0.013   73.134    0.000
+##     drs_flngs_knw_    1.020    0.013   80.144    0.000
+##     ders_upst_ck_p    0.760    0.012   63.093    0.000
+##   c =~                                                
+##     drs_pst_ngry_p    1.000                           
+##     drs_pst_cntrl_    0.702    0.008   84.481    0.000
+##     drs_pst_dffcl_    0.773    0.011   71.472    0.000
+##     drs_pst_mbrrs_    0.986    0.012   81.388    0.000
+##     ders_pst_fcs_p    0.790    0.009   87.752    0.000
+##     drs_pst_t_cnt_    0.870    0.012   72.614    0.000
+##   a =~                                                
+##     drs_pst_shmd_p    1.000                           
+##     drs_pst_bhvr__    0.830    0.014   60.223    0.000
+##     drs_pst_dprss_    0.871    0.010   86.053    0.000
+##     ders_pst_stm_p    1.022    0.010  100.690    0.000
+##     drs_pst_fl_bt_    0.931    0.009  102.532    0.000
+##     drs_pst_glty_p    1.128    0.012   94.694    0.000
+##     drs_pst_rrttn_    1.003    0.009  114.024    0.000
+##     ders_upst_tm_p    0.758    0.012   64.555    0.000
+##     ders_upst_wk_p    1.073    0.016   68.799    0.000
+##   d =~                                                
+##     drs_pst_bhvr_p    1.000                           
+##     drs_pst_bttr_p    1.041    0.017   61.130    0.000
+##     drs_pst_cncnt_    1.059    0.011   94.852    0.000
+##     drs_pst_mtn_v_    1.246    0.014   91.898    0.000
+##     drs_pst_fxtn_p    1.187    0.011  105.360    0.000
+##     drs_pst_lng___    1.139    0.012   92.068    0.000
+##     drs_pst_ls_cn_    0.977    0.010   93.973    0.000
+## 
+## Covariances:
+##                    Estimate  Std.Err  z-value  P(>|z|)
+##   b ~~                                                
+##     c              1306.707   31.057   42.074    0.000
+##     a              1314.713   32.965   39.882    0.000
+##     d               977.803   23.843   41.010    0.000
+##   c ~~                                                
+##     a              1889.998   43.083   43.868    0.000
+##     d              1409.192   31.338   44.968    0.000
+##   a ~~                                                
+##     d              1647.825   35.449   46.485    0.000
+## 
+## Variances:
+##                    Estimate  Std.Err  z-value  P(>|z|)
+##    .drs_ttn_wrnss_  513.518   11.572   44.378    0.000
+##    .drs_clr_flngs_  406.478    9.368   43.391    0.000
+##    .drs_mtn_vrwhl_ 1338.981   25.163   53.212    0.000
+##    .drs_flngs_ttn_ 1574.552   30.665   51.347    0.000
+##    .drs_flngs_cr_p  842.167   17.209   48.936    0.000
+##    .drs_flngs_knw_  652.877   14.069   46.406    0.000
+##    .ders_upst_ck_p  785.343   15.308   51.303    0.000
+##    .drs_pst_ngry_p  762.693   16.279   46.851    0.000
+##    .drs_pst_cntrl_  396.881    8.388   47.316    0.000
+##    .drs_pst_dffcl_  864.936   16.978   50.945    0.000
+##    .drs_pst_mbrrs_  905.787   18.706   48.423    0.000
+##    .ders_pst_fcs_p  428.311    9.333   45.890    0.000
+##    .drs_pst_t_cnt_ 1041.786   20.543   50.713    0.000
+##    .drs_pst_shmd_p  645.893   13.927   46.376    0.000
+##    .drs_pst_bhvr__ 2521.764   46.826   53.854    0.000
+##    .drs_pst_dprss_ 1100.835   21.405   51.429    0.000
+##    .ders_pst_stm_p  918.441   18.823   48.794    0.000
+##    .drs_pst_fl_bt_  714.048   14.770   48.343    0.000
+##    .drs_pst_glty_p 1376.005   27.494   50.048    0.000
+##    .drs_pst_rrttn_  538.793   12.109   44.496    0.000
+##    .ders_upst_tm_p 1781.098   33.250   53.566    0.000
+##    .ders_upst_wk_p 3045.811   57.202   53.247    0.000
+##    .drs_pst_bhvr_p  341.520    7.431   45.958    0.000
+##    .drs_pst_bttr_p 1865.524   34.818   53.580    0.000
+##    .drs_pst_cncnt_  568.218   11.578   49.079    0.000
+##    .drs_pst_mtn_v_  874.766   17.593   49.723    0.000
+##    .drs_pst_fxtn_p  482.445   10.491   45.987    0.000
+##    .drs_pst_lng___  726.835   14.628   49.688    0.000
+##    .drs_pst_ls_cn_  499.455   10.135   49.279    0.000
+##     b              1331.862   32.715   40.710    0.000
+##     c              1973.464   48.190   40.951    0.000
+##     a              2650.912   58.812   45.074    0.000
+##     d              1316.773   29.564   44.539    0.000
+\end{verbatim}
+
+\hypertarget{sem}{%
+\section{SEM}\label{sem}}
+
+\hypertarget{steps-3-4-1}{%
+\subsection{Steps 3 \& 4}\label{steps-3-4-1}}
+
+The CFA above shows us that there are several latent variables that underlie the scale in this dataset, which we have labelled \texttt{a} through \texttt{d}. Do the scores on one factor predict scores on another? Does the sex of a subject predict their scores on these hidden variables? SEM is the technique that answers this question. All we need to to to get there is to combine our existing model with some existing commands.
+
+Here, we are saying that we expect variable \texttt{a} to be predicted by variable \texttt{b}, as well as subject sex.
+
+To demonstrate another trick in the next line, we'll tell R that we want our model to force the correlation between \texttt{b} and \texttt{c} to be exactly 0. Why do this? In this case, there isn't really a reason, but in broader SEM it helps to have this tool in your belt, so we demonstrate how to force model constraintes here in case you ever need them.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{new\_model }\OtherTok{\textless{}{-}} \FunctionTok{paste}\NormalTok{(}
+\NormalTok{  my\_model, }
+  \StringTok{\textquotesingle{}}
+\StringTok{  a \textasciitilde{} b + sex}
+\StringTok{  b \textasciitilde{}\textasciitilde{} 0*c\textquotesingle{}}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+With our new model specified, we can safely proceed to estimate our SEM and ask for a summary in the usual way.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{fit }\OtherTok{\textless{}{-}} \FunctionTok{sem}\NormalTok{(}
+  \AttributeTok{model =}\NormalTok{ new\_model,}
+  \AttributeTok{data =}\NormalTok{ df,}
+  \AttributeTok{estimator =} \StringTok{\textquotesingle{}MLR\textquotesingle{}}\NormalTok{,}
+  \AttributeTok{missing =} \StringTok{\textquotesingle{}ML\textquotesingle{}}\NormalTok{)}
+
+\FunctionTok{summary}\NormalTok{(fit)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## lavaan 0.6-11 ended normally after 433 iterations
+## 
+##   Estimator                                         ML
+##   Optimization method                           NLMINB
+##   Number of model parameters                        91
+##                                                       
+##   Number of observations                          6251
+##   Number of missing patterns                         2
+##                                                       
+## Model Test User Model:
+##                                                 Standard      Robust
+##   Test Statistic                               44875.439     969.709
+##   Degrees of freedom                                 402         402
+##   P-value (Chi-square)                             0.000       0.000
+##   Scaling correction factor                                   46.277
+##        Yuan-Bentler correction (Mplus variant)                      
+## 
+## Parameter Estimates:
+## 
+##   Standard errors                             Sandwich
+##   Information bread                           Observed
+##   Observed information based on                Hessian
+## 
+## Latent Variables:
+##                    Estimate  Std.Err  z-value  P(>|z|)
+##   b =~                                                
+##     drs_ttn_wrnss_    1.000                           
+##     drs_clr_flngs_    0.922    0.045   20.477    0.000
+##     drs_mtn_vrwhl_    0.712    0.118    6.055    0.000
+##     drs_flngs_ttn_    1.073    0.087   12.339    0.000
+##     drs_flngs_cr_p    0.971    0.203    4.783    0.000
+##     drs_flngs_knw_    1.002    0.170    5.885    0.000
+##     ders_upst_ck_p    0.739    0.169    4.381    0.000
+##   c =~                                                
+##     drs_pst_ngry_p    1.000                           
+##     drs_pst_cntrl_    0.716    0.102    7.009    0.000
+##     drs_pst_dffcl_    0.771    0.102    7.584    0.000
+##     drs_pst_mbrrs_    0.993    0.022   46.136    0.000
+##     ders_pst_fcs_p    0.796    0.091    8.765    0.000
+##     drs_pst_t_cnt_    0.870    0.075   11.650    0.000
+##   a =~                                                
+##     drs_pst_shmd_p    1.000                           
+##     drs_pst_bhvr__    0.813    0.080   10.207    0.000
+##     drs_pst_dprss_    0.867    0.093    9.342    0.000
+##     ders_pst_stm_p    1.022    0.070   14.501    0.000
+##     drs_pst_fl_bt_    0.921    0.068   13.504    0.000
+##     drs_pst_glty_p    1.134    0.056   20.143    0.000
+##     drs_pst_rrttn_    1.001    0.053   18.806    0.000
+##     ders_upst_tm_p    0.758    0.106    7.132    0.000
+##     ders_upst_wk_p    1.076    0.079   13.565    0.000
+##   d =~                                                
+##     drs_pst_bhvr_p    1.000                           
+##     drs_pst_bttr_p    1.026    0.099   10.395    0.000
+##     drs_pst_cncnt_    1.058    0.106    9.990    0.000
+##     drs_pst_mtn_v_    1.228    0.126    9.718    0.000
+##     drs_pst_fxtn_p    1.184    0.108   10.985    0.000
+##     drs_pst_lng___    1.138    0.108   10.570    0.000
+##     drs_pst_ls_cn_    0.979    0.111    8.784    0.000
+## 
+## Regressions:
+##                    Estimate  Std.Err  z-value  P(>|z|)
+##   a ~                                                 
+##     b                 0.994    0.179    5.553    0.000
+##     sex              -0.200    1.011   -0.198    0.843
+## 
+## Covariances:
+##                    Estimate  Std.Err  z-value  P(>|z|)
+##   b ~~                                                
+##     c                 0.000                           
+##     d               331.406  212.968    1.556    0.120
+##   c ~~                                                
+##     d              1085.534  369.380    2.939    0.003
+## 
+## Intercepts:
+##                    Estimate  Std.Err  z-value  P(>|z|)
+##    .drs_ttn_wrnss_    6.262    0.548   11.437    0.000
+##    .drs_clr_flngs_    5.890    0.503   11.719    0.000
+##    .drs_mtn_vrwhl_    4.458    0.577    7.724    0.000
+##    .drs_flngs_ttn_    7.605    0.710   10.711    0.000
+##    .drs_flngs_cr_p    6.691    0.589   11.359    0.000
+##    .drs_flngs_knw_    6.395    0.576   11.110    0.000
+##    .ders_upst_ck_p    5.698    0.503   11.334    0.000
+##    .drs_pst_ngry_p    5.373    0.666    8.069    0.000
+##    .drs_pst_cntrl_    3.283    0.472    6.960    0.000
+##    .drs_pst_dffcl_    5.246    0.577    9.098    0.000
+##    .drs_pst_mbrrs_    5.460    0.678    8.058    0.000
+##    .ders_pst_fcs_p    4.418    0.519    8.510    0.000
+##    .drs_pst_t_cnt_    4.830    0.642    7.523    0.000
+##    .drs_pst_shmd_p    6.082    1.722    3.531    0.000
+##    .drs_pst_bhvr__    9.136    1.587    5.757    0.000
+##    .drs_pst_dprss_    5.656    1.579    3.581    0.000
+##    .ders_pst_stm_p    6.690    1.784    3.750    0.000
+##    .drs_pst_fl_bt_    5.815    1.624    3.581    0.000
+##    .drs_pst_glty_p    8.072    1.998    4.040    0.000
+##    .drs_pst_rrttn_    6.049    1.748    3.460    0.001
+##    .ders_upst_tm_p    6.030    1.464    4.118    0.000
+##    .ders_upst_wk_p    9.695    2.009    4.826    0.000
+##    .drs_pst_bhvr_p    3.928    0.519    7.562    0.000
+##    .drs_pst_bttr_p    7.784    0.732   10.635    0.000
+##    .drs_pst_cncnt_    5.052    0.577    8.761    0.000
+##    .drs_pst_mtn_v_    5.647    0.689    8.194    0.000
+##    .drs_pst_fxtn_p    5.027    0.617    8.153    0.000
+##    .drs_pst_lng___    4.801    0.630    7.627    0.000
+##    .drs_pst_ls_cn_    3.824    0.535    7.154    0.000
+##     b                 0.000                           
+##     c                 0.000                           
+##    .a                 0.000                           
+##     d                 0.000                           
+## 
+## Variances:
+##                    Estimate  Std.Err  z-value  P(>|z|)
+##    .drs_ttn_wrnss_  492.585  294.777    1.671    0.095
+##    .drs_clr_flngs_  399.547  235.111    1.699    0.089
+##    .drs_mtn_vrwhl_ 1359.647  332.156    4.093    0.000
+##    .drs_flngs_ttn_ 1539.259  390.781    3.939    0.000
+##    .drs_flngs_cr_p  854.744  343.692    2.487    0.013
+##    .drs_flngs_knw_  674.489  274.379    2.458    0.014
+##    .ders_upst_ck_p  813.010  249.011    3.265    0.001
+##    .drs_pst_ngry_p  771.454  257.955    2.991    0.003
+##    .drs_pst_cntrl_  371.548  123.848    3.000    0.003
+##    .drs_pst_dffcl_  890.127  253.745    3.508    0.000
+##    .drs_pst_mbrrs_  909.902  298.617    3.047    0.002
+##    .ders_pst_fcs_p  427.696  158.159    2.704    0.007
+##    .drs_pst_t_cnt_ 1062.867  289.565    3.671    0.000
+##    .drs_pst_shmd_p  644.235  201.146    3.203    0.001
+##    .drs_pst_bhvr__ 2586.715  451.488    5.729    0.000
+##    .drs_pst_dprss_ 1106.487  269.756    4.102    0.000
+##    .ders_pst_stm_p  901.646  241.954    3.727    0.000
+##    .drs_pst_fl_bt_  751.413  192.760    3.898    0.000
+##    .drs_pst_glty_p 1318.051  322.353    4.089    0.000
+##    .drs_pst_rrttn_  534.993  171.841    3.113    0.002
+##    .ders_upst_tm_p 1771.492  359.545    4.927    0.000
+##    .ders_upst_wk_p 3005.514  507.729    5.920    0.000
+##    .drs_pst_bhvr_p  331.459  106.528    3.111    0.002
+##    .drs_pst_bttr_p 1897.752  392.567    4.834    0.000
+##    .drs_pst_cncnt_  561.320  186.090    3.016    0.003
+##    .drs_pst_mtn_v_  921.990  256.741    3.591    0.000
+##    .drs_pst_fxtn_p  480.142  158.951    3.021    0.003
+##    .drs_pst_lng___  721.445  217.179    3.322    0.001
+##    .drs_pst_ls_cn_  487.095  161.691    3.012    0.003
+##     b              1362.952  424.069    3.214    0.001
+##     c              1920.212  424.074    4.528    0.000
+##    .a              1342.507  419.220    3.202    0.001
+##     d               998.399  337.969    2.954    0.003
+\end{verbatim}
+
+\hypertarget{modification-indices}{%
+\subsection{Modification indices}\label{modification-indices}}
+
+Not all models fit well. When they don't it is often evidence that something in the model is mis-specified (e.g., forced to 0, when it should be estimated). \textbf{Modification indices} give you hints at which parameters you might want to free and they are easy to get with the \texttt{modindices()} function.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{modindices}\NormalTok{(fit, }\AttributeTok{sort =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{maximum.number =} \DecValTok{5}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##                        lhs op                      rhs
+## 32                       b ~~                        c
+## 190  ders_attn_awareness_p ~~    ders_clear_feelings_p
+## 367     ders_upset_angry_p ~~ ders_upset_embarrassed_p
+## 509 ders_upset_depressed_p ~~        ders_upset_time_p
+## 296   ders_feelings_care_p ~~     ders_feelings_know_p
+##           mi      epc sepc.lv sepc.all sepc.nox
+## 32  3645.559 1344.429   0.831    0.831    0.831
+## 190 2936.500  454.475 454.475    1.024    1.024
+## 367 2263.767  645.209 645.209    0.770    0.770
+## 509 2124.146  878.919 878.919    0.628    0.628
+## 296 1691.296  484.229 484.229    0.638    0.638
+\end{verbatim}
+
+\hypertarget{strings-should-you-care}{%
+\chapter{Strings, should you care?}\label{strings-should-you-care}}
+
+When it comes to learning R, there are two topics that almost no one ever \emph{asks} for, but they still often appreciate having after the fact. The first of these is string manipulation.
+
+Here, we show off some of R's text manipulation abilities. If you see something you like, feel free to incorporate it.
+
+\hypertarget{a-recurring-example}{%
+\section{A recurring example}\label{a-recurring-example}}
+
+Throughout this exercise, we'll imagine we have an ongoing research study with multiple sources of important information:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  A \texttt{contact\_df}, which includes identifying contact information about the subjects in our study, some of which we need for administrative purposes, but some of which we also need for analysis (e.g., birth dates to calculate age, which will be used as a covariate in a regression.).
+\item
+  A \texttt{mood\_df}, which contains the substantive information the study is about, including a mood score.
+\end{enumerate}
+
+Because each dataset only includes three people, they are easy to take a glance at below.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(tidyverse)}
+
+\NormalTok{contact\_df }\OtherTok{\textless{}{-}} \FunctionTok{read\_csv}\NormalTok{(}\StringTok{\textquotesingle{}data/contact\_info.csv\textquotesingle{}}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Rows: 3 Columns: 11
+## -- Column specification ------------------------------------
+## Delimiter: ","
+## chr (8): form_1_timestamp, fname, lname, phone, address,...
+## dbl (2): record_id, form_1_complete
+## lgl (1): redcap_survey_identifier
+## 
+## i Use `spec()` to retrieve the full column specification for this data.
+## i Specify the column types or set `show_col_types = FALSE` to quiet this message.
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{mood\_df }\OtherTok{\textless{}{-}} \FunctionTok{read\_csv}\NormalTok{(}\StringTok{\textquotesingle{}data/mood\_data.csv\textquotesingle{}}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Rows: 3 Columns: 3
+## -- Column specification ------------------------------------
+## Delimiter: ","
+## chr (1): name
+## dbl (2): age, mood_score
+## 
+## i Use `spec()` to retrieve the full column specification for this data.
+## i Specify the column types or set `show_col_types = FALSE` to quiet this message.
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{contact\_df}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 3 x 11
+##   record_id redcap_survey_iden~ form_1_timestamp fname lname
+##       <dbl> <lgl>               <chr>            <chr> <chr>
+## 1         1 NA                  4/14/2022 14:30  Ian   Cero 
+## 2         2 NA                  4/14/2022 14:32  Test  McFa~
+## 3         3 NA                  4/14/2022 14:34  Exam~ McFa~
+## # ... with 6 more variables: phone <chr>, address <chr>,
+## #   tax_day <chr>, tax_day_wish <chr>, open_ended <chr>,
+## #   form_1_complete <dbl>
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{mood\_df}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 3 x 3
+##   name              age mood_score
+##   <chr>           <dbl>      <dbl>
+## 1 CERO, Ian          25          6
+## 2 MCFAKE, Test       26          9
+## 3 MCFAKE, Example    25          3
+\end{verbatim}
+
+\hypertarget{join-the-datasets}{%
+\section{Join the datasets}\label{join-the-datasets}}
+
+One of the first, most obvious things we want to do might be joining these two datasets. That \emph{should} be easy because we have names in both of them.
+
+But wait! The names aren't formatted in the same way. In the mood dataset, they are formatted like ``CERO, Ian'', but in the contact dataset, they are formatted with two seperate variables: \texttt{fname} = Ian, \texttt{lname} = Cero. All of the joining operations we know require that at least one column is \emph{identical} across the datasets. That's how we know which scores to link.
+
+To solve this, we can simply create a new \texttt{name} variable in the contact dataframe, using \texttt{paste()} and \texttt{toupper()}. Now, we will have a column with identical formatting in each dataframe.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{contact\_df }\OtherTok{\textless{}{-}}\NormalTok{ contact\_df }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{mutate}\NormalTok{(}
+    \AttributeTok{name =} \FunctionTok{paste}\NormalTok{(}\FunctionTok{toupper}\NormalTok{(lname), fname, }\AttributeTok{sep =} \StringTok{\textquotesingle{}, \textquotesingle{}}\NormalTok{))}
+
+\NormalTok{contact\_df }\OtherTok{\textless{}{-}}\NormalTok{ contact\_df }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{left\_join}\NormalTok{(mood\_df, }\AttributeTok{by =} \StringTok{\textquotesingle{}name\textquotesingle{}}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{direction-order-of-operations}{%
+\subsection{Direction / order of operations}\label{direction-order-of-operations}}
+
+Can we go the other way around, from mood to contact? Yes, but takes more work, as you can see below. This is an important lesson about R's string functions: there is typically more than one way to solve a problem, but they are not all equally valuable. Sometimes, one is much harder than the others.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{mood\_df }\OtherTok{\textless{}{-}}\NormalTok{ mood\_df }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{mutate}\NormalTok{(}
+    \AttributeTok{lname =} \FunctionTok{str\_extract}\NormalTok{(name, }\StringTok{\textquotesingle{}}\SpecialCharTok{\textbackslash{}\textbackslash{}}\StringTok{w+\textquotesingle{}}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%} 
+      \FunctionTok{tolower}\NormalTok{() }\SpecialCharTok{\%\textgreater{}\%} 
+\NormalTok{      tools}\SpecialCharTok{::}\FunctionTok{toTitleCase}\NormalTok{() }\SpecialCharTok{\%\textgreater{}\%} 
+      \FunctionTok{str\_replace}\NormalTok{(}\StringTok{\textquotesingle{}Mcf\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}McF\textquotesingle{}}\NormalTok{),}
+    \AttributeTok{fname =} \FunctionTok{str\_extract}\NormalTok{(name, }\StringTok{\textquotesingle{}, }\SpecialCharTok{\textbackslash{}\textbackslash{}}\StringTok{w+\textquotesingle{}}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%} 
+      \FunctionTok{str\_remove}\NormalTok{(}\StringTok{\textquotesingle{}, \textquotesingle{}}\NormalTok{))}
+
+\NormalTok{mood\_df }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{left\_join}\NormalTok{(contact\_df, }\AttributeTok{by =} \FunctionTok{c}\NormalTok{(}\StringTok{\textquotesingle{}fname\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}lname\textquotesingle{}}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 3 x 17
+##   name.x          age.x mood_score.x lname  fname  record_id
+##   <chr>           <dbl>        <dbl> <chr>  <chr>      <dbl>
+## 1 CERO, Ian          25            6 Cero   Ian            1
+## 2 MCFAKE, Test       26            9 McFake Test           2
+## 3 MCFAKE, Example    25            3 McFake Examp~         3
+## # ... with 11 more variables:
+## #   redcap_survey_identifier <lgl>, form_1_timestamp <chr>,
+## #   phone <chr>, address <chr>, tax_day <chr>,
+## #   tax_day_wish <chr>, open_ended <chr>,
+## #   form_1_complete <dbl>, name.y <chr>, age.y <dbl>,
+## #   mood_score.y <dbl>
+\end{verbatim}
+
+\hypertarget{extract-some-information}{%
+\section{Extract some information}\label{extract-some-information}}
+
+Often, a column in a spreadsheet holds many pieces of information\ldots{} and we need just one specific piece. For example, a person's address has much information about their location, but the zipcode is typically most useful for statistical analysis because we can associate it withe median income.
+
+The problem comes in when we need \emph{just} that one piece of information in a new column. Again, R comes to the rescue, this time with the \texttt{str\_extract()} function, which takes two arguments: the text we want to grab something from, and the ``pattern'' of things we want to extract. In this case, the pattern \texttt{\textquotesingle{}{[}0-9{]}+\$\textquotesingle{}} tells R to grab any digit from 0-9. The \texttt{+} says that it needs to be an unbroken sequence of digits and the \texttt{\$} says it must come at the end of the main text, which is where zipcodes are always located.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{contact\_df }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{mutate}\NormalTok{(}
+    \AttributeTok{zip =} \FunctionTok{str\_extract}\NormalTok{(address, }\StringTok{\textquotesingle{}[0{-}9]+$\textquotesingle{}}\NormalTok{)) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{select}\NormalTok{(address, zip)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 3 x 2
+##   address                          zip  
+##   <chr>                            <chr>
+## 1 123 4th St S  Appleton, MI 67890 67890
+## 2 456 5th St  Appleton, MI 67890   67890
+## 3 789 6th St  Appleton, MI 67890   67890
+\end{verbatim}
+
+\hypertarget{phone-numbers}{%
+\section{Phone numbers}\label{phone-numbers}}
+
+When you ask a research subject, they can give you a valid phone number in a variety of different ways: (123) 456-7890, 123-456-7890, 1234567890, and so on. This can make working with them complicated. Technically, all we need from a phone number is the numbers. We could use \texttt{str\_extract()} for that, but to demonstrate another approach, let's use \texttt{str\_replace\_all()} this time. Here, we tell R that we want to replace anything in \texttt{phone} that is NOT a digit (the \texttt{\^{}} symbol means ``not'') with \texttt{\textquotesingle{}\textquotesingle{}} (an empty string / nothing).
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{contact\_df }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{mutate}\NormalTok{(}
+    \AttributeTok{formatted\_phone =} \FunctionTok{str\_replace\_all}\NormalTok{(phone, }\StringTok{\textquotesingle{}[\^{}0{-}9]\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}\textquotesingle{}}\NormalTok{)) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{select}\NormalTok{(phone, formatted\_phone)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 3 x 2
+##   phone          formatted_phone
+##   <chr>          <chr>          
+## 1 314-159-1234   3141591234     
+## 2 (567) 123-5876 5671235876     
+## 3 4567890123     4567890123
+\end{verbatim}
+
+They may not be pretty, but now all of our phone numbers are formatted in exactly the same way. This makes it easy to run subsequent manipulation tasks on them, like checking for duplicates.
+
+\hypertarget{what-about-using-str_extract_all}{%
+\subsection{\texorpdfstring{What about using \texttt{str\_extract\_all()}}{What about using str\_extract\_all()}}\label{what-about-using-str_extract_all}}
+
+As we mentioned above, there are typically many ways to do the same process with strings, but one or the other often takes more work. In case you are interested, here is the process for extracting a phone number with \texttt{str\_extract\_all()}. The reason it is more complicated in this case is because that function returns a \texttt{list()} object, which means you need to wrap it in \texttt{map()} to play nice, then unlist and collapse it.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{contact\_df }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{mutate}\NormalTok{(}
+    \AttributeTok{formatted\_phone =} \FunctionTok{map\_chr}\NormalTok{(}
+      \AttributeTok{.x =}\NormalTok{ phone, }
+      \AttributeTok{.f =} \SpecialCharTok{\textasciitilde{}} \FunctionTok{str\_extract\_all}\NormalTok{(.x, }\StringTok{\textquotesingle{}[0{-}9]+\textquotesingle{}}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%} 
+        \FunctionTok{unlist}\NormalTok{() }\SpecialCharTok{\%\textgreater{}\%} 
+        \FunctionTok{paste}\NormalTok{(}\AttributeTok{collapse =} \StringTok{\textquotesingle{}\textquotesingle{}}\NormalTok{))) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{select}\NormalTok{(phone, formatted\_phone)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 3 x 2
+##   phone          formatted_phone
+##   <chr>          <chr>          
+## 1 314-159-1234   3141591234     
+## 2 (567) 123-5876 5671235876     
+## 3 4567890123     4567890123
+\end{verbatim}
+
+\hypertarget{string-interpolation}{%
+\section{String interpolation}\label{string-interpolation}}
+
+For basic tasks, the family of \texttt{str\_...()} functions are great. But what if I want to do something more complicated, like compose a letter.
+
+As a dmeonstration, our contact dataframe includes the date taxes were due, but also the days taxes were paid. What if we wanted to produce a message for everyone that included their last name, as well as the number of days late their taxes were.
+
+Enter \texttt{glue} and \textbf{string interpolation}. This powerful tool lets us write out our template string, then use \texttt{\{\}} to refer to a variable that will be injected (``interpolated'') into that string, like so.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(glue)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning: package 'glue' was built under R version 4.1.3
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{me }\OtherTok{\textless{}{-}} \StringTok{\textquotesingle{}Ian\textquotesingle{}}
+\FunctionTok{glue}\NormalTok{(}\StringTok{\textquotesingle{}My name is \{me\}\textquotesingle{}}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## My name is Ian
+\end{verbatim}
+
+We can use this knowledge to create individual messages for each person in our dataframe.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{contact\_df }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{mutate}\NormalTok{(}
+    \AttributeTok{tax\_date =}\NormalTok{ lubridate}\SpecialCharTok{::}\FunctionTok{mdy}\NormalTok{(tax\_day),}
+    \AttributeTok{days\_late =}\NormalTok{ tax\_date }\SpecialCharTok{{-}} \FunctionTok{as.Date}\NormalTok{(}\StringTok{\textquotesingle{}2022{-}04{-}18\textquotesingle{}}\NormalTok{)) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{filter}\NormalTok{(days\_late }\SpecialCharTok{\textgreater{}} \DecValTok{0}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{mutate}\NormalTok{(}
+    \AttributeTok{message =} \FunctionTok{glue}\NormalTok{(}
+      \StringTok{\textquotesingle{}Mr. \{lname\}, your taxes are \{days\_late\} days late.\textquotesingle{}}\NormalTok{)) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{select}\NormalTok{(lname, message)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 2 x 2
+##   lname  message                                
+##   <chr>  <glue>                                 
+## 1 Cero   Mr. Cero, your taxes are 5 days late.  
+## 2 McFake Mr. McFake, your taxes are 4 days late.
+\end{verbatim}
+
+You can also do it with as many variables as you like.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{data.frame}\NormalTok{(}\AttributeTok{id =} \DecValTok{1}\SpecialCharTok{:}\DecValTok{3}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{mutate}\NormalTok{(}
+    \AttributeTok{name =} \FunctionTok{c}\NormalTok{(}\StringTok{\textquotesingle{}Ian\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}Jen\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}Andy\textquotesingle{}}\NormalTok{),}
+    \AttributeTok{job =} \FunctionTok{c}\NormalTok{(}\StringTok{\textquotesingle{}statistician\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}writer\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}researcher\textquotesingle{}}\NormalTok{),}
+    \AttributeTok{pronouns =} \FunctionTok{c}\NormalTok{(}\StringTok{\textquotesingle{}He\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}She\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}They\textquotesingle{}}\NormalTok{),}
+    \AttributeTok{verb =} \FunctionTok{ifelse}\NormalTok{(pronouns }\SpecialCharTok{==} \StringTok{\textquotesingle{}They\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}are\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}is\textquotesingle{}}\NormalTok{),}
+    \AttributeTok{bio =} \FunctionTok{glue}\NormalTok{(}\StringTok{\textquotesingle{}This is \{name\}. \{pronouns\} \{verb\} a \{job\}.\textquotesingle{}}\NormalTok{)) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{select}\NormalTok{(bio)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##                                    bio
+## 1   This is Ian. He is a statistician.
+## 2        This is Jen. She is a writer.
+## 3 This is Andy. They are a researcher.
+\end{verbatim}
+
+\hypertarget{simulations}{%
+\chapter{Simulations}\label{simulations}}
+
+If strings are the main feature of R that people didn't realize they needed, simulation techniques are the 2nd. Many people start out saying they are a little intimidated by simulations, but end up feeling comfortable after a little bit of practice.
+
+The initial discomfort usually comes from the fact that we are doing statistics in reverse. In statistical \textbf{analysis}, we feed the data to a fitting function (like \texttt{lm()}) in order to get parameter estimates. In contrast, in simulations we are studying how well those functions \textbf{recover} parameters, so we choose some parameter values ourselves, make data that are consistent with those parameters, then apply our fitting function to see how well it guessed the parameters we planted in our data.
+
+\hypertarget{generating-fake-data}{%
+\section{Generating fake data}\label{generating-fake-data}}
+
+To get started, the first thing you need to know is how to generate fake random data. Fortunately, R has many functions for this, which generally start with \texttt{r...} for ``random''.
+
+For example, to make a random normal variable, you would call \texttt{rnorm}, which takes 3 arguments:
+
+\begin{itemize}
+\tightlist
+\item
+  \texttt{n}, the number of numbers you want to generate
+\item
+  \texttt{mean}, the mean of the population you want to be drawing from
+\item
+  \texttt{sd}, the standard deviation of the population you want to be drawing from
+\end{itemize}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{my\_normals }\OtherTok{\textless{}{-}} \FunctionTok{rnorm}\NormalTok{(}\AttributeTok{n =} \DecValTok{100}\NormalTok{, }\AttributeTok{mean =} \DecValTok{11}\NormalTok{, }\AttributeTok{sd =} \DecValTok{3}\NormalTok{)}
+
+\FunctionTok{hist}\NormalTok{(my\_normals)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{_main_files/figure-latex/unnamed-chunk-165-1.pdf}
+Looking at the graph, we got just about what we would have expected. Will things get even more normal looking with a larger sample size? Definitely.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{my\_normals }\OtherTok{\textless{}{-}} \FunctionTok{rnorm}\NormalTok{(}\AttributeTok{n =} \DecValTok{10000}\NormalTok{, }\AttributeTok{mean =} \DecValTok{11}\NormalTok{, }\AttributeTok{sd =} \DecValTok{3}\NormalTok{)}
+
+\FunctionTok{hist}\NormalTok{(my\_normals)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{_main_files/figure-latex/unnamed-chunk-166-1.pdf}
+
+\hypertarget{how-is-this-useful}{%
+\section{How is this useful?}\label{how-is-this-useful}}
+
+On their own, random numbers are useless. However, if we use them to make many fake datasets, we can apply the same analysis function to each dataset and keep track of the results. This allows us to ask questions like \emph{how often was an effect significant?} (i.e., power). For example, let's look at the power of a t-test.
+
+R tells us that if we use the formula, the power of a t-test with a true effect size of \texttt{d\ =\ .30} and a sample size of \texttt{n\ =\ 150} in each group, we have a power of about .73
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{pwr}\SpecialCharTok{::}\FunctionTok{pwr.t.test}\NormalTok{(}\AttributeTok{n =} \DecValTok{150}\NormalTok{, }\AttributeTok{d =}\NormalTok{ .}\DecValTok{30}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+##      Two-sample t test power calculation 
+## 
+##               n = 150
+##               d = 0.3
+##       sig.level = 0.05
+##           power = 0.7355674
+##     alternative = two.sided
+## 
+## NOTE: n is number in *each* group
+\end{verbatim}
+
+Let's make our own data and see if that holds when we try to simulate it.
+
+\hypertarget{re-testing-the-t-test}{%
+\section{Re-testing the t-test}\label{re-testing-the-t-test}}
+
+To simulate several datasets, we need just a few ingredients. First, we need a dataframe that is set up to represent many datasets. We can use \texttt{expand\_grid()} for this. With the following commands, it will make 1000 samples, each with two groups (0, 1), and each of those groups will contain 150 people.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{many\_datasets }\OtherTok{\textless{}{-}} \FunctionTok{expand\_grid}\NormalTok{(}
+  \AttributeTok{sample =} \DecValTok{1}\SpecialCharTok{:}\DecValTok{1000}\NormalTok{, }
+  \AttributeTok{group =} \DecValTok{0}\SpecialCharTok{:}\DecValTok{1}\NormalTok{, }
+  \AttributeTok{person\_id =} \DecValTok{1}\SpecialCharTok{:}\DecValTok{150}\NormalTok{)}
+
+\FunctionTok{head}\NormalTok{(many\_datasets)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 6 x 3
+##   sample group person_id
+##    <int> <int>     <int>
+## 1      1     0         1
+## 2      1     0         2
+## 3      1     0         3
+## 4      1     0         4
+## 5      1     0         5
+## 6      1     0         6
+\end{verbatim}
+
+Now, let's put some information in those groups. We'll give group 0 a mean of 0 and group 1 a mean of .30. Assuming they both have a standard deviation of 1.0, this works out to a group difference of Cohen's d = .30.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{many\_datasets }\OtherTok{\textless{}{-}}\NormalTok{ many\_datasets }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{mutate}\NormalTok{(}
+    \AttributeTok{score =} \FunctionTok{ifelse}\NormalTok{(}
+      \AttributeTok{test =}\NormalTok{ group }\SpecialCharTok{==} \DecValTok{0}\NormalTok{,}
+      \AttributeTok{yes =} \FunctionTok{rnorm}\NormalTok{(}\FunctionTok{n}\NormalTok{(), }\AttributeTok{mean =} \DecValTok{0}\NormalTok{, }\AttributeTok{sd =} \DecValTok{1}\NormalTok{),}
+      \AttributeTok{no =} \FunctionTok{rnorm}\NormalTok{(}\FunctionTok{n}\NormalTok{(), }\AttributeTok{mean =}\NormalTok{ .}\DecValTok{30}\NormalTok{, }\AttributeTok{sd =} \DecValTok{1}\NormalTok{)))}
+
+\FunctionTok{head}\NormalTok{(many\_datasets)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 6 x 4
+##   sample group person_id  score
+##    <int> <int>     <int>  <dbl>
+## 1      1     0         1 -0.986
+## 2      1     0         2 -1.00 
+## 3      1     0         3 -1.77 
+## 4      1     0         4  0.156
+## 5      1     0         5 -1.38 
+## 6      1     0         6  0.684
+\end{verbatim}
+
+Now, let's conduct a t-test on each one and look at the results.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{many\_datasets }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{group\_by}\NormalTok{(sample) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{nest}\NormalTok{() }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{mutate}\NormalTok{(}
+    \AttributeTok{fit =} \FunctionTok{map}\NormalTok{(data, }\SpecialCharTok{\textasciitilde{}} \FunctionTok{t.test}\NormalTok{(score }\SpecialCharTok{\textasciitilde{}}\NormalTok{ group, }\AttributeTok{data =}\NormalTok{ .x)),}
+    \AttributeTok{results =} \FunctionTok{map}\NormalTok{(fit, }\SpecialCharTok{\textasciitilde{}}\NormalTok{ broom}\SpecialCharTok{::}\FunctionTok{tidy}\NormalTok{(.x))) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{unnest}\NormalTok{(results) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{ungroup}\NormalTok{() }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{summarise}\NormalTok{(}\AttributeTok{power =} \FunctionTok{sum}\NormalTok{(p.value }\SpecialCharTok{\textless{}}\NormalTok{ .}\DecValTok{05}\NormalTok{)}\SpecialCharTok{/}\FunctionTok{length}\NormalTok{(p.value))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 1 x 1
+##   power
+##   <dbl>
+## 1 0.756
+\end{verbatim}
+
+Voila! Without doing any complicated calculus, we were able to calculate the power of a t-test - and pretty accurately too!
 
   \bibliography{book.bib,packages.bib}
 

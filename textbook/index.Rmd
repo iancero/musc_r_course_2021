@@ -1,5 +1,6 @@
 --- 
-title: "An Organic R Textbook"
+title: "Squeglia Lab:"
+subtitle: "Organic R Textbook"
 author: "Ian Cero, PhD MStat"
 date: "2022"
 site: bookdown::bookdown_site
