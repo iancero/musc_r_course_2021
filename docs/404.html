@@ -201,15 +201,25 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="3.9.2" data-path="basic-r.html"><a href="basic-r.html#official-coding-conventions"><i class="fa fa-check"></i><b>3.9.2</b> Official coding conventions</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="4" data-path="multilevel-models.html"><a href="multilevel-models.html"><i class="fa fa-check"></i><b>4</b> Multilevel Models</a>
+<li class="chapter" data-level="4" data-path="strings-should-you-care.html"><a href="strings-should-you-care.html"><i class="fa fa-check"></i><b>4</b> Strings, should you care?</a>
 <ul>
-<li class="chapter" data-level="4.1" data-path="multilevel-models.html"><a href="multilevel-models.html#steps-1-2---import-and-clean-the-data"><i class="fa fa-check"></i><b>4.1</b> Steps 1 &amp; 2 - Import and clean the data</a></li>
-<li class="chapter" data-level="4.2" data-path="multilevel-models.html"><a href="multilevel-models.html#steps-3-4---fit-the-model-and-summarize-it"><i class="fa fa-check"></i><b>4.2</b> Steps 3 &amp; 4 - Fit the model and summarize it</a>
+<li class="chapter" data-level="4.1" data-path="strings-should-you-care.html"><a href="strings-should-you-care.html#a-recurring-example"><i class="fa fa-check"></i><b>4.1</b> A recurring example</a></li>
+<li class="chapter" data-level="4.2" data-path="strings-should-you-care.html"><a href="strings-should-you-care.html#join-the-datasets"><i class="fa fa-check"></i><b>4.2</b> Join the datasets</a>
 <ul>
-<li class="chapter" data-level="4.2.1" data-path="multilevel-models.html"><a href="multilevel-models.html#where-are-my-p-values"><i class="fa fa-check"></i><b>4.2.1</b> Where are my p-values?</a></li>
-<li class="chapter" data-level="4.2.2" data-path="multilevel-models.html"><a href="multilevel-models.html#where-are-my-intraclass-correlations-iccs"><i class="fa fa-check"></i><b>4.2.2</b> Where are my intraclass correlations (ICCs)?</a></li>
+<li class="chapter" data-level="4.2.1" data-path="strings-should-you-care.html"><a href="strings-should-you-care.html#direction-order-of-operations"><i class="fa fa-check"></i><b>4.2.1</b> Direction / order of operations</a></li>
 </ul></li>
-<li class="chapter" data-level="4.3" data-path="multilevel-models.html"><a href="multilevel-models.html#logistic-multilevel-models"><i class="fa fa-check"></i><b>4.3</b> Logistic multilevel models</a></li>
+<li class="chapter" data-level="4.3" data-path="strings-should-you-care.html"><a href="strings-should-you-care.html#extract-some-information"><i class="fa fa-check"></i><b>4.3</b> Extract some information</a></li>
+<li class="chapter" data-level="4.4" data-path="strings-should-you-care.html"><a href="strings-should-you-care.html#phone-numbers"><i class="fa fa-check"></i><b>4.4</b> Phone numbers</a>
+<ul>
+<li class="chapter" data-level="4.4.1" data-path="strings-should-you-care.html"><a href="strings-should-you-care.html#what-about-using-str_extract_all"><i class="fa fa-check"></i><b>4.4.1</b> What about using <code>str_extract_all()</code></a></li>
+</ul></li>
+<li class="chapter" data-level="4.5" data-path="strings-should-you-care.html"><a href="strings-should-you-care.html#string-interpolation"><i class="fa fa-check"></i><b>4.5</b> String interpolation</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="simulations.html"><a href="simulations.html"><i class="fa fa-check"></i><b>5</b> Simulations</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="simulations.html"><a href="simulations.html#generating-fake-data"><i class="fa fa-check"></i><b>5.1</b> Generating fake data</a></li>
+<li class="chapter" data-level="5.2" data-path="simulations.html"><a href="simulations.html#how-is-this-useful"><i class="fa fa-check"></i><b>5.2</b> How is this useful?</a></li>
+<li class="chapter" data-level="5.3" data-path="simulations.html"><a href="simulations.html#re-testing-the-t-test"><i class="fa fa-check"></i><b>5.3</b> Re-testing the t-test</a></li>
 </ul></li>
 </ul>
 
@@ -294,6 +304,20 @@ gitbook.start({
 });
 </script>
 
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
 </body>
 
 </html>

@@ -1,16 +1,40 @@
 
 # Strings, should you care?
 
+When it comes to learning R, there are two topics that almost no one ever *asks* for, but they still often appreciate having after the fact. The first of these is string manipulation.
+
+Here, we show off some of R's text manipulation abilities. If you see something you like, feel free to incorporate it.
+
+## A recurring example
+
+Throughout this exercise, we'll imagine we have an ongoing research study with multiple sources of important information:
+
+1. A `contact_df`, which includes identifying contact information about the subjects in our study, some of which we need for administrative purposes, but some of which we also need for analysis (e.g., birth dates to calculate age, which will be used as a covariate in a regression.).
+
+2. A `mood_df`, which contains the substantive information the study is about, including a mood score.
+
+Because each dataset only includes three people, they are easy to take a glance at below.
+
 ```{r}
 library(tidyverse)
 
 contact_df <- read_csv('data/contact_info.csv')
 mood_df <- read_csv('data/mood_data.csv')
+```
 
+
+```{r}
 contact_df
 mood_df
 ```
-# Join the datasets
+
+## Join the datasets
+
+One of the first, most obvious things we want to do might be joining these two datasets. That *should* be easy because we have names in both of them.
+
+But wait! The names aren't formatted in the same way. In the mood dataset, they are formatted like "CERO, Ian", but in the contact dataset, they are formatted with two seperate variables: `fname` = Ian, `lname` = Cero. All of the joining operations we know require that at least one column is *identical* across the datasets. That's how we know which scores to link.
+
+To solve this, we can simply create a new `name` variable in the contact dataframe, using `paste()` and `toupper()`. Now, we will have a column with identical formatting in each dataframe.
 
 ```{r}
 contact_df <- contact_df %>% 
@@ -20,6 +44,10 @@ contact_df <- contact_df %>%
 contact_df <- contact_df %>% 
   left_join(mood_df, by = 'name')
 ```
+
+### Direction / order of operations
+
+Can we go the other way around, from mood to contact? Yes, but takes more work, as you can see below. This is an important lesson about R's string functions: there is typically more than one way to solve a problem, but they are not all equally valuable. Sometimes, one is much harder than the others. 
 
 ```{r}
 mood_df <- mood_df %>% 
@@ -35,14 +63,11 @@ mood_df %>%
   left_join(contact_df, by = c('fname', 'lname'))
 ```
 
-# Extract some information
+## Extract some information
 
-```{r}
-contact_df %>% 
-  mutate(
-    formatted_phone = str_replace_all(phone, '[^0-9]', '')) %>% 
-  select(phone, formatted_phone)
-```
+Often, a column in a spreadsheet holds many pieces of information... and we need just one specific piece. For example, a person's address has much information about their location, but the zipcode is typically most useful for statistical analysis because we can associate it withe median income.
+
+The problem comes in when we need *just* that one piece of information in a new column. Again, R comes to the rescue, this time with the `str_extract()` function, which takes two arguments: the text we want to grab something from, and the "pattern" of things we want to extract. In this case, the pattern `'[0-9]+$'` tells R to grab any digit from 0-9. The `+` says that it needs to be an unbroken sequence of digits and the `$` says it must come at the end of the main text, which is where zipcodes are always located.
 
 ```{r}
 contact_df %>% 
@@ -51,6 +76,23 @@ contact_df %>%
   select(address, zip)
 ```
 
+## Phone numbers
+
+When you ask a research subject, they can give you a valid phone number in a variety of different ways: (123) 456-7890, 123-456-7890, 1234567890, and so on. This can make working with them complicated. Technically, all we need from a phone number is the numbers. We could use `str_extract()` for that, but to demonstrate another approach, let's use `str_replace_all()` this time. Here, we tell R that we want to replace anything in `phone` that is NOT a digit (the `^` symbol means "not") with `''` (an empty string / nothing).
+
+```{r}
+contact_df %>% 
+  mutate(
+    formatted_phone = str_replace_all(phone, '[^0-9]', '')) %>% 
+  select(phone, formatted_phone)
+```
+
+They may not be pretty, but now all of our phone numbers are formatted in exactly the same way. This makes it easy to run subsequent manipulation tasks on them, like checking for duplicates.
+
+### What about using `str_extract_all()`
+
+As we mentioned above, there are typically many ways to do the same process with strings, but one or the other often takes more work. In case you are interested, here is the process for extracting a phone number with `str_extract_all()`. The reason it is more complicated in this case is because that function returns a `list()` object, which means you need to wrap it in `map()` to play nice, then unlist and collapse it.
+
 ```{r}
 contact_df %>% 
   mutate(
@@ -58,24 +100,17 @@ contact_df %>%
       .x = phone, 
       .f = ~ str_extract_all(.x, '[0-9]+') %>% 
         unlist() %>% 
-        paste(collapse = '-'))) %>% 
+        paste(collapse = ''))) %>% 
   select(phone, formatted_phone)
 ```
 
+## String interpolation
 
-```{r}
-library(glue)
+For basic tasks, the family of `str_...()` functions are great. But what if I want to do something more complicated, like compose a letter.
 
-contact_df %>% 
-  mutate(
-    tax_date = lubridate::mdy(tax_day),
-    days_late = tax_date - as.Date('2022-04-18')) %>% 
-  filter(days_late > 0) %>% 
-  mutate(message = glue('Dear Mr. {lname}, your taxes are {days_late} days late.')) %>% 
-  select(phone, fname, lname, message)
-```
+As a dmeonstration, our contact dataframe includes the date taxes were due, but also the days taxes were paid. What if we wanted to produce a message for everyone that included their last name, as well as the number of days late their taxes were.
 
-# String interpolation
+Enter `glue` and **string interpolation**. This powerful tool lets us write out our template string, then use `{}` to refer to a variable that will be injected ("interpolated") into that string, like so.
 
 ```{r}
 library(glue)
@@ -84,6 +119,20 @@ me <- 'Ian'
 glue('My name is {me}')
 ```
 
+We can use this knowledge to create individual messages for each person in our dataframe.
+
+```{r}
+contact_df %>% 
+  mutate(
+    tax_date = lubridate::mdy(tax_day),
+    days_late = tax_date - as.Date('2022-04-18')) %>% 
+  filter(days_late > 0) %>% 
+  mutate(message = glue('Dear Mr. {lname}, your taxes are {days_late} days late.')) %>% 
+  select(lname, message)
+```
+
+You can also do it with as many variables as you like.
+
 ```{r}
 data.frame(id = 1:3) %>% 
   mutate(
@@ -91,22 +140,8 @@ data.frame(id = 1:3) %>%
     job = c('statistician', 'writer', 'researcher'),
     pronouns = c('He', 'She', 'They'),
     verb = ifelse(pronouns == 'They', 'are', 'is'),
-    bio = glue('This is {name}. {pronouns} {verb} a {job}.'))
+    bio = glue('This is {name}. {pronouns} {verb} a {job}.')) %>% 
+  select(bio)
 ```
-
-
-# Sentiment analysis
-
-
-```{r}
-library(tidytext)
-
-contact_df %>% 
-  unnest_tokens(word, open_ended) %>% 
-  left_join(get_sentiments('bing'), by = 'word') %>% 
-  group_by(record_id, sentiment) %>% 
-  count()
-```
-
 
 

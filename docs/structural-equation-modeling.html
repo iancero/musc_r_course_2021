@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>13 Structural Equation Modeling | R Notebook</title>
+  <title>5 Structural Equation Modeling | An Organic R Textbook</title>
   <meta name="description" content="This is the organic textbook accompanying Cero’s 2021 course on statistical programming with R" />
   <meta name="generator" content="bookdown 0.24 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="13 Structural Equation Modeling | R Notebook" />
+  <meta property="og:title" content="5 Structural Equation Modeling | An Organic R Textbook" />
   <meta property="og:type" content="book" />
   <meta property="og:url" content="https://iancero.github.io/musc_r_course_2021" />
   
@@ -16,7 +16,7 @@
   <meta name="github-repo" content="iancero/musc_r_course_2021" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="13 Structural Equation Modeling | R Notebook" />
+  <meta name="twitter:title" content="5 Structural Equation Modeling | An Organic R Textbook" />
   
   <meta name="twitter:description" content="This is the organic textbook accompanying Cero’s 2021 course on statistical programming with R" />
   
@@ -31,8 +31,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon" />
-<link rel="prev" href="bayesian-models.html"/>
-<link rel="next" href="strings-should-you-care.html"/>
+<link rel="prev" href="introduction-to-machine-learning.html"/>
+
 <script src="libs/header-attrs-2.11/header-attrs.js"></script>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
@@ -201,29 +201,35 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="3.9.2" data-path="basic-r.html"><a href="basic-r.html#official-coding-conventions"><i class="fa fa-check"></i><b>3.9.2</b> Official coding conventions</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="4" data-path="working-with-abcd.html"><a href="working-with-abcd.html"><i class="fa fa-check"></i><b>4</b> Working with ABCD</a>
+<li class="chapter" data-level="4" data-path="introduction-to-machine-learning.html"><a href="introduction-to-machine-learning.html"><i class="fa fa-check"></i><b>4</b> Introduction to machine learning</a>
 <ul>
-<li class="chapter" data-level="4.1" data-path="working-with-abcd.html"><a href="working-with-abcd.html#importing-abcd-datafiles"><i class="fa fa-check"></i><b>4.1</b> Importing ABCD datafiles</a>
+<li class="chapter" data-level="4.1" data-path="introduction-to-machine-learning.html"><a href="introduction-to-machine-learning.html#wait-arent-those-the-same-thing"><i class="fa fa-check"></i><b>4.1</b> Wait, aren’t those the same thing?</a></li>
+<li class="chapter" data-level="4.2" data-path="introduction-to-machine-learning.html"><a href="introduction-to-machine-learning.html#the-tidymodels-framework"><i class="fa fa-check"></i><b>4.2</b> The <code>tidymodels</code> framework</a></li>
+<li class="chapter" data-level="4.3" data-path="introduction-to-machine-learning.html"><a href="introduction-to-machine-learning.html#steps-1-2---load-data-and-do-some-very-basic-cleaning"><i class="fa fa-check"></i><b>4.3</b> Steps 1 &amp; 2 - Load data and do some very basic cleaning</a></li>
+<li class="chapter" data-level="4.4" data-path="introduction-to-machine-learning.html"><a href="introduction-to-machine-learning.html#step-3---split-training-and-test-samples"><i class="fa fa-check"></i><b>4.4</b> Step 3 - Split training and test samples</a></li>
+<li class="chapter" data-level="4.5" data-path="introduction-to-machine-learning.html"><a href="introduction-to-machine-learning.html#step-4---build-a-data-processing-recipe"><i class="fa fa-check"></i><b>4.5</b> Step 4 - Build a data processing recipe</a></li>
+<li class="chapter" data-level="4.6" data-path="introduction-to-machine-learning.html"><a href="introduction-to-machine-learning.html#step-5---extract-the-preprocessed-data"><i class="fa fa-check"></i><b>4.6</b> Step 5 - Extract the preprocessed data</a></li>
+<li class="chapter" data-level="4.7" data-path="introduction-to-machine-learning.html"><a href="introduction-to-machine-learning.html#step-6---fit-a-model"><i class="fa fa-check"></i><b>4.7</b> Step 6 - Fit a model</a></li>
+<li class="chapter" data-level="4.8" data-path="introduction-to-machine-learning.html"><a href="introduction-to-machine-learning.html#step-7---evaluate-the-model"><i class="fa fa-check"></i><b>4.8</b> Step 7 - Evaluate the model</a></li>
+<li class="chapter" data-level="4.9" data-path="introduction-to-machine-learning.html"><a href="introduction-to-machine-learning.html#step-8---plot-your-data"><i class="fa fa-check"></i><b>4.9</b> Step 8 - Plot your data</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="structural-equation-modeling.html"><a href="structural-equation-modeling.html"><i class="fa fa-check"></i><b>5</b> Structural Equation Modeling</a>
 <ul>
-<li class="chapter" data-level="4.1.1" data-path="working-with-abcd.html"><a href="working-with-abcd.html#whats-different-about-abcd"><i class="fa fa-check"></i><b>4.1.1</b> What’s different about ABCD?</a></li>
-<li class="chapter" data-level="4.1.2" data-path="working-with-abcd.html"><a href="working-with-abcd.html#walking-through-abcd-data-importation"><i class="fa fa-check"></i><b>4.1.2</b> Walking through ABCD data importation</a></li>
-<li class="chapter" data-level="4.1.3" data-path="working-with-abcd.html"><a href="working-with-abcd.html#copypaste-able-code"><i class="fa fa-check"></i><b>4.1.3</b> Copy/paste-able code</a></li>
+<li class="chapter" data-level="5.1" data-path="structural-equation-modeling.html"><a href="structural-equation-modeling.html#step-1-and-2---load-data-and-clean"><i class="fa fa-check"></i><b>5.1</b> Step 1 and 2 - Load data and clean</a></li>
+<li class="chapter" data-level="5.2" data-path="structural-equation-modeling.html"><a href="structural-equation-modeling.html#efa"><i class="fa fa-check"></i><b>5.2</b> EFA</a>
+<ul>
+<li class="chapter" data-level="5.2.1" data-path="structural-equation-modeling.html"><a href="structural-equation-modeling.html#steps-3-4"><i class="fa fa-check"></i><b>5.2.1</b> Steps 3 &amp; 4</a></li>
+</ul></li>
+<li class="chapter" data-level="5.3" data-path="structural-equation-modeling.html"><a href="structural-equation-modeling.html#cfa"><i class="fa fa-check"></i><b>5.3</b> CFA</a>
+<ul>
+<li class="chapter" data-level="5.3.1" data-path="structural-equation-modeling.html"><a href="structural-equation-modeling.html#step-3-4"><i class="fa fa-check"></i><b>5.3.1</b> Step 3 &amp; 4</a></li>
+</ul></li>
+<li class="chapter" data-level="5.4" data-path="structural-equation-modeling.html"><a href="structural-equation-modeling.html#sem"><i class="fa fa-check"></i><b>5.4</b> SEM</a>
+<ul>
+<li class="chapter" data-level="5.4.1" data-path="structural-equation-modeling.html"><a href="structural-equation-modeling.html#steps-3-4-1"><i class="fa fa-check"></i><b>5.4.1</b> Steps 3 &amp; 4</a></li>
+<li class="chapter" data-level="5.4.2" data-path="structural-equation-modeling.html"><a href="structural-equation-modeling.html#modification-indices"><i class="fa fa-check"></i><b>5.4.2</b> Modification indices</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="5" data-path="visualization.html"><a href="visualization.html"><i class="fa fa-check"></i><b>5</b> Visualization?</a></li>
-<li class="chapter" data-level="6" data-path="basic-hypthothesis-tests.html"><a href="basic-hypthothesis-tests.html"><i class="fa fa-check"></i><b>6</b> Basic hypthothesis tests</a></li>
-<li class="chapter" data-level="7" data-path="linear-regression.html"><a href="linear-regression.html"><i class="fa fa-check"></i><b>7</b> Linear Regression</a></li>
-<li class="chapter" data-level="8" data-path="logistic-regression.html"><a href="logistic-regression.html"><i class="fa fa-check"></i><b>8</b> Logistic Regression</a></li>
-<li class="chapter" data-level="9" data-path="intro-to-machine-learning.html"><a href="intro-to-machine-learning.html"><i class="fa fa-check"></i><b>9</b> Intro to machine learning</a></li>
-<li class="chapter" data-level="10" data-path="multilevel-models.html"><a href="multilevel-models.html"><i class="fa fa-check"></i><b>10</b> Multilevel Models</a></li>
-<li class="chapter" data-level="11" data-path="logistic-mixed-models.html"><a href="logistic-mixed-models.html"><i class="fa fa-check"></i><b>11</b> Logistic mixed models</a></li>
-<li class="chapter" data-level="12" data-path="bayesian-models.html"><a href="bayesian-models.html"><i class="fa fa-check"></i><b>12</b> Bayesian models</a></li>
-<li class="chapter" data-level="13" data-path="structural-equation-modeling.html"><a href="structural-equation-modeling.html"><i class="fa fa-check"></i><b>13</b> Structural Equation Modeling</a></li>
-<li class="chapter" data-level="14" data-path="strings-should-you-care.html"><a href="strings-should-you-care.html"><i class="fa fa-check"></i><b>14</b> Strings, should you care?</a></li>
-<li class="chapter" data-level="15" data-path="join-the-datasets.html"><a href="join-the-datasets.html"><i class="fa fa-check"></i><b>15</b> Join the datasets</a></li>
-<li class="chapter" data-level="16" data-path="extract-some-information.html"><a href="extract-some-information.html"><i class="fa fa-check"></i><b>16</b> Extract some information</a></li>
-<li class="chapter" data-level="17" data-path="string-interpolation.html"><a href="string-interpolation.html"><i class="fa fa-check"></i><b>17</b> String interpolation</a></li>
-<li class="chapter" data-level="18" data-path="sentiment-analysis.html"><a href="sentiment-analysis.html"><i class="fa fa-check"></i><b>18</b> Sentiment analysis</a></li>
 </ul>
 
       </nav>
@@ -233,7 +239,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <div class="body-inner">
         <div class="book-header" role="navigation">
           <h1>
-            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">R Notebook</a>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">An Organic R Textbook</a>
           </h1>
         </div>
 
@@ -241,100 +247,129 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="structural-equation-modeling" class="section level1" number="13">
-<h1><span class="header-section-number">13</span> Structural Equation Modeling</h1>
-<div class="sourceCode" id="cb254"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb254-1"><a href="structural-equation-modeling.html#cb254-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb254-2"><a href="structural-equation-modeling.html#cb254-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb254-3"><a href="structural-equation-modeling.html#cb254-3" aria-hidden="true" tabindex="-1"></a>read_abcd <span class="ot">&lt;-</span> <span class="cf">function</span>(abcd_path){</span>
-<span id="cb254-4"><a href="structural-equation-modeling.html#cb254-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">suppressMessages</span>({</span>
-<span id="cb254-5"><a href="structural-equation-modeling.html#cb254-5" aria-hidden="true" tabindex="-1"></a>    abcd_path <span class="sc">%&gt;%</span> </span>
-<span id="cb254-6"><a href="structural-equation-modeling.html#cb254-6" aria-hidden="true" tabindex="-1"></a>      <span class="fu">read_delim</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb254-7"><a href="structural-equation-modeling.html#cb254-7" aria-hidden="true" tabindex="-1"></a>      <span class="fu">filter</span>(<span class="fu">row_number</span>() <span class="sc">!=</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb254-8"><a href="structural-equation-modeling.html#cb254-8" aria-hidden="true" tabindex="-1"></a>      <span class="fu">type_convert</span>()  </span>
-<span id="cb254-9"><a href="structural-equation-modeling.html#cb254-9" aria-hidden="true" tabindex="-1"></a>  })</span>
-<span id="cb254-10"><a href="structural-equation-modeling.html#cb254-10" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb254-11"><a href="structural-equation-modeling.html#cb254-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb254-12"><a href="structural-equation-modeling.html#cb254-12" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">read_abcd</span>(<span class="st">&#39;data/diff_emotion_reg_p01.txt&#39;</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb254-13"><a href="structural-equation-modeling.html#cb254-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="at">.cols =</span> <span class="fu">starts_with</span>(<span class="st">&#39;ders_&#39;</span>), <span class="at">.fns =</span> <span class="sc">~</span> <span class="fu">ifelse</span>(.x <span class="sc">==</span> <span class="dv">7</span>, <span class="cn">NA</span>, .x)))</span></code></pre></div>
-<div class="sourceCode" id="cb255"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb255-1"><a href="structural-equation-modeling.html#cb255-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(psych)</span>
-<span id="cb255-2"><a href="structural-equation-modeling.html#cb255-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb255-3"><a href="structural-equation-modeling.html#cb255-3" aria-hidden="true" tabindex="-1"></a>efa_samp <span class="ot">&lt;-</span> <span class="fu">sample</span>(df<span class="sc">$</span>src_subject_id, <span class="at">size =</span> <span class="fu">nrow</span>(df)<span class="sc">/</span><span class="dv">2</span>)</span>
-<span id="cb255-4"><a href="structural-equation-modeling.html#cb255-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb255-5"><a href="structural-equation-modeling.html#cb255-5" aria-hidden="true" tabindex="-1"></a>ders_df <span class="ot">&lt;-</span> df <span class="sc">%&gt;%</span> </span>
-<span id="cb255-6"><a href="structural-equation-modeling.html#cb255-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(src_subject_id <span class="sc">%in%</span> efa_samp) <span class="sc">%&gt;%</span> </span>
-<span id="cb255-7"><a href="structural-equation-modeling.html#cb255-7" aria-hidden="true" tabindex="-1"></a>  <span class="co"># filter(complete.cases(.)) %&gt;% </span></span>
-<span id="cb255-8"><a href="structural-equation-modeling.html#cb255-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="fu">starts_with</span>(<span class="st">&#39;ders_&#39;</span>) <span class="sc">&amp;</span> <span class="fu">ends_with</span>(<span class="st">&#39;_p&#39;</span>))</span>
-<span id="cb255-9"><a href="structural-equation-modeling.html#cb255-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb255-10"><a href="structural-equation-modeling.html#cb255-10" aria-hidden="true" tabindex="-1"></a>fit <span class="ot">&lt;-</span> <span class="fu">fa</span>(ders_df, <span class="at">nfactors =</span> <span class="dv">6</span>)</span>
-<span id="cb255-11"><a href="structural-equation-modeling.html#cb255-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb255-12"><a href="structural-equation-modeling.html#cb255-12" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(fit)</span></code></pre></div>
+<div id="structural-equation-modeling" class="section level1" number="5">
+<h1><span class="header-section-number">5</span> Structural Equation Modeling</h1>
+<p>Structural equation modeling (SEM) can be thought of as a series of regressions, all estimated simultaneously. This allows the relationship between some variables to provide information on the relationship between others. To get a feel for how this works, consider that if we have three variables (A, B, C) and two negative correlations (A is negatively correlated with B, B is negatively correlated with C), we know that A and C MUST be positively correlated. Thus, if I estimate all of these correlations simultaneously, I can get a more precise estimate for all of their relationships by incorporating all possible information.</p>
+<p>There are many kinds of SEMS, so we’ll cover just a few of the most common ones:</p>
+<ul>
+<li><p>Exploratory factor analysis (EFA), in which we ask whether some hidden factor accounts for the observed correlation between several items (usually items from the same survey scale). In the case of EFA, we also don’t really have any prior knowledge as to what this hidden variable might be like, so we let the model figure it out for us.</p></li>
+<li><p>Confirmatory factor analysis (CFA), which is like EFA, but we force the model to fit an <em>a priori</em> idea that we have about the relationship between our observed variables and the hidden variable that explains their correlations. After we force a specific model, we then evaluate how well it fit our observed data.</p></li>
+<li><p>Path models. These are often what people think of when they hear “SEM.” These are typically just a series of regressions (paths) connecting variables in a kind of spider web of relationships.</p></li>
+</ul>
+<div id="step-1-and-2---load-data-and-clean" class="section level2" number="5.1">
+<h2><span class="header-section-number">5.1</span> Step 1 and 2 - Load data and clean</h2>
+<p>Because we want to evaluate the factors underlying particular scales, we’ll start by using the <code>diff_emotion_reg_p01.txt</code> dataset, which includes data from an emotion regulation survey scale.</p>
+<div class="sourceCode" id="cb151"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb151-1"><a href="structural-equation-modeling.html#cb151-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb151-2"><a href="structural-equation-modeling.html#cb151-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb151-3"><a href="structural-equation-modeling.html#cb151-3" aria-hidden="true" tabindex="-1"></a>read_abcd_quietly <span class="ot">&lt;-</span> <span class="cf">function</span>(file_path){</span>
+<span id="cb151-4"><a href="structural-equation-modeling.html#cb151-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">suppressMessages</span>(</span>
+<span id="cb151-5"><a href="structural-equation-modeling.html#cb151-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">expr =</span> <span class="fu">read_delim</span>(file_path, <span class="at">delim =</span> <span class="st">&#39;</span><span class="sc">\t</span><span class="st">&#39;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb151-6"><a href="structural-equation-modeling.html#cb151-6" aria-hidden="true" tabindex="-1"></a>      <span class="fu">filter</span>(<span class="fu">row_number</span>() <span class="sc">!=</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb151-7"><a href="structural-equation-modeling.html#cb151-7" aria-hidden="true" tabindex="-1"></a>      <span class="fu">type_convert</span>())</span>
+<span id="cb151-8"><a href="structural-equation-modeling.html#cb151-8" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb151-9"><a href="structural-equation-modeling.html#cb151-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb151-10"><a href="structural-equation-modeling.html#cb151-10" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">read_abcd_quietly</span>(<span class="st">&#39;data/diff_emotion_reg_p01.txt&#39;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb151-11"><a href="structural-equation-modeling.html#cb151-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="at">.cols =</span> <span class="fu">starts_with</span>(<span class="st">&#39;ders_&#39;</span>), <span class="at">.fns =</span> <span class="sc">~</span> <span class="fu">ifelse</span>(.x <span class="sc">==</span> <span class="dv">7</span>, <span class="cn">NA</span>, .x)))</span></code></pre></div>
+</div>
+<div id="efa" class="section level2" number="5.2">
+<h2><span class="header-section-number">5.2</span> EFA</h2>
+<div id="steps-3-4" class="section level3" number="5.2.1">
+<h3><span class="header-section-number">5.2.1</span> Steps 3 &amp; 4</h3>
+<p>To conduct an EFA, we’ll use functions from the <code>psych</code> package. This process is luckily relatively straightforward. All we need to do is select the variables we want to analyze, then feed them to the <code>fa()</code> function. The <code>fa()</code> function also wants to know what the max number of factors we want to look for is, so we’ll tell it 6 (it this case, we know this scale has 6 factors because it has been extensively studied before).</p>
+<div class="sourceCode" id="cb152"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb152-1"><a href="structural-equation-modeling.html#cb152-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(psych)</span>
+<span id="cb152-2"><a href="structural-equation-modeling.html#cb152-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb152-3"><a href="structural-equation-modeling.html#cb152-3" aria-hidden="true" tabindex="-1"></a>ders_df <span class="ot">&lt;-</span> df <span class="sc">%&gt;%</span> </span>
+<span id="cb152-4"><a href="structural-equation-modeling.html#cb152-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="fu">starts_with</span>(<span class="st">&#39;ders_&#39;</span>) <span class="sc">&amp;</span> <span class="fu">ends_with</span>(<span class="st">&#39;_p&#39;</span>))</span>
+<span id="cb152-5"><a href="structural-equation-modeling.html#cb152-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb152-6"><a href="structural-equation-modeling.html#cb152-6" aria-hidden="true" tabindex="-1"></a>fit <span class="ot">&lt;-</span> <span class="fu">fa</span>(ders_df, <span class="at">nfactors =</span> <span class="dv">6</span>)</span>
+<span id="cb152-7"><a href="structural-equation-modeling.html#cb152-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb152-8"><a href="structural-equation-modeling.html#cb152-8" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(fit)</span></code></pre></div>
 <pre><code>## 
 ## Factor analysis with Call: fa(r = ders_df, nfactors = 6)
 ## 
 ## Test of the hypothesis that 6 factors are sufficient.
-## The degrees of freedom for the model is 247  and the objective function was  7.3 
-## The number of observations was  3125  with Chi Square =  22710.62  with prob &lt;  0 
+## The degrees of freedom for the model is 247  and the objective function was  3.01 
+## The number of observations was  6251  with Chi Square =  18775.94  with prob &lt;  0 
 ## 
-## The root mean square of the residuals (RMSA) is  0.03 
-## The df corrected root mean square of the residuals is  0.04 
+## The root mean square of the residuals (RMSA) is  0.02 
+## The df corrected root mean square of the residuals is  0.03 
 ## 
-## Tucker Lewis Index of factoring reliability =  0.66
-## RMSEA index =  0.171  and the 10 % confidence intervals are  0.169 0.173
-## BIC =  20722.96
+## Tucker Lewis Index of factoring reliability =  0.837
+## RMSEA index =  0.11  and the 10 % confidence intervals are  0.108 0.111
+## BIC =  16617.04
 ##  With factor correlations of 
-##      MR2   MR3  MR5  MR1   MR6   MR4
-## MR2 1.00  0.47 0.60 0.43  0.46  0.02
-## MR3 0.47  1.00 0.57 0.50  0.57 -0.01
-## MR5 0.60  0.57 1.00 0.60  0.56  0.03
-## MR1 0.43  0.50 0.60 1.00  0.42  0.07
-## MR6 0.46  0.57 0.56 0.42  1.00 -0.06
-## MR4 0.02 -0.01 0.03 0.07 -0.06  1.00</code></pre>
-<div class="sourceCode" id="cb257"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb257-1"><a href="structural-equation-modeling.html#cb257-1" aria-hidden="true" tabindex="-1"></a>loads <span class="ot">&lt;-</span> fit<span class="sc">$</span>loadings</span>
-<span id="cb257-2"><a href="structural-equation-modeling.html#cb257-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb257-3"><a href="structural-equation-modeling.html#cb257-3" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(loads) <span class="ot">&lt;-</span> <span class="st">&#39;matrix&#39;</span></span>
-<span id="cb257-4"><a href="structural-equation-modeling.html#cb257-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb257-5"><a href="structural-equation-modeling.html#cb257-5" aria-hidden="true" tabindex="-1"></a>loading_df <span class="ot">&lt;-</span> loads <span class="sc">%&gt;%</span> </span>
-<span id="cb257-6"><a href="structural-equation-modeling.html#cb257-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.data.frame</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb257-7"><a href="structural-equation-modeling.html#cb257-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">var_name =</span> <span class="fu">rownames</span>(.)) <span class="sc">%&gt;%</span> </span>
-<span id="cb257-8"><a href="structural-equation-modeling.html#cb257-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="sc">-</span>var_name, <span class="at">names_to =</span> <span class="st">&#39;factor&#39;</span>, <span class="at">values_to =</span> <span class="st">&#39;loading&#39;</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb257-9"><a href="structural-equation-modeling.html#cb257-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(var_name) <span class="sc">%&gt;%</span> </span>
-<span id="cb257-10"><a href="structural-equation-modeling.html#cb257-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(loading <span class="sc">==</span> <span class="fu">max</span>(loading))</span></code></pre></div>
-<div class="sourceCode" id="cb258"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb258-1"><a href="structural-equation-modeling.html#cb258-1" aria-hidden="true" tabindex="-1"></a>loading_df <span class="sc">%&gt;%</span> </span>
-<span id="cb258-2"><a href="structural-equation-modeling.html#cb258-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(factor) <span class="sc">%&gt;%</span> </span>
-<span id="cb258-3"><a href="structural-equation-modeling.html#cb258-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">nest</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb258-4"><a href="structural-equation-modeling.html#cb258-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb258-5"><a href="structural-equation-modeling.html#cb258-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">factor_name =</span> <span class="fu">case_when</span>(</span>
-<span id="cb258-6"><a href="structural-equation-modeling.html#cb258-6" aria-hidden="true" tabindex="-1"></a>      factor <span class="sc">==</span> <span class="st">&#39;MR1&#39;</span> <span class="sc">~</span> <span class="st">&#39;a&#39;</span>,</span>
-<span id="cb258-7"><a href="structural-equation-modeling.html#cb258-7" aria-hidden="true" tabindex="-1"></a>      factor <span class="sc">==</span> <span class="st">&#39;MR2&#39;</span> <span class="sc">~</span> <span class="st">&#39;b&#39;</span>,</span>
-<span id="cb258-8"><a href="structural-equation-modeling.html#cb258-8" aria-hidden="true" tabindex="-1"></a>      factor <span class="sc">==</span> <span class="st">&#39;MR3&#39;</span> <span class="sc">~</span> <span class="st">&#39;c&#39;</span>,</span>
-<span id="cb258-9"><a href="structural-equation-modeling.html#cb258-9" aria-hidden="true" tabindex="-1"></a>      factor <span class="sc">==</span> <span class="st">&#39;MR4&#39;</span> <span class="sc">~</span> <span class="st">&#39;d&#39;</span>,</span>
-<span id="cb258-10"><a href="structural-equation-modeling.html#cb258-10" aria-hidden="true" tabindex="-1"></a>      factor <span class="sc">==</span> <span class="st">&#39;MR5&#39;</span> <span class="sc">~</span> <span class="st">&#39;e&#39;</span>,</span>
-<span id="cb258-11"><a href="structural-equation-modeling.html#cb258-11" aria-hidden="true" tabindex="-1"></a>      factor <span class="sc">==</span> <span class="st">&#39;MR6&#39;</span> <span class="sc">~</span> <span class="st">&#39;f&#39;</span>),</span>
-<span id="cb258-12"><a href="structural-equation-modeling.html#cb258-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">vars =</span> <span class="fu">map_chr</span>(data, <span class="sc">~</span> <span class="fu">paste</span>(.x<span class="sc">$</span>var_name, <span class="at">collapse =</span> <span class="st">&#39; + &#39;</span>)),</span>
-<span id="cb258-13"><a href="structural-equation-modeling.html#cb258-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">fmla =</span> <span class="fu">paste</span>(factor_name, <span class="st">&#39;=~&#39;</span>, vars)) <span class="sc">%&gt;%</span> </span>
-<span id="cb258-14"><a href="structural-equation-modeling.html#cb258-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pull</span>(fmla)</span></code></pre></div>
-<pre><code>## [1] &quot;b =~ ders_attn_awareness_p + ders_clear_feelings_p + ders_emotion_overwhelm_p + ders_feelings_attentive_p + ders_feelings_care_p + ders_feelings_know_p + ders_upset_ack_p&quot;                    
-## [2] &quot;e =~ ders_upset_angry_p + ders_upset_behavior_control_p + ders_upset_embarrassed_p + ders_upset_focus_p + ders_upset_lose_control_p&quot;                                                           
-## [3] &quot;a =~ ders_upset_ashamed_p + ders_upset_better_p + ders_upset_feel_better_p + ders_upset_guilty_p + ders_upset_irritation_p + ders_upset_out_control_p + ders_upset_weak_p&quot;                     
-## [4] &quot;c =~ ders_upset_behavior_p + ders_upset_concentrate_p + ders_upset_difficulty_p + ders_upset_emotion_overwhelm_p + ders_upset_esteem_p + ders_upset_fixation_p + ders_upset_long_time_better_p&quot;
-## [5] &quot;f =~ ders_upset_control_p + ders_upset_depressed_p + ders_upset_time_p&quot;</code></pre>
-<div class="sourceCode" id="cb260"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb260-1"><a href="structural-equation-modeling.html#cb260-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lavaan)</span>
-<span id="cb260-2"><a href="structural-equation-modeling.html#cb260-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb260-3"><a href="structural-equation-modeling.html#cb260-3" aria-hidden="true" tabindex="-1"></a>my_model <span class="ot">&lt;-</span> <span class="st">&#39;</span></span>
-<span id="cb260-4"><a href="structural-equation-modeling.html#cb260-4" aria-hidden="true" tabindex="-1"></a><span class="st">  b =~ ders_attn_awareness_p + ders_clear_feelings_p + ders_emotion_overwhelm_p + ders_feelings_attentive_p + ders_feelings_care_p + ders_feelings_know_p + ders_upset_ack_p</span></span>
-<span id="cb260-5"><a href="structural-equation-modeling.html#cb260-5" aria-hidden="true" tabindex="-1"></a><span class="st">  </span></span>
-<span id="cb260-6"><a href="structural-equation-modeling.html#cb260-6" aria-hidden="true" tabindex="-1"></a><span class="st">  c =~ ders_upset_angry_p + ders_upset_control_p + ders_upset_difficulty_p + ders_upset_embarrassed_p + ders_upset_focus_p + ders_upset_out_control_p</span></span>
-<span id="cb260-7"><a href="structural-equation-modeling.html#cb260-7" aria-hidden="true" tabindex="-1"></a><span class="st">  </span></span>
-<span id="cb260-8"><a href="structural-equation-modeling.html#cb260-8" aria-hidden="true" tabindex="-1"></a><span class="st">  a =~ ders_upset_ashamed_p + ders_upset_behavior_control_p + ders_upset_depressed_p + ders_upset_esteem_p + ders_upset_feel_better_p + ders_upset_guilty_p + ders_upset_irritation_p + ders_upset_time_p + ders_upset_weak_p</span></span>
-<span id="cb260-9"><a href="structural-equation-modeling.html#cb260-9" aria-hidden="true" tabindex="-1"></a><span class="st">  </span></span>
-<span id="cb260-10"><a href="structural-equation-modeling.html#cb260-10" aria-hidden="true" tabindex="-1"></a><span class="st">  d =~ ders_upset_behavior_p + ders_upset_better_p + ders_upset_concentrate_p + ders_upset_emotion_overwhelm_p + ders_upset_fixation_p + ders_upset_long_time_better_p + ders_upset_lose_control_p</span></span>
-<span id="cb260-11"><a href="structural-equation-modeling.html#cb260-11" aria-hidden="true" tabindex="-1"></a><span class="st">&#39;</span></span>
-<span id="cb260-12"><a href="structural-equation-modeling.html#cb260-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb260-13"><a href="structural-equation-modeling.html#cb260-13" aria-hidden="true" tabindex="-1"></a>fit <span class="ot">&lt;-</span> <span class="fu">cfa</span>(</span>
-<span id="cb260-14"><a href="structural-equation-modeling.html#cb260-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">model =</span> my_model,</span>
-<span id="cb260-15"><a href="structural-equation-modeling.html#cb260-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> df)</span>
-<span id="cb260-16"><a href="structural-equation-modeling.html#cb260-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb260-17"><a href="structural-equation-modeling.html#cb260-17" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(fit, <span class="at">fit.measures =</span> T)</span></code></pre></div>
+##      MR5  MR2  MR1  MR4  MR3  MR6
+## MR5 1.00 0.56 0.53 0.61 0.55 0.57
+## MR2 0.56 1.00 0.31 0.51 0.45 0.63
+## MR1 0.53 0.31 1.00 0.33 0.46 0.38
+## MR4 0.61 0.51 0.33 1.00 0.50 0.47
+## MR3 0.55 0.45 0.46 0.50 1.00 0.45
+## MR6 0.57 0.63 0.38 0.47 0.45 1.00</code></pre>
+<p>Unfortunately, the output we get from <code>summary()</code> doesn’t tell us which items load onto which factors. To get that, we need to extract them from the <code>fit</code> object directly.</p>
+<div class="sourceCode" id="cb154"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb154-1"><a href="structural-equation-modeling.html#cb154-1" aria-hidden="true" tabindex="-1"></a>fit<span class="sc">$</span>loadings</span></code></pre></div>
+<pre><code>## 
+## Loadings:
+##                                MR5    MR2    MR1    MR4    MR3    MR6   
+## ders_attn_awareness_p                  0.953                            
+## ders_clear_feelings_p                  0.902                            
+## ders_emotion_overwhelm_p        0.119  0.543 -0.107  0.128              
+## ders_feelings_attentive_p              0.662                            
+## ders_feelings_care_p                                               0.903
+## ders_feelings_know_p                   0.278         0.112         0.511
+## ders_upset_ack_p                0.174  0.243 -0.163  0.120  0.184  0.281
+## ders_upset_angry_p                            0.149  0.635         0.185
+## ders_upset_ashamed_p            0.169  0.129  0.546  0.271              
+## ders_upset_behavior_control_p   0.224         0.228  0.303              
+## ders_upset_behavior_p           0.853                                   
+## ders_upset_better_p             0.311         0.161  0.112  0.111  0.140
+## ders_upset_concentrate_p        0.673                      -0.104  0.192
+## ders_upset_control_p            0.504        -0.265  0.349  0.275       
+## ders_upset_depressed_p          0.138         0.218         0.581       
+## ders_upset_difficulty_p         0.262  0.272         0.366              
+## ders_upset_embarrassed_p                      0.162  0.677         0.217
+## ders_upset_emotion_overwhelm_p  0.521         0.247                     
+## ders_upset_esteem_p             0.200         0.489         0.296  0.128
+## ders_upset_feel_better_p        0.345  0.130  0.416         0.176       
+## ders_upset_fixation_p           0.834                                   
+## ders_upset_focus_p              0.365  0.220 -0.139  0.397  0.150       
+## ders_upset_guilty_p                           0.640  0.132  0.121       
+## ders_upset_irritation_p         0.231  0.108  0.548  0.130         0.112
+## ders_upset_long_time_better_p   0.606  0.136                       0.138
+## ders_upset_lose_control_p       0.657                0.106              
+## ders_upset_out_control_p        0.304  0.171  0.211  0.383  0.109 -0.185
+## ders_upset_time_p                                           0.997       
+## ders_upset_weak_p                             0.495         0.216       
+## 
+##                  MR5   MR2   MR1   MR4   MR3   MR6
+## SS loadings    3.977 2.845 2.105 1.718 1.723 1.426
+## Proportion Var 0.137 0.098 0.073 0.059 0.059 0.049
+## Cumulative Var 0.137 0.235 0.308 0.367 0.426 0.476</code></pre>
+</div>
+</div>
+<div id="cfa" class="section level2" number="5.3">
+<h2><span class="header-section-number">5.3</span> CFA</h2>
+<div id="step-3-4" class="section level3" number="5.3.1">
+<h3><span class="header-section-number">5.3.1</span> Step 3 &amp; 4</h3>
+<p>Above, we did an exploratory factor analysis, but now we want to run a confirmatory one. To do that, we’ll use the <code>lavaan</code> package, which is the most popular pacakge in R for SEM-based analyses.</p>
+<p>Like a basic regression, we’ll need a model formula and some data. But unlike a basic regression, CFA and broader SEM usually have several formulas at once. To handle this, we’ll write down our model as a string and save it in a <code>my_model</code> variable to make things easier to read.</p>
+<p>After that, we just send the model to the <code>cfa()</code> function, which does the rest of the work for us. A quick call to <code>summary()</code> and we’re done!</p>
+<div class="sourceCode" id="cb156"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb156-1"><a href="structural-equation-modeling.html#cb156-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lavaan)</span>
+<span id="cb156-2"><a href="structural-equation-modeling.html#cb156-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb156-3"><a href="structural-equation-modeling.html#cb156-3" aria-hidden="true" tabindex="-1"></a>my_model <span class="ot">&lt;-</span> <span class="st">&#39;</span></span>
+<span id="cb156-4"><a href="structural-equation-modeling.html#cb156-4" aria-hidden="true" tabindex="-1"></a><span class="st">  b =~ ders_attn_awareness_p + ders_clear_feelings_p + ders_emotion_overwhelm_p + ders_feelings_attentive_p + ders_feelings_care_p + ders_feelings_know_p + ders_upset_ack_p</span></span>
+<span id="cb156-5"><a href="structural-equation-modeling.html#cb156-5" aria-hidden="true" tabindex="-1"></a><span class="st">  </span></span>
+<span id="cb156-6"><a href="structural-equation-modeling.html#cb156-6" aria-hidden="true" tabindex="-1"></a><span class="st">  c =~ ders_upset_angry_p + ders_upset_control_p + ders_upset_difficulty_p + ders_upset_embarrassed_p + ders_upset_focus_p + ders_upset_out_control_p</span></span>
+<span id="cb156-7"><a href="structural-equation-modeling.html#cb156-7" aria-hidden="true" tabindex="-1"></a><span class="st">  </span></span>
+<span id="cb156-8"><a href="structural-equation-modeling.html#cb156-8" aria-hidden="true" tabindex="-1"></a><span class="st">  a =~ ders_upset_ashamed_p + ders_upset_behavior_control_p + ders_upset_depressed_p + ders_upset_esteem_p + ders_upset_feel_better_p + ders_upset_guilty_p + ders_upset_irritation_p + ders_upset_time_p + ders_upset_weak_p</span></span>
+<span id="cb156-9"><a href="structural-equation-modeling.html#cb156-9" aria-hidden="true" tabindex="-1"></a><span class="st">  </span></span>
+<span id="cb156-10"><a href="structural-equation-modeling.html#cb156-10" aria-hidden="true" tabindex="-1"></a><span class="st">  d =~ ders_upset_behavior_p + ders_upset_better_p + ders_upset_concentrate_p + ders_upset_emotion_overwhelm_p + ders_upset_fixation_p + ders_upset_long_time_better_p + ders_upset_lose_control_p</span></span>
+<span id="cb156-11"><a href="structural-equation-modeling.html#cb156-11" aria-hidden="true" tabindex="-1"></a><span class="st">&#39;</span></span>
+<span id="cb156-12"><a href="structural-equation-modeling.html#cb156-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb156-13"><a href="structural-equation-modeling.html#cb156-13" aria-hidden="true" tabindex="-1"></a>fit <span class="ot">&lt;-</span> <span class="fu">cfa</span>(</span>
+<span id="cb156-14"><a href="structural-equation-modeling.html#cb156-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">model =</span> my_model,</span>
+<span id="cb156-15"><a href="structural-equation-modeling.html#cb156-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> df)</span>
+<span id="cb156-16"><a href="structural-equation-modeling.html#cb156-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb156-17"><a href="structural-equation-modeling.html#cb156-17" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(fit, <span class="at">fit.measures =</span> T)</span></code></pre></div>
 <pre><code>## lavaan 0.6-11 ended normally after 300 iterations
 ## 
 ##   Estimator                                         ML
@@ -470,21 +505,28 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ##     c              1973.464   48.190   40.951    0.000
 ##     a              2650.912   58.812   45.074    0.000
 ##     d              1316.773   29.564   44.539    0.000</code></pre>
-<div class="sourceCode" id="cb262"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb262-1"><a href="structural-equation-modeling.html#cb262-1" aria-hidden="true" tabindex="-1"></a>new_model <span class="ot">&lt;-</span> <span class="fu">paste</span>(</span>
-<span id="cb262-2"><a href="structural-equation-modeling.html#cb262-2" aria-hidden="true" tabindex="-1"></a>  my_model, </span>
-<span id="cb262-3"><a href="structural-equation-modeling.html#cb262-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">&#39;</span></span>
-<span id="cb262-4"><a href="structural-equation-modeling.html#cb262-4" aria-hidden="true" tabindex="-1"></a><span class="st">  </span></span>
-<span id="cb262-5"><a href="structural-equation-modeling.html#cb262-5" aria-hidden="true" tabindex="-1"></a><span class="st">  a ~ b + sex</span></span>
-<span id="cb262-6"><a href="structural-equation-modeling.html#cb262-6" aria-hidden="true" tabindex="-1"></a><span class="st">  b ~~ 0*c</span></span>
-<span id="cb262-7"><a href="structural-equation-modeling.html#cb262-7" aria-hidden="true" tabindex="-1"></a><span class="st">  &#39;</span>)</span>
-<span id="cb262-8"><a href="structural-equation-modeling.html#cb262-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb262-9"><a href="structural-equation-modeling.html#cb262-9" aria-hidden="true" tabindex="-1"></a>fit <span class="ot">&lt;-</span> <span class="fu">sem</span>(</span>
-<span id="cb262-10"><a href="structural-equation-modeling.html#cb262-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">model =</span> new_model,</span>
-<span id="cb262-11"><a href="structural-equation-modeling.html#cb262-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> df,</span>
-<span id="cb262-12"><a href="structural-equation-modeling.html#cb262-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">estimator =</span> <span class="st">&#39;MLR&#39;</span>,</span>
-<span id="cb262-13"><a href="structural-equation-modeling.html#cb262-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">missing =</span> <span class="st">&#39;ML&#39;</span>)</span>
-<span id="cb262-14"><a href="structural-equation-modeling.html#cb262-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb262-15"><a href="structural-equation-modeling.html#cb262-15" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(fit)</span></code></pre></div>
+</div>
+</div>
+<div id="sem" class="section level2" number="5.4">
+<h2><span class="header-section-number">5.4</span> SEM</h2>
+<div id="steps-3-4-1" class="section level3" number="5.4.1">
+<h3><span class="header-section-number">5.4.1</span> Steps 3 &amp; 4</h3>
+<p>The CFA above shows us that there are several latent variables that underlie the scale in this dataset, which we have labelled <code>a</code> through <code>d</code>. Do the scores on one factor predict scores on another? Does the sex of a subject predict their scores on these hidden variables? SEM is the technique that answers this question. All we need to to to get there is to combine our existing model with some existing commands.</p>
+<p>Here, we are saying that we expect variable <code>a</code> to be predicted by variable <code>b</code>, as well as subject sex.</p>
+<p>To demonstrate another trick in the next line, we’ll tell R that we want our model to force the correlation between <code>b</code> and <code>c</code> to be exactly 0. Why do this? In this case, there isn’t really a reason, but in broader SEM it helps to have this tool in your belt, so we demonstrate how to force model constraintes here in case you ever need them.</p>
+<div class="sourceCode" id="cb158"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb158-1"><a href="structural-equation-modeling.html#cb158-1" aria-hidden="true" tabindex="-1"></a>new_model <span class="ot">&lt;-</span> <span class="fu">paste</span>(</span>
+<span id="cb158-2"><a href="structural-equation-modeling.html#cb158-2" aria-hidden="true" tabindex="-1"></a>  my_model, </span>
+<span id="cb158-3"><a href="structural-equation-modeling.html#cb158-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">&#39;</span></span>
+<span id="cb158-4"><a href="structural-equation-modeling.html#cb158-4" aria-hidden="true" tabindex="-1"></a><span class="st">  a ~ b + sex</span></span>
+<span id="cb158-5"><a href="structural-equation-modeling.html#cb158-5" aria-hidden="true" tabindex="-1"></a><span class="st">  b ~~ 0*c&#39;</span>)</span></code></pre></div>
+<p>With our new model specified, we can safely proceed to estimate our SEM and ask for a summary in the usual way.</p>
+<div class="sourceCode" id="cb159"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb159-1"><a href="structural-equation-modeling.html#cb159-1" aria-hidden="true" tabindex="-1"></a>fit <span class="ot">&lt;-</span> <span class="fu">sem</span>(</span>
+<span id="cb159-2"><a href="structural-equation-modeling.html#cb159-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">model =</span> new_model,</span>
+<span id="cb159-3"><a href="structural-equation-modeling.html#cb159-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> df,</span>
+<span id="cb159-4"><a href="structural-equation-modeling.html#cb159-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">estimator =</span> <span class="st">&#39;MLR&#39;</span>,</span>
+<span id="cb159-5"><a href="structural-equation-modeling.html#cb159-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">missing =</span> <span class="st">&#39;ML&#39;</span>)</span>
+<span id="cb159-6"><a href="structural-equation-modeling.html#cb159-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb159-7"><a href="structural-equation-modeling.html#cb159-7" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(fit)</span></code></pre></div>
 <pre><code>## lavaan 0.6-11 ended normally after 433 iterations
 ## 
 ##   Estimator                                         ML
@@ -629,7 +671,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ##     c              1920.212  424.074    4.528    0.000
 ##    .a              1342.507  419.220    3.202    0.001
 ##     d               998.399  337.969    2.954    0.003</code></pre>
-<div class="sourceCode" id="cb264"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb264-1"><a href="structural-equation-modeling.html#cb264-1" aria-hidden="true" tabindex="-1"></a><span class="fu">modindices</span>(fit, <span class="at">sort =</span> <span class="cn">TRUE</span>, <span class="at">maximum.number =</span> <span class="dv">5</span>)</span></code></pre></div>
+</div>
+<div id="modification-indices" class="section level3" number="5.4.2">
+<h3><span class="header-section-number">5.4.2</span> Modification indices</h3>
+<p>Not all models fit well. When they don’t it is often evidence that something in the model is mis-specified (e.g., forced to 0, when it should be estimated). <strong>Modification indices</strong> give you hints at which parameters you might want to free and they are easy to get with the <code>modindices()</code> function.</p>
+<div class="sourceCode" id="cb161"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb161-1"><a href="structural-equation-modeling.html#cb161-1" aria-hidden="true" tabindex="-1"></a><span class="fu">modindices</span>(fit, <span class="at">sort =</span> <span class="cn">TRUE</span>, <span class="at">maximum.number =</span> <span class="dv">5</span>)</span></code></pre></div>
 <pre><code>##                        lhs op                      rhs       mi      epc sepc.lv
 ## 32                       b ~~                        c 3645.559 1344.429   0.831
 ## 190  ders_attn_awareness_p ~~    ders_clear_feelings_p 2936.500  454.475 454.475
@@ -644,13 +690,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## 296    0.638    0.638</code></pre>
 
 </div>
+</div>
+</div>
             </section>
 
           </div>
         </div>
       </div>
-<a href="bayesian-models.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="strings-should-you-care.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="introduction-to-machine-learning.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

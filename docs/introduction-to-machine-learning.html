@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>4 Introduction to machine learning | An Organic R Textbook</title>
+  <meta name="description" content="This is the organic textbook accompanying Cero’s 2021 course on statistical programming with R" />
+  <meta name="generator" content="bookdown 0.24 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="4 Introduction to machine learning | An Organic R Textbook" />
+  <meta property="og:type" content="book" />
+  <meta property="og:url" content="https://iancero.github.io/musc_r_course_2021" />
+  
+  <meta property="og:description" content="This is the organic textbook accompanying Cero’s 2021 course on statistical programming with R" />
+  <meta name="github-repo" content="iancero/musc_r_course_2021" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="4 Introduction to machine learning | An Organic R Textbook" />
+  
+  <meta name="twitter:description" content="This is the organic textbook accompanying Cero’s 2021 course on statistical programming with R" />
+  
+
+<meta name="author" content="Ian Cero, PhD MStat" />
+
+
+<meta name="date" content="2021-01-01" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon" />
+<link rel="prev" href="basic-r.html"/>
+<link rel="next" href="structural-equation-modeling.html"/>
+<script src="libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> About</a></li>
+<li class="chapter" data-level="2" data-path="getting-started.html"><a href="getting-started.html"><i class="fa fa-check"></i><b>2</b> Getting Started</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="getting-started.html"><a href="getting-started.html#overview-of-the-r-ecosystem"><i class="fa fa-check"></i><b>2.1</b> Overview of the R ecosystem</a></li>
+<li class="chapter" data-level="2.2" data-path="getting-started.html"><a href="getting-started.html#installation"><i class="fa fa-check"></i><b>2.2</b> Installation</a>
+<ul>
+<li class="chapter" data-level="2.2.1" data-path="getting-started.html"><a href="getting-started.html#step-1---download-and-install-the-r-language"><i class="fa fa-check"></i><b>2.2.1</b> Step 1 - Download and install the R language</a></li>
+<li class="chapter" data-level="2.2.2" data-path="getting-started.html"><a href="getting-started.html#step-2---download-and-install-the-rstudio-ide"><i class="fa fa-check"></i><b>2.2.2</b> Step 2 - Download and install the RStudio IDE</a></li>
+<li class="chapter" data-level="2.2.3" data-path="getting-started.html"><a href="getting-started.html#step-3---install-the-tidyverse-package-optional"><i class="fa fa-check"></i><b>2.2.3</b> Step 3 - Install the <code>tidyverse</code> package (optional)</a></li>
+</ul></li>
+<li class="chapter" data-level="2.3" data-path="getting-started.html"><a href="getting-started.html#a-tour-of-rstudio"><i class="fa fa-check"></i><b>2.3</b> A tour of RStudio</a>
+<ul>
+<li class="chapter" data-level="2.3.1" data-path="getting-started.html"><a href="getting-started.html#the-console"><i class="fa fa-check"></i><b>2.3.1</b> The console</a></li>
+<li class="chapter" data-level="2.3.2" data-path="getting-started.html"><a href="getting-started.html#the-environment"><i class="fa fa-check"></i><b>2.3.2</b> The environment</a></li>
+<li class="chapter" data-level="2.3.3" data-path="getting-started.html"><a href="getting-started.html#the-lower-right-pane"><i class="fa fa-check"></i><b>2.3.3</b> The lower right pane</a></li>
+</ul></li>
+<li class="chapter" data-level="2.4" data-path="getting-started.html"><a href="getting-started.html#your-very-first-analysis"><i class="fa fa-check"></i><b>2.4</b> Your very first analysis</a>
+<ul>
+<li class="chapter" data-level="2.4.1" data-path="getting-started.html"><a href="getting-started.html#step-1---download-the-data"><i class="fa fa-check"></i><b>2.4.1</b> Step 1 - download the data</a></li>
+<li class="chapter" data-level="2.4.2" data-path="getting-started.html"><a href="getting-started.html#step-2---make-an-rstudio-project"><i class="fa fa-check"></i><b>2.4.2</b> Step 2 - Make an RStudio Project</a></li>
+<li class="chapter" data-level="2.4.3" data-path="getting-started.html"><a href="getting-started.html#step-3---get-the-data-into-your-project-folder"><i class="fa fa-check"></i><b>2.4.3</b> Step 3 - Get the data into your project folder</a></li>
+<li class="chapter" data-level="2.4.4" data-path="getting-started.html"><a href="getting-started.html#step-4---open-an-rmarkdown-notebook"><i class="fa fa-check"></i><b>2.4.4</b> Step 4 - Open an Rmarkdown Notebook</a></li>
+<li class="chapter" data-level="2.4.5" data-path="getting-started.html"><a href="getting-started.html#step-5---create-a-space-to-code"><i class="fa fa-check"></i><b>2.4.5</b> Step 5 - Create a space to code</a></li>
+<li class="chapter" data-level="2.4.6" data-path="getting-started.html"><a href="getting-started.html#step-6---write-a-command-to-import-the-data"><i class="fa fa-check"></i><b>2.4.6</b> Step 6 - Write a command to import the data</a></li>
+<li class="chapter" data-level="2.4.7" data-path="getting-started.html"><a href="getting-started.html#step-7---look-inside-the-data"><i class="fa fa-check"></i><b>2.4.7</b> Step 7 - Look inside the data</a></li>
+<li class="chapter" data-level="2.4.8" data-path="getting-started.html"><a href="getting-started.html#step-8---make-a-histogram"><i class="fa fa-check"></i><b>2.4.8</b> Step 8 - Make a histogram</a></li>
+<li class="chapter" data-level="2.4.9" data-path="getting-started.html"><a href="getting-started.html#step-9---run-a-regression"><i class="fa fa-check"></i><b>2.4.9</b> Step 9 - Run a regression</a></li>
+<li class="chapter" data-level="2.4.10" data-path="getting-started.html"><a href="getting-started.html#step-10---get-a-summary-of-your-results"><i class="fa fa-check"></i><b>2.4.10</b> Step 10 - Get a summary of your results</a></li>
+<li class="chapter" data-level="2.4.11" data-path="getting-started.html"><a href="getting-started.html#a-look-forward"><i class="fa fa-check"></i><b>2.4.11</b> A Look forward</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="basic-r.html"><a href="basic-r.html"><i class="fa fa-check"></i><b>3</b> Basic R</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="basic-r.html"><a href="basic-r.html#writing-in-r-and-rmarkdown"><i class="fa fa-check"></i><b>3.1</b> Writing in R and Rmarkdown</a>
+<ul>
+<li class="chapter" data-level="3.1.1" data-path="basic-r.html"><a href="basic-r.html#chatting-with-r"><i class="fa fa-check"></i><b>3.1.1</b> Chatting with R</a></li>
+<li class="chapter" data-level="3.1.2" data-path="basic-r.html"><a href="basic-r.html#rmarkdown-tricks"><i class="fa fa-check"></i><b>3.1.2</b> Rmarkdown tricks</a></li>
+<li class="chapter" data-level="3.1.3" data-path="basic-r.html"><a href="basic-r.html#code-blocks"><i class="fa fa-check"></i><b>3.1.3</b> Code blocks</a></li>
+</ul></li>
+<li class="chapter" data-level="3.2" data-path="basic-r.html"><a href="basic-r.html#variables"><i class="fa fa-check"></i><b>3.2</b> Variables</a>
+<ul>
+<li class="chapter" data-level="3.2.1" data-path="basic-r.html"><a href="basic-r.html#the-assignment-operator"><i class="fa fa-check"></i><b>3.2.1</b> The assignment operator</a></li>
+<li class="chapter" data-level="3.2.2" data-path="basic-r.html"><a href="basic-r.html#numerics"><i class="fa fa-check"></i><b>3.2.2</b> Numerics</a></li>
+<li class="chapter" data-level="3.2.3" data-path="basic-r.html"><a href="basic-r.html#characters"><i class="fa fa-check"></i><b>3.2.3</b> Characters</a></li>
+<li class="chapter" data-level="3.2.4" data-path="basic-r.html"><a href="basic-r.html#booleans"><i class="fa fa-check"></i><b>3.2.4</b> Booleans</a></li>
+<li class="chapter" data-level="3.2.5" data-path="basic-r.html"><a href="basic-r.html#special-types"><i class="fa fa-check"></i><b>3.2.5</b> Special types</a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="basic-r.html"><a href="basic-r.html#vectors"><i class="fa fa-check"></i><b>3.3</b> Vectors</a></li>
+<li class="chapter" data-level="3.4" data-path="basic-r.html"><a href="basic-r.html#lists"><i class="fa fa-check"></i><b>3.4</b> Lists</a></li>
+<li class="chapter" data-level="3.5" data-path="basic-r.html"><a href="basic-r.html#dataframes"><i class="fa fa-check"></i><b>3.5</b> Dataframes</a>
+<ul>
+<li class="chapter" data-level="3.5.1" data-path="basic-r.html"><a href="basic-r.html#construction"><i class="fa fa-check"></i><b>3.5.1</b> Construction</a></li>
+<li class="chapter" data-level="3.5.2" data-path="basic-r.html"><a href="basic-r.html#built-in-dataframes"><i class="fa fa-check"></i><b>3.5.2</b> Built-in dataframes</a></li>
+</ul></li>
+<li class="chapter" data-level="3.6" data-path="basic-r.html"><a href="basic-r.html#functions"><i class="fa fa-check"></i><b>3.6</b> Functions</a>
+<ul>
+<li class="chapter" data-level="3.6.1" data-path="basic-r.html"><a href="basic-r.html#getting-help"><i class="fa fa-check"></i><b>3.6.1</b> Getting help</a></li>
+<li class="chapter" data-level="3.6.2" data-path="basic-r.html"><a href="basic-r.html#function-parameters"><i class="fa fa-check"></i><b>3.6.2</b> Function parameters</a></li>
+</ul></li>
+<li class="chapter" data-level="3.7" data-path="basic-r.html"><a href="basic-r.html#packages"><i class="fa fa-check"></i><b>3.7</b> Packages</a></li>
+<li class="chapter" data-level="3.8" data-path="basic-r.html"><a href="basic-r.html#error-messages"><i class="fa fa-check"></i><b>3.8</b> Error messages</a></li>
+<li class="chapter" data-level="3.9" data-path="basic-r.html"><a href="basic-r.html#coding-conventions"><i class="fa fa-check"></i><b>3.9</b> Coding Conventions</a>
+<ul>
+<li class="chapter" data-level="3.9.1" data-path="basic-r.html"><a href="basic-r.html#what-should-my-code-look-like"><i class="fa fa-check"></i><b>3.9.1</b> What should my code look like?</a></li>
+<li class="chapter" data-level="3.9.2" data-path="basic-r.html"><a href="basic-r.html#official-coding-conventions"><i class="fa fa-check"></i><b>3.9.2</b> Official coding conventions</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="introduction-to-machine-learning.html"><a href="introduction-to-machine-learning.html"><i class="fa fa-check"></i><b>4</b> Introduction to machine learning</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="introduction-to-machine-learning.html"><a href="introduction-to-machine-learning.html#wait-arent-those-the-same-thing"><i class="fa fa-check"></i><b>4.1</b> Wait, aren’t those the same thing?</a></li>
+<li class="chapter" data-level="4.2" data-path="introduction-to-machine-learning.html"><a href="introduction-to-machine-learning.html#the-tidymodels-framework"><i class="fa fa-check"></i><b>4.2</b> The <code>tidymodels</code> framework</a></li>
+<li class="chapter" data-level="4.3" data-path="introduction-to-machine-learning.html"><a href="introduction-to-machine-learning.html#steps-1-2---load-data-and-do-some-very-basic-cleaning"><i class="fa fa-check"></i><b>4.3</b> Steps 1 &amp; 2 - Load data and do some very basic cleaning</a></li>
+<li class="chapter" data-level="4.4" data-path="introduction-to-machine-learning.html"><a href="introduction-to-machine-learning.html#step-3---split-training-and-test-samples"><i class="fa fa-check"></i><b>4.4</b> Step 3 - Split training and test samples</a></li>
+<li class="chapter" data-level="4.5" data-path="introduction-to-machine-learning.html"><a href="introduction-to-machine-learning.html#step-4---build-a-data-processing-recipe"><i class="fa fa-check"></i><b>4.5</b> Step 4 - Build a data processing recipe</a></li>
+<li class="chapter" data-level="4.6" data-path="introduction-to-machine-learning.html"><a href="introduction-to-machine-learning.html#step-5---extract-the-preprocessed-data"><i class="fa fa-check"></i><b>4.6</b> Step 5 - Extract the preprocessed data</a></li>
+<li class="chapter" data-level="4.7" data-path="introduction-to-machine-learning.html"><a href="introduction-to-machine-learning.html#step-6---fit-a-model"><i class="fa fa-check"></i><b>4.7</b> Step 6 - Fit a model</a></li>
+<li class="chapter" data-level="4.8" data-path="introduction-to-machine-learning.html"><a href="introduction-to-machine-learning.html#step-7---evaluate-the-model"><i class="fa fa-check"></i><b>4.8</b> Step 7 - Evaluate the model</a></li>
+<li class="chapter" data-level="4.9" data-path="introduction-to-machine-learning.html"><a href="introduction-to-machine-learning.html#step-8---plot-your-data"><i class="fa fa-check"></i><b>4.9</b> Step 8 - Plot your data</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="structural-equation-modeling.html"><a href="structural-equation-modeling.html"><i class="fa fa-check"></i><b>5</b> Structural Equation Modeling</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="structural-equation-modeling.html"><a href="structural-equation-modeling.html#step-1-and-2---load-data-and-clean"><i class="fa fa-check"></i><b>5.1</b> Step 1 and 2 - Load data and clean</a></li>
+<li class="chapter" data-level="5.2" data-path="structural-equation-modeling.html"><a href="structural-equation-modeling.html#efa"><i class="fa fa-check"></i><b>5.2</b> EFA</a>
+<ul>
+<li class="chapter" data-level="5.2.1" data-path="structural-equation-modeling.html"><a href="structural-equation-modeling.html#steps-3-4"><i class="fa fa-check"></i><b>5.2.1</b> Steps 3 &amp; 4</a></li>
+</ul></li>
+<li class="chapter" data-level="5.3" data-path="structural-equation-modeling.html"><a href="structural-equation-modeling.html#cfa"><i class="fa fa-check"></i><b>5.3</b> CFA</a>
+<ul>
+<li class="chapter" data-level="5.3.1" data-path="structural-equation-modeling.html"><a href="structural-equation-modeling.html#step-3-4"><i class="fa fa-check"></i><b>5.3.1</b> Step 3 &amp; 4</a></li>
+</ul></li>
+<li class="chapter" data-level="5.4" data-path="structural-equation-modeling.html"><a href="structural-equation-modeling.html#sem"><i class="fa fa-check"></i><b>5.4</b> SEM</a>
+<ul>
+<li class="chapter" data-level="5.4.1" data-path="structural-equation-modeling.html"><a href="structural-equation-modeling.html#steps-3-4-1"><i class="fa fa-check"></i><b>5.4.1</b> Steps 3 &amp; 4</a></li>
+<li class="chapter" data-level="5.4.2" data-path="structural-equation-modeling.html"><a href="structural-equation-modeling.html#modification-indices"><i class="fa fa-check"></i><b>5.4.2</b> Modification indices</a></li>
+</ul></li>
+</ul></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">An Organic R Textbook</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="introduction-to-machine-learning" class="section level1" number="4">
+<h1><span class="header-section-number">4</span> Introduction to machine learning</h1>
+<p>For many years, the field of statistics has proceeded along two different lines of development: one focused on <strong>inference</strong> and the other focused on <strong>prediction</strong>. Most readers of this particular document will have been trained in the <strong>inference tradition</strong>, in which the goal of a statistical analysis is to use sample information to make an inference about a broader population. However, in this chapter we will focus on the <strong>prediction tradition</strong>, in which our goal is to use limited sample information to build a model capable of making accurate out-of-sample predictions about new individuals we might come across.</p>
+<div id="wait-arent-those-the-same-thing" class="section level2" number="4.1">
+<h2><span class="header-section-number">4.1</span> Wait, aren’t those the same thing?</h2>
+<p>Often, yes, models that are good at making accurate inferences about some population parameter are also good at making predictions about new individuals from that population. The reverse is also often true: models that make accurate predictions are also probably models that can tell us something about the features of a broader population.</p>
+<p>However, these two approaches also often imply some differences too. For example, in the inference traditional, <strong>interpretability and explainability</strong> are key. In that tradition, we are deeply skeptical of a model with a high <span class="math inline">\(R^2\)</span> value, but which can’t be quickly explained to us. In contrast, in the prediction tradition, explainability still matters, but not nearly as much. If we can show that a model reliably produces good predictions, we are generally satisfied.</p>
+</div>
+<div id="the-tidymodels-framework" class="section level2" number="4.2">
+<h2><span class="header-section-number">4.2</span> The <code>tidymodels</code> framework</h2>
+<p>If your goals are different, the tools you use to achieve those goals will generally be different too. Unlike in many other chapters, where everything is just a new flavor of the same old linear regression, in this chapter we introduce a whole new modelling framework, implemented in the <code>tidymodels</code> package.</p>
+<p>This package was created out of a desire to unify (and thus simplify) the machine learning process in R, which is currently dominated by an array of diverse packages - many of which do the same thing, slightly differently. To help you get through your analysis quickly (and in a less error prone way) than sorting through a bunch of different packages, <code>tidymodels</code> will handle a lot under the hood, leaving you with a simple <strong>baking metaphor</strong> to guide you through the process.</p>
+</div>
+<div id="steps-1-2---load-data-and-do-some-very-basic-cleaning" class="section level2" number="4.3">
+<h2><span class="header-section-number">4.3</span> Steps 1 &amp; 2 - Load data and do some very basic cleaning</h2>
+<p>Again, we load the KSADS dataset with our custom function and do some very basic cleaning. We also load both the <code>tidyverse</code> and <code>tidymodels</code> packages because we’ll be using both throughout.</p>
+<div class="sourceCode" id="cb138"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb138-1"><a href="introduction-to-machine-learning.html#cb138-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb138-2"><a href="introduction-to-machine-learning.html#cb138-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidymodels)</span>
+<span id="cb138-3"><a href="introduction-to-machine-learning.html#cb138-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb138-4"><a href="introduction-to-machine-learning.html#cb138-4" aria-hidden="true" tabindex="-1"></a>read_abcd_quietly <span class="ot">&lt;-</span> <span class="cf">function</span>(file_path){</span>
+<span id="cb138-5"><a href="introduction-to-machine-learning.html#cb138-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">suppressMessages</span>(</span>
+<span id="cb138-6"><a href="introduction-to-machine-learning.html#cb138-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">expr =</span> <span class="fu">read_delim</span>(file_path, <span class="at">delim =</span> <span class="st">&#39;</span><span class="sc">\t</span><span class="st">&#39;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb138-7"><a href="introduction-to-machine-learning.html#cb138-7" aria-hidden="true" tabindex="-1"></a>      <span class="fu">filter</span>(<span class="fu">row_number</span>() <span class="sc">!=</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb138-8"><a href="introduction-to-machine-learning.html#cb138-8" aria-hidden="true" tabindex="-1"></a>      <span class="fu">type_convert</span>())</span>
+<span id="cb138-9"><a href="introduction-to-machine-learning.html#cb138-9" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb138-10"><a href="introduction-to-machine-learning.html#cb138-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb138-11"><a href="introduction-to-machine-learning.html#cb138-11" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">read_abcd_quietly</span>(<span class="st">&#39;data/abcd_lpksad01.txt&#39;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb138-12"><a href="introduction-to-machine-learning.html#cb138-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">grade_drop =</span> kbi_p_c_drop_in_grades_l) <span class="sc">%&gt;%</span> </span>
+<span id="cb138-13"><a href="introduction-to-machine-learning.html#cb138-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(grade_drop <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb138-14"><a href="introduction-to-machine-learning.html#cb138-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb138-15"><a href="introduction-to-machine-learning.html#cb138-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">grade_drop =</span> <span class="fu">factor</span>(</span>
+<span id="cb138-16"><a href="introduction-to-machine-learning.html#cb138-16" aria-hidden="true" tabindex="-1"></a>      <span class="at">x =</span> grade_drop, </span>
+<span id="cb138-17"><a href="introduction-to-machine-learning.html#cb138-17" aria-hidden="true" tabindex="-1"></a>      <span class="at">levels =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>), </span>
+<span id="cb138-18"><a href="introduction-to-machine-learning.html#cb138-18" aria-hidden="true" tabindex="-1"></a>      <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">&#39;yes&#39;</span>, <span class="st">&#39;no&#39;</span>))) <span class="sc">%&gt;%</span></span>
+<span id="cb138-19"><a href="introduction-to-machine-learning.html#cb138-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(subjectkey) <span class="sc">%&gt;%</span> </span>
+<span id="cb138-20"><a href="introduction-to-machine-learning.html#cb138-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(interview_age <span class="sc">==</span> <span class="fu">min</span>(interview_age))</span></code></pre></div>
+</div>
+<div id="step-3---split-training-and-test-samples" class="section level2" number="4.4">
+<h2><span class="header-section-number">4.4</span> Step 3 - Split training and test samples</h2>
+<p>Recall from above that our goal with machine learning is to make good out-of-sample predictions. To test whether our model has done that, we need to split our sample into two parts: a <strong>training</strong> sample that we use to fit and calibrate our model (usually 80% of the total sample) and a smaller <strong>test</strong> sample we can use to evaluate how good that model is at predicting scores it has not seen before (usually 20%). We can do this with the <code>initial_split()</code> function.</p>
+<div class="sourceCode" id="cb139"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb139-1"><a href="introduction-to-machine-learning.html#cb139-1" aria-hidden="true" tabindex="-1"></a>df_split <span class="ot">&lt;-</span> <span class="fu">initial_split</span>(df, <span class="at">prop =</span> .<span class="dv">80</span>)</span>
+<span id="cb139-2"><a href="introduction-to-machine-learning.html#cb139-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb139-3"><a href="introduction-to-machine-learning.html#cb139-3" aria-hidden="true" tabindex="-1"></a>df_split</span></code></pre></div>
+<pre><code>## &lt;Analysis/Assess/Total&gt;
+## &lt;8282/2071/10353&gt;</code></pre>
+<p>As we can see, this splits our data into analysis (training) and assess (test) sub-components. If we want to look at a particular sub-component, we can simply ask for it with a simple helper function. In this case, we use the well-named <code>training()</code> function to get a look at which data ended up in the training set.</p>
+<div class="sourceCode" id="cb141"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb141-1"><a href="introduction-to-machine-learning.html#cb141-1" aria-hidden="true" tabindex="-1"></a>df_split <span class="sc">%&gt;%</span></span>
+<span id="cb141-2"><a href="introduction-to-machine-learning.html#cb141-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">training</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb141-3"><a href="introduction-to-machine-learning.html#cb141-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>()</span></code></pre></div>
+<pre><code>## # A tibble: 6 x 90
+## # Groups:   subjectkey [6]
+##   collection_id abcd_lpksad01_id dataset_id subjectkey    src_subject_id  interview_age
+##           &lt;dbl&gt;            &lt;dbl&gt;      &lt;dbl&gt; &lt;chr&gt;         &lt;chr&gt;                   &lt;dbl&gt;
+## 1          2573            32435      47218 NDAR_INVBBH4~ NDAR_INVBBH4GW~           141
+## 2          2573            24853      47218 NDAR_INV27NU~ NDAR_INV27NU4C~           138
+## 3          2573            36895      47218 NDAR_INVFRT7~ NDAR_INVFRT7F0~           123
+## 4          2573            43694      47218 NDAR_INVN9D4~ NDAR_INVN9D4XZ~           131
+## 5          2573            33934      47218 NDAR_INVE4KD~ NDAR_INVE4KDYW~           140
+## 6          2573            48962      47218 NDAR_INVWY8V~ NDAR_INVWY8VJ5~           154
+## # ... with 84 more variables: interview_date &lt;chr&gt;, sex &lt;chr&gt;, eventname &lt;chr&gt;,
+## #   kbi_l_p_select_language___1 &lt;dbl&gt;, kbi_p_c_live_full_time_l &lt;dbl&gt;,
+## #   kbi_p_c_guard_l___1 &lt;dbl&gt;, kbi_p_c_guard_l___2 &lt;dbl&gt;, kbi_p_c_guard_l___3 &lt;dbl&gt;,
+## #   kbi_p_c_guard_l___4 &lt;dbl&gt;, kbi_p_c_guard_l___5 &lt;dbl&gt;, kbi_p_c_guard_l___6 &lt;dbl&gt;,
+## #   kbi_p_c_guard_l___7 &lt;dbl&gt;, kbi_p_c_guard_l___8 &lt;dbl&gt;, kbi_p_c_guard_l___9 &lt;dbl&gt;,
+## #   kbi_p_c_guard_l___10 &lt;dbl&gt;, kbi_p_c_guard_l___11 &lt;dbl&gt;,
+## #   kbi_p_c_guard_l___12 &lt;dbl&gt;, kbi_p_c_guard_l___0 &lt;dbl&gt;, kbi_p_conflict_l &lt;dbl&gt;, ...</code></pre>
+</div>
+<div id="step-4---build-a-data-processing-recipe" class="section level2" number="4.5">
+<h2><span class="header-section-number">4.5</span> Step 4 - Build a data processing recipe</h2>
+<p>As mentioned above, the <code>tidymodels</code> framework is built around a cooking metaphor. The idea is that you start with a <strong>recipe</strong>, which is a set of instructions for what you want to do to process your data.</p>
+<p>We do this by extracting our data, then telling R that we want a <code>recipe()</code> and feed it a formula indicating what we want to use as our outcome variable and what we want to use as our predictors. In this case, the formula <code>grade_drop ~ .</code> means “use <code>grade_drop</code> as the outcome and everything else you can find as a predictor.</p>
+<p>After that, we use any number of <code>step_...()</code> functions. These are the steps in our recipe. There are dozens of helpful ones build into <code>tidymodels</code>, so make sure to browse the documentation for ones you might like.</p>
+<p>In this case, we’ll use a few common ones:</p>
+<ul>
+<li><code>step_rm()</code> removes variables much like <code>select()</code> does. In this case, we remove variables that don’t have anything that would help with predicting grade drop (e.g., the <code>subjectkey</code> is a randomly generated variable and has nothing to do with grade changes).</li>
+<li><code>step_filter_missing()</code> filters out variables that have too much missing data, based on a threshold we set. In this case, we want to get rid of ANY missing data.</li>
+<li><code>step_nzv()</code> removes variables that have zero (or low) variance, indicating everyone has the same or similar scores and we wont get much information out of those variables.</li>
+<li><code>step_corr()</code> removes variables that are highly correlated with one another because they offer little <em>unique</em> information.</li>
+</ul>
+<p>Once all of this is done, we call <code>prep()</code> to finalize the recipe building process.</p>
+<div class="sourceCode" id="cb143"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb143-1"><a href="introduction-to-machine-learning.html#cb143-1" aria-hidden="true" tabindex="-1"></a>df_recipe <span class="ot">&lt;-</span> df_split <span class="sc">%&gt;%</span> </span>
+<span id="cb143-2"><a href="introduction-to-machine-learning.html#cb143-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">training</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb143-3"><a href="introduction-to-machine-learning.html#cb143-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">recipe</span>(grade_drop <span class="sc">~</span> .) <span class="sc">%&gt;%</span> </span>
+<span id="cb143-4"><a href="introduction-to-machine-learning.html#cb143-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_rm</span>(<span class="fu">ends_with</span>(<span class="st">&#39;id&#39;</span>) <span class="sc">|</span> <span class="fu">matches</span>(<span class="st">&#39;subjectkey&#39;</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb143-5"><a href="introduction-to-machine-learning.html#cb143-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_filter_missing</span>(<span class="fu">all_predictors</span>(), <span class="at">threshold =</span> <span class="dv">0</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb143-6"><a href="introduction-to-machine-learning.html#cb143-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_nzv</span>(<span class="fu">all_predictors</span>()) <span class="sc">%&gt;%</span> </span>
+<span id="cb143-7"><a href="introduction-to-machine-learning.html#cb143-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_corr</span>(<span class="fu">all_numeric_predictors</span>(), <span class="at">threshold =</span> .<span class="dv">50</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb143-8"><a href="introduction-to-machine-learning.html#cb143-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">prep</span>()</span>
+<span id="cb143-9"><a href="introduction-to-machine-learning.html#cb143-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb143-10"><a href="introduction-to-machine-learning.html#cb143-10" aria-hidden="true" tabindex="-1"></a>df_recipe</span></code></pre></div>
+<pre><code>## Recipe
+## 
+## Inputs:
+## 
+##       role #variables
+##    outcome          1
+##  predictor         89
+## 
+## Training data contained 8282 data points and 8282 incomplete rows. 
+## 
+## Operations:
+## 
+## Variables removed collection_id, abcd_lpksad01_id, dataset_id, src_subject_id, s... [trained]
+## Missing value column filter removed kbi_p_c_best_friend_len_l, kbi_p_c_reg_friend_gr... [trained]
+## Sparse, unbalanced variable filter removed kbi_p_c_guard_l___1, kbi_p_c_guard_l___2, kbi_... [trained]
+## Correlation filter on kbi_p_conflict_causes_l___8, kbi_p_c_spec_serv_l... [trained]</code></pre>
+<p>The output we get is helpful here, indicating how many variables are involved in our recipe.</p>
+</div>
+<div id="step-5---extract-the-preprocessed-data" class="section level2" number="4.6">
+<h2><span class="header-section-number">4.6</span> Step 5 - Extract the preprocessed data</h2>
+<p>With our preprocessing recipe prepped, we can now <code>bake()</code> it. This means we implement the preprocessing instructions on the datasets.</p>
+<p>To do this, we say we want to take the recipe, and then bake it using our dataset of choice.</p>
+<p>We’ll do this once for our training data and once for our testing data. Note, for our testing data we also filter to have only complete cases on our outcome variable as well, which will make evaluation easier later.</p>
+<div class="sourceCode" id="cb145"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb145-1"><a href="introduction-to-machine-learning.html#cb145-1" aria-hidden="true" tabindex="-1"></a>df_training <span class="ot">&lt;-</span> df_recipe <span class="sc">%&gt;%</span> </span>
+<span id="cb145-2"><a href="introduction-to-machine-learning.html#cb145-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bake</span>(<span class="fu">training</span>(df_split))</span>
+<span id="cb145-3"><a href="introduction-to-machine-learning.html#cb145-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb145-4"><a href="introduction-to-machine-learning.html#cb145-4" aria-hidden="true" tabindex="-1"></a>df_testing <span class="ot">&lt;-</span> df_recipe <span class="sc">%&gt;%</span> </span>
+<span id="cb145-5"><a href="introduction-to-machine-learning.html#cb145-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bake</span>(<span class="fu">testing</span>(df_split)) <span class="sc">%&gt;%</span> </span>
+<span id="cb145-6"><a href="introduction-to-machine-learning.html#cb145-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">complete.cases</span>(.))</span></code></pre></div>
+</div>
+<div id="step-6---fit-a-model" class="section level2" number="4.7">
+<h2><span class="header-section-number">4.7</span> Step 6 - Fit a model</h2>
+<p>With our data prepped and baked, it is time to finally fit a model. In this case, we’ll fit a random forest model, using the <code>rand_forest()</code> function.</p>
+<p>Underneath the hood, <code>rand_forest()</code> is capable of using a bunch of different “engines” (R packages) to do its computations, each with their own quirks. You won’t notice them because <code>rand_forest()</code> will make everything run smoothly for you. However, you do need to tell it which engine to use with <code>set_engine()</code>. In this case, we’ll tell it to use the basic <code>'ranger'</code> engine because that is a popular package.</p>
+<p>Lastly, with all the options set, we tell R to <code>fit()</code> our model, using the familiar formula / data combination of arguments, much like linear regression. The only trick here is again the use of the <code>.</code> in our formula, which means “use everything you can find”</p>
+<div class="sourceCode" id="cb146"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb146-1"><a href="introduction-to-machine-learning.html#cb146-1" aria-hidden="true" tabindex="-1"></a>df_ranger <span class="ot">&lt;-</span> <span class="fu">rand_forest</span>(<span class="at">trees =</span> <span class="dv">100</span>, <span class="at">mode =</span> <span class="st">&#39;classification&#39;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb146-2"><a href="introduction-to-machine-learning.html#cb146-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_engine</span>(<span class="st">&#39;ranger&#39;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb146-3"><a href="introduction-to-machine-learning.html#cb146-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit</span>(grade_drop <span class="sc">~</span> ., <span class="at">data =</span> df_training)</span>
+<span id="cb146-4"><a href="introduction-to-machine-learning.html#cb146-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb146-5"><a href="introduction-to-machine-learning.html#cb146-5" aria-hidden="true" tabindex="-1"></a>df_ranger</span></code></pre></div>
+<pre><code>## parsnip model object
+## 
+## Ranger result
+## 
+## Call:
+##  ranger::ranger(x = maybe_data_frame(x), y = y, num.trees = ~100,      num.threads = 1, verbose = FALSE, seed = sample.int(10^5,          1), probability = TRUE) 
+## 
+## Type:                             Probability estimation 
+## Number of trees:                  100 
+## Sample size:                      8282 
+## Number of independent variables:  19 
+## Mtry:                             4 
+## Target node size:                 10 
+## Variable importance mode:         none 
+## Splitrule:                        gini 
+## OOB prediction error (Brier s.):  0.09693659</code></pre>
+<p>Great! Our output gives us some information about our model. But… it didn’t give use a ton of information about how good that model is.</p>
+</div>
+<div id="step-7---evaluate-the-model" class="section level2" number="4.8">
+<h2><span class="header-section-number">4.8</span> Step 7 - Evaluate the model</h2>
+<p>To get information about how well our model did predicting new data, we need to use it to make predictions about our test data, then see how close those predictions were to the actually observed data in that test set that we set aside.</p>
+<p>To do that, we take our model, then call <code>predict()</code> on our testing data. After that, we use <code>bind_cols()</code> to take those predictions and place them in a new dataframe, right next to the observed testing data. With all of that done, we can then use the <code>metrics()</code> function to get some performance metrics. All we need to do is tell <code>metrics()</code> which column represents the true score and which one is the prediction estimated by the model.</p>
+<div class="sourceCode" id="cb148"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb148-1"><a href="introduction-to-machine-learning.html#cb148-1" aria-hidden="true" tabindex="-1"></a>df_ranger <span class="sc">%&gt;%</span></span>
+<span id="cb148-2"><a href="introduction-to-machine-learning.html#cb148-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">predict</span>(df_testing) <span class="sc">%&gt;%</span></span>
+<span id="cb148-3"><a href="introduction-to-machine-learning.html#cb148-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bind_cols</span>(df_testing) <span class="sc">%&gt;%</span> </span>
+<span id="cb148-4"><a href="introduction-to-machine-learning.html#cb148-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">metrics</span>(<span class="at">truth =</span> grade_drop, <span class="at">estimate =</span> .pred_class)</span></code></pre></div>
+<pre><code>## # A tibble: 2 x 3
+##   .metric  .estimator .estimate
+##   &lt;chr&gt;    &lt;chr&gt;          &lt;dbl&gt;
+## 1 accuracy binary        0.860 
+## 2 kap      binary        0.0700</code></pre>
+<p>Here, we can see that our model is about 88% accurate at predicting a grade drop for a student it has never seen before.</p>
+</div>
+<div id="step-8---plot-your-data" class="section level2" number="4.9">
+<h2><span class="header-section-number">4.9</span> Step 8 - Plot your data</h2>
+<p>It is also possible to plot the success of your model, using a similar pipeline. But this time instead of using <code>metrics()</code>, we ask R to give us a <code>roc_curve()</code> and to graph it with <code>autoplot()</code>. This gives us a publication-ready figure, in just two extra lines!</p>
+<div class="sourceCode" id="cb150"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb150-1"><a href="introduction-to-machine-learning.html#cb150-1" aria-hidden="true" tabindex="-1"></a>df_ranger <span class="sc">%&gt;%</span></span>
+<span id="cb150-2"><a href="introduction-to-machine-learning.html#cb150-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">predict</span>(df_testing, <span class="at">type =</span> <span class="st">&#39;prob&#39;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb150-3"><a href="introduction-to-machine-learning.html#cb150-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bind_cols</span>(df_testing) <span class="sc">%&gt;%</span> </span>
+<span id="cb150-4"><a href="introduction-to-machine-learning.html#cb150-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">roc_curve</span>(<span class="at">truth =</span> grade_drop, <span class="at">estimate =</span> .pred_yes) <span class="sc">%&gt;%</span> </span>
+<span id="cb150-5"><a href="introduction-to-machine-learning.html#cb150-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">autoplot</span>()</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-117-1.png" width="672" /></p>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="basic-r.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="structural-equation-modeling.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "sepia",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/iancero/musc_r_course_2021/edit/main/intro_to_machine_learning.Rmd",
+"text": "Find a typo? Please suggest an edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["_main.pdf", "_main.epub"],
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

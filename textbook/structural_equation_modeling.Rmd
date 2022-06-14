@@ -1,64 +1,64 @@
 # Structural Equation Modeling
 
+Structural equation modeling (SEM) can be thought of as a series of regressions, all estimated simultaneously. This allows the relationship between some variables to provide information on the relationship between others. To get a feel for how this works, consider that if we have three variables (A, B, C) and two negative correlations (A is negatively correlated with B, B is negatively correlated with C), we know that A and C MUST be positively correlated. Thus, if I estimate all of these correlations simultaneously, I can get a more precise estimate for all of their relationships by incorporating all possible information.
+
+There are many kinds of SEMS, so we'll cover just a few of the most common ones:
+
+- Exploratory factor analysis (EFA), in which we ask whether some hidden factor accounts for the observed correlation between several items (usually items from the same survey scale). In the case of EFA, we also don't really have any prior knowledge as to what this hidden variable might be like, so we let the model figure it out for us.
+
+- Confirmatory factor analysis (CFA), which is like EFA, but we force the model to fit an *a priori* idea that we have about the relationship between our observed variables and the hidden variable that explains their correlations. After we force a specific model, we then evaluate how well it fit our observed data.
+
+- Path models. These are often what people think of when they hear "SEM." These are typically just a series of regressions (paths) connecting variables in a kind of spider web of relationships.
+
+## Step 1 and 2 - Load data and clean
+
+Because we want to evaluate the factors underlying particular scales, we'll start by using the `diff_emotion_reg_p01.txt` dataset, which includes data from an emotion regulation survey scale.
+
 ```{r}
 library(tidyverse)
 
-read_abcd <- function(abcd_path){
-  suppressMessages({
-    abcd_path %>% 
-      read_delim() %>% 
+read_abcd_quietly <- function(file_path){
+  suppressMessages(
+    expr = read_delim(file_path, delim = '\t') %>% 
       filter(row_number() != 1) %>% 
-      type_convert()  
-  })
+      type_convert())
 }
 
-df <- read_abcd('data/diff_emotion_reg_p01.txt') %>% 
+df <- read_abcd_quietly('data/diff_emotion_reg_p01.txt') %>% 
   mutate(across(.cols = starts_with('ders_'), .fns = ~ ifelse(.x == 7, NA, .x)))
 ```
+
+## EFA
+
+### Steps 3 & 4
+
+To conduct an EFA, we'll use functions from the `psych` package. This process is luckily relatively straightforward. All we need to do is select the variables we want to analyze, then feed them to the `fa()` function. The `fa()` function also wants to know what the max number of factors we want to look for is, so we'll tell it 6 (it this case, we know this scale has 6 factors because it has been extensively studied before).
 
 ```{r}
 library(psych)
 
-efa_samp <- sample(df$src_subject_id, size = nrow(df)/2)
-
 ders_df <- df %>% 
-  filter(src_subject_id %in% efa_samp) %>% 
-  # filter(complete.cases(.)) %>% 
   select(starts_with('ders_') & ends_with('_p'))
 
 fit <- fa(ders_df, nfactors = 6)
 
 summary(fit)
 ```
-```{r}
-loads <- fit$loadings
-
-class(loads) <- 'matrix'
-
-loading_df <- loads %>% 
-  as.data.frame() %>% 
-  mutate(var_name = rownames(.)) %>% 
-  pivot_longer(-var_name, names_to = 'factor', values_to = 'loading') %>% 
-  group_by(var_name) %>% 
-  filter(loading == max(loading))
-```
+Unfortunately, the output we get from `summary()` doesn't tell us which items load onto which factors. To get that, we need to extract them from the `fit` object directly.
 
 ```{r}
-loading_df %>% 
-  group_by(factor) %>% 
-  nest() %>% 
-  mutate(
-    factor_name = case_when(
-      factor == 'MR1' ~ 'a',
-      factor == 'MR2' ~ 'b',
-      factor == 'MR3' ~ 'c',
-      factor == 'MR4' ~ 'd',
-      factor == 'MR5' ~ 'e',
-      factor == 'MR6' ~ 'f'),
-    vars = map_chr(data, ~ paste(.x$var_name, collapse = ' + ')),
-    fmla = paste(factor_name, '=~', vars)) %>% 
-  pull(fmla)
+fit$loadings
 ```
+
+## CFA
+
+### Step 3 & 4
+
+Above, we did an exploratory factor analysis, but now we want to run a confirmatory one. To do that, we'll use the `lavaan` package, which is the most popular pacakge in R for SEM-based analyses.
+
+Like a basic regression, we'll need a model formula and some data. But unlike a basic regression, CFA and broader SEM usually have several formulas at once. To handle this, we'll write down our model as a string and save it in a `my_model` variable to make things easier to read. 
+
+After that, we just send the model to the `cfa()` function, which does the rest of the work for us. A quick call to `summary()` and we're done!
 
 ```{r}
 library(lavaan)
@@ -80,17 +80,27 @@ fit <- cfa(
 summary(fit, fit.measures = T)
 ```
 
+## SEM
 
+### Steps 3 & 4
+
+The CFA above shows us that there are several latent variables that underlie the scale in this dataset, which we have labelled `a` through `d`. Do the scores on one factor predict scores on another? Does the sex of a subject predict their scores on these hidden variables? SEM is the technique that answers this question. All we need to to to get there is to combine our existing model with some existing commands.
+
+Here, we are saying that we expect variable `a` to be predicted by variable `b`, as well as subject sex. 
+
+To demonstrate another trick in the next line, we'll tell R that we want our model to force the correlation between `b` and `c` to be exactly 0. Why do this? In this case, there isn't really a reason, but in broader SEM it helps to have this tool in your belt, so we demonstrate how to force model constraintes here in case you ever need them.
 
 ```{r}
 new_model <- paste(
   my_model, 
   '
-  
   a ~ b + sex
-  b ~~ 0*c
-  ')
+  b ~~ 0*c')
+```
 
+With our new model specified, we can safely proceed to estimate our SEM and ask for a summary in the usual way.
+
+```{r}
 fit <- sem(
   model = new_model,
   data = df,
@@ -100,6 +110,10 @@ fit <- sem(
 summary(fit)
 ```
 
+
+### Modification indices
+
+Not all models fit well. When they don't it is often evidence that something in the model is mis-specified (e.g., forced to 0, when it should be estimated). **Modification indices** give you hints at which parameters you might want to free and they are easy to get with the `modindices()` function.
 
 ```{r}
 modindices(fit, sort = TRUE, maximum.number = 5)

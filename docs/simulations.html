@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>5 String interpolation | An Organic R Textbook</title>
+  <title>5 Simulations | An Organic R Textbook</title>
   <meta name="description" content="This is the organic textbook accompanying Cero’s 2021 course on statistical programming with R" />
   <meta name="generator" content="bookdown 0.24 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="5 String interpolation | An Organic R Textbook" />
+  <meta property="og:title" content="5 Simulations | An Organic R Textbook" />
   <meta property="og:type" content="book" />
   <meta property="og:url" content="https://iancero.github.io/musc_r_course_2021" />
   
@@ -16,7 +16,7 @@
   <meta name="github-repo" content="iancero/musc_r_course_2021" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="5 String interpolation | An Organic R Textbook" />
+  <meta name="twitter:title" content="5 Simulations | An Organic R Textbook" />
   
   <meta name="twitter:description" content="This is the organic textbook accompanying Cero’s 2021 course on statistical programming with R" />
   
@@ -32,7 +32,7 @@
   
   <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon" />
 <link rel="prev" href="strings-should-you-care.html"/>
-<link rel="next" href="simulations.html"/>
+
 <script src="libs/header-attrs-2.11/header-attrs.js"></script>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
@@ -213,13 +213,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ul>
 <li class="chapter" data-level="4.4.1" data-path="strings-should-you-care.html"><a href="strings-should-you-care.html#what-about-using-str_extract_all"><i class="fa fa-check"></i><b>4.4.1</b> What about using <code>str_extract_all()</code></a></li>
 </ul></li>
+<li class="chapter" data-level="4.5" data-path="strings-should-you-care.html"><a href="strings-should-you-care.html#string-interpolation"><i class="fa fa-check"></i><b>4.5</b> String interpolation</a></li>
 </ul></li>
-<li class="chapter" data-level="5" data-path="string-interpolation.html"><a href="string-interpolation.html"><i class="fa fa-check"></i><b>5</b> String interpolation</a></li>
-<li class="chapter" data-level="6" data-path="simulations.html"><a href="simulations.html"><i class="fa fa-check"></i><b>6</b> Simulations</a>
+<li class="chapter" data-level="5" data-path="simulations.html"><a href="simulations.html"><i class="fa fa-check"></i><b>5</b> Simulations</a>
 <ul>
-<li class="chapter" data-level="6.1" data-path="simulations.html"><a href="simulations.html#generating-fake-data"><i class="fa fa-check"></i><b>6.1</b> Generating fake data</a></li>
-<li class="chapter" data-level="6.2" data-path="simulations.html"><a href="simulations.html#how-is-this-useful"><i class="fa fa-check"></i><b>6.2</b> How is this useful?</a></li>
-<li class="chapter" data-level="6.3" data-path="simulations.html"><a href="simulations.html#re-testing-the-t-test"><i class="fa fa-check"></i><b>6.3</b> Re-testing the t-test</a></li>
+<li class="chapter" data-level="5.1" data-path="simulations.html"><a href="simulations.html#generating-fake-data"><i class="fa fa-check"></i><b>5.1</b> Generating fake data</a></li>
+<li class="chapter" data-level="5.2" data-path="simulations.html"><a href="simulations.html#how-is-this-useful"><i class="fa fa-check"></i><b>5.2</b> How is this useful?</a></li>
+<li class="chapter" data-level="5.3" data-path="simulations.html"><a href="simulations.html#re-testing-the-t-test"><i class="fa fa-check"></i><b>5.3</b> Re-testing the t-test</a></li>
 </ul></li>
 </ul>
 
@@ -238,51 +238,104 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="string-interpolation" class="section level1" number="5">
-<h1><span class="header-section-number">5</span> String interpolation</h1>
-<p>For basic tasks, the family of <code>str_...()</code> functions are great. But what if I want to do something more complicated, like compose a letter.</p>
-<p>As a dmeonstration, our contact dataframe includes the date taxes were due, but also the days taxes were paid. What if we wanted to produce a message for everyone that included their last name, as well as the number of days late their taxes were.</p>
-<p>Enter <code>glue</code> and <strong>string interpolation</strong>. This powerful tool lets us write out our template string, then use <code>{}</code> to refer to a variable that will be injected (“interpolated”) into that string, like so.</p>
-<div class="sourceCode" id="cb155"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb155-1"><a href="string-interpolation.html#cb155-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(glue)</span>
-<span id="cb155-2"><a href="string-interpolation.html#cb155-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb155-3"><a href="string-interpolation.html#cb155-3" aria-hidden="true" tabindex="-1"></a>me <span class="ot">&lt;-</span> <span class="st">&#39;Ian&#39;</span></span>
-<span id="cb155-4"><a href="string-interpolation.html#cb155-4" aria-hidden="true" tabindex="-1"></a><span class="fu">glue</span>(<span class="st">&#39;My name is {me}&#39;</span>)</span></code></pre></div>
-<pre><code>## My name is Ian</code></pre>
-<p>We can use this knowledge to create individual messages for each person in our dataframe.</p>
-<div class="sourceCode" id="cb157"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb157-1"><a href="string-interpolation.html#cb157-1" aria-hidden="true" tabindex="-1"></a>contact_df <span class="sc">%&gt;%</span> </span>
-<span id="cb157-2"><a href="string-interpolation.html#cb157-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb157-3"><a href="string-interpolation.html#cb157-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">tax_date =</span> lubridate<span class="sc">::</span><span class="fu">mdy</span>(tax_day),</span>
-<span id="cb157-4"><a href="string-interpolation.html#cb157-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">days_late =</span> tax_date <span class="sc">-</span> <span class="fu">as.Date</span>(<span class="st">&#39;2022-04-18&#39;</span>)) <span class="sc">%&gt;%</span> </span>
-<span id="cb157-5"><a href="string-interpolation.html#cb157-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(days_late <span class="sc">&gt;</span> <span class="dv">0</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb157-6"><a href="string-interpolation.html#cb157-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">message =</span> <span class="fu">glue</span>(<span class="st">&#39;Dear Mr. {lname}, your taxes are {days_late} days late.&#39;</span>)) <span class="sc">%&gt;%</span> </span>
-<span id="cb157-7"><a href="string-interpolation.html#cb157-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(lname, message)</span></code></pre></div>
-<pre><code>## # A tibble: 2 x 2
-##   lname  message                                     
-##   &lt;chr&gt;  &lt;glue&gt;                                      
-## 1 Cero   Dear Mr. Cero, your taxes are 5 days late.  
-## 2 McFake Dear Mr. McFake, your taxes are 4 days late.</code></pre>
-<p>You can also do it with as many variables as you like.</p>
-<div class="sourceCode" id="cb159"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb159-1"><a href="string-interpolation.html#cb159-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data.frame</span>(<span class="at">id =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb159-2"><a href="string-interpolation.html#cb159-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb159-3"><a href="string-interpolation.html#cb159-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">name =</span> <span class="fu">c</span>(<span class="st">&#39;Ian&#39;</span>, <span class="st">&#39;Jen&#39;</span>, <span class="st">&#39;Andy&#39;</span>),</span>
-<span id="cb159-4"><a href="string-interpolation.html#cb159-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">job =</span> <span class="fu">c</span>(<span class="st">&#39;statistician&#39;</span>, <span class="st">&#39;writer&#39;</span>, <span class="st">&#39;researcher&#39;</span>),</span>
-<span id="cb159-5"><a href="string-interpolation.html#cb159-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">pronouns =</span> <span class="fu">c</span>(<span class="st">&#39;He&#39;</span>, <span class="st">&#39;She&#39;</span>, <span class="st">&#39;They&#39;</span>),</span>
-<span id="cb159-6"><a href="string-interpolation.html#cb159-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">verb =</span> <span class="fu">ifelse</span>(pronouns <span class="sc">==</span> <span class="st">&#39;They&#39;</span>, <span class="st">&#39;are&#39;</span>, <span class="st">&#39;is&#39;</span>),</span>
-<span id="cb159-7"><a href="string-interpolation.html#cb159-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">bio =</span> <span class="fu">glue</span>(<span class="st">&#39;This is {name}. {pronouns} {verb} a {job}.&#39;</span>)) <span class="sc">%&gt;%</span> </span>
-<span id="cb159-8"><a href="string-interpolation.html#cb159-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(bio)</span></code></pre></div>
-<pre><code>##                                    bio
-## 1   This is Ian. He is a statistician.
-## 2        This is Jen. She is a writer.
-## 3 This is Andy. They are a researcher.</code></pre>
+<div id="simulations" class="section level1" number="5">
+<h1><span class="header-section-number">5</span> Simulations</h1>
+<p>If strings are the main feature of R that people didn’t realize they needed, simulation techniques are the 2nd. Many people start out saying they are a little intimidated by simulations, but end up feeling comfortable after a little bit of practice.</p>
+<p>The initial discomfort usually comes from the fact that we are doing statistics in reverse. In statistical <strong>analysis</strong>, we feed the data to a fitting function (like <code>lm()</code>) in order to get parameter estimates. In contrast, in simulations we are studying how well those functions <strong>recover</strong> parameters, so we choose some parameter values ourselves, make data that are consistent with those parameters, then apply our fitting function to see how well it guessed the parameters we planted in our data.</p>
+<div id="generating-fake-data" class="section level2" number="5.1">
+<h2><span class="header-section-number">5.1</span> Generating fake data</h2>
+<p>To get started, the first thing you need to know is how to generate fake random data. Fortunately, R has many functions for this, which generally start with <code>r...</code> for “random”.</p>
+<p>For example, to make a random normal variable, you would call <code>rnorm</code>, which takes 3 arguments:</p>
+<ul>
+<li><code>n</code>, the number of numbers you want to generate</li>
+<li><code>mean</code>, the mean of the population you want to be drawing from</li>
+<li><code>sd</code>, the standard deviation of the population you want to be drawing from</li>
+</ul>
+<div class="sourceCode" id="cb163"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb163-1"><a href="simulations.html#cb163-1" aria-hidden="true" tabindex="-1"></a>my_normals <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="at">n =</span> <span class="dv">100</span>, <span class="at">mean =</span> <span class="dv">11</span>, <span class="at">sd =</span> <span class="dv">3</span>)</span>
+<span id="cb163-2"><a href="simulations.html#cb163-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb163-3"><a href="simulations.html#cb163-3" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(my_normals)</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-83-1.png" width="672" />
+Looking at the graph, we got just about what we would have expected. Will things get even more normal looking with a larger sample size? Definitely.</p>
+<div class="sourceCode" id="cb164"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb164-1"><a href="simulations.html#cb164-1" aria-hidden="true" tabindex="-1"></a>my_normals <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="at">n =</span> <span class="dv">10000</span>, <span class="at">mean =</span> <span class="dv">11</span>, <span class="at">sd =</span> <span class="dv">3</span>)</span>
+<span id="cb164-2"><a href="simulations.html#cb164-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb164-3"><a href="simulations.html#cb164-3" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(my_normals)</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-84-1.png" width="672" /></p>
+</div>
+<div id="how-is-this-useful" class="section level2" number="5.2">
+<h2><span class="header-section-number">5.2</span> How is this useful?</h2>
+<p>On their own, random numbers are useless. However, if we use them to make many fake datasets, we can apply the same analysis function to each dataset and keep track of the results. This allows us to ask questions like <em>how often was an effect significant?</em> (i.e., power). For example, let’s look at the power of a t-test.</p>
+<p>R tells us that if we use the formula, the power of a t-test with a true effect size of <code>d = .30</code> and a sample size of <code>n = 150</code> in each group, we have a power of about .73</p>
+<div class="sourceCode" id="cb165"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb165-1"><a href="simulations.html#cb165-1" aria-hidden="true" tabindex="-1"></a>pwr<span class="sc">::</span><span class="fu">pwr.t.test</span>(<span class="at">n =</span> <span class="dv">150</span>, <span class="at">d =</span> .<span class="dv">30</span>)</span></code></pre></div>
+<pre><code>## 
+##      Two-sample t test power calculation 
+## 
+##               n = 150
+##               d = 0.3
+##       sig.level = 0.05
+##           power = 0.7355674
+##     alternative = two.sided
+## 
+## NOTE: n is number in *each* group</code></pre>
+<p>Let’s make our own data and see if that holds when we try to simulate it.</p>
+</div>
+<div id="re-testing-the-t-test" class="section level2" number="5.3">
+<h2><span class="header-section-number">5.3</span> Re-testing the t-test</h2>
+<p>To simulate several datasets, we need just a few ingredients. First, we need a dataframe that is set up to represent many datasets. We can use <code>expand_grid()</code> for this. With the following commands, it will make 1000 samples, each with two groups (0, 1), and each of those groups will contain 150 people.</p>
+<div class="sourceCode" id="cb167"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb167-1"><a href="simulations.html#cb167-1" aria-hidden="true" tabindex="-1"></a>many_datasets <span class="ot">&lt;-</span> <span class="fu">expand_grid</span>(<span class="at">sample =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">1000</span>, <span class="at">group =</span> <span class="dv">0</span><span class="sc">:</span><span class="dv">1</span>, <span class="at">person_id =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">150</span>)</span>
+<span id="cb167-2"><a href="simulations.html#cb167-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb167-3"><a href="simulations.html#cb167-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(many_datasets)</span></code></pre></div>
+<pre><code>## # A tibble: 6 x 3
+##   sample group person_id
+##    &lt;int&gt; &lt;int&gt;     &lt;int&gt;
+## 1      1     0         1
+## 2      1     0         2
+## 3      1     0         3
+## 4      1     0         4
+## 5      1     0         5
+## 6      1     0         6</code></pre>
+<p>Now, let’s put some information in those groups. We’ll give group 0 a mean of 0 and group 1 a mean of .30. Assuming they both have a standard deviation of 1.0, this works out to a group difference of Cohen’s d = .30.</p>
+<div class="sourceCode" id="cb169"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb169-1"><a href="simulations.html#cb169-1" aria-hidden="true" tabindex="-1"></a>many_datasets <span class="ot">&lt;-</span> many_datasets <span class="sc">%&gt;%</span> </span>
+<span id="cb169-2"><a href="simulations.html#cb169-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb169-3"><a href="simulations.html#cb169-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">score =</span> <span class="fu">ifelse</span>(</span>
+<span id="cb169-4"><a href="simulations.html#cb169-4" aria-hidden="true" tabindex="-1"></a>      <span class="at">test =</span> group <span class="sc">==</span> <span class="dv">0</span>,</span>
+<span id="cb169-5"><a href="simulations.html#cb169-5" aria-hidden="true" tabindex="-1"></a>      <span class="at">yes =</span> <span class="fu">rnorm</span>(<span class="fu">n</span>(), <span class="at">mean =</span> <span class="dv">0</span>, <span class="at">sd =</span> <span class="dv">1</span>),</span>
+<span id="cb169-6"><a href="simulations.html#cb169-6" aria-hidden="true" tabindex="-1"></a>      <span class="at">no =</span> <span class="fu">rnorm</span>(<span class="fu">n</span>(), <span class="at">mean =</span> .<span class="dv">30</span>, <span class="at">sd =</span> <span class="dv">1</span>)))</span>
+<span id="cb169-7"><a href="simulations.html#cb169-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb169-8"><a href="simulations.html#cb169-8" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(many_datasets)</span></code></pre></div>
+<pre><code>## # A tibble: 6 x 4
+##   sample group person_id   score
+##    &lt;int&gt; &lt;int&gt;     &lt;int&gt;   &lt;dbl&gt;
+## 1      1     0         1  0.0418
+## 2      1     0         2 -1.50  
+## 3      1     0         3 -0.799 
+## 4      1     0         4  0.351 
+## 5      1     0         5 -0.903 
+## 6      1     0         6 -1.55</code></pre>
+<p>Now, let’s conduct a t-test on each one and look at the results.</p>
+<div class="sourceCode" id="cb171"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb171-1"><a href="simulations.html#cb171-1" aria-hidden="true" tabindex="-1"></a>many_datasets <span class="sc">%&gt;%</span></span>
+<span id="cb171-2"><a href="simulations.html#cb171-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(sample) <span class="sc">%&gt;%</span> </span>
+<span id="cb171-3"><a href="simulations.html#cb171-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">nest</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb171-4"><a href="simulations.html#cb171-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb171-5"><a href="simulations.html#cb171-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">fit =</span> <span class="fu">map</span>(data, <span class="sc">~</span> <span class="fu">t.test</span>(score <span class="sc">~</span> group, <span class="at">data =</span> .x)),</span>
+<span id="cb171-6"><a href="simulations.html#cb171-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">results =</span> <span class="fu">map</span>(fit, <span class="sc">~</span> broom<span class="sc">::</span><span class="fu">tidy</span>(.x))) <span class="sc">%&gt;%</span> </span>
+<span id="cb171-7"><a href="simulations.html#cb171-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unnest</span>(results) <span class="sc">%&gt;%</span> </span>
+<span id="cb171-8"><a href="simulations.html#cb171-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb171-9"><a href="simulations.html#cb171-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">power =</span> <span class="fu">sum</span>(p.value <span class="sc">&lt;</span> .<span class="dv">05</span>)<span class="sc">/</span><span class="fu">length</span>(p.value))</span></code></pre></div>
+<pre><code>## # A tibble: 1 x 1
+##   power
+##   &lt;dbl&gt;
+## 1 0.724</code></pre>
+<p>Voila! Without doing any complicated calculus, we were able to calculate the power of a t-test - and pretty accurately too!</p>
 
+</div>
 </div>
             </section>
 
           </div>
         </div>
       </div>
-<a href="strings-should-you-care.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="simulations.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="strings-should-you-care.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
@@ -313,7 +366,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/iancero/musc_r_course_2021/edit/main/strings.Rmd",
+"link": "https://github.com/iancero/musc_r_course_2021/edit/main/simulations.Rmd",
 "text": "Find a typo? Please suggest an edit"
 },
 "history": {

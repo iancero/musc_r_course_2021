@@ -1,67 +1,81 @@
----
-title: "R Notebook"
-output: html_notebook
----
+# Simulations
+
+If strings are the main feature of R that people didn't realize they needed, simulation techniques are the 2nd. Many people start out saying they are a little intimidated by simulations, but end up feeling comfortable after a little bit of practice.
+
+The initial discomfort usually comes from the fact that we are doing statistics in reverse. In statistical **analysis**, we feed the data to a fitting function (like `lm()`) in order to get parameter estimates. In contrast, in simulations we are studying how well those functions **recover** parameters, so we choose some parameter values ourselves, make data that are consistent with those parameters, then apply our fitting function to see how well it guessed the parameters we planted in our data. 
+
+## Generating fake data
+
+To get started, the first thing you need to know is how to generate fake random data. Fortunately, R has many functions for this, which generally start with `r...` for "random".
+
+For example, to make a random normal variable, you would call `rnorm`, which takes 3 arguments:
+
+- `n`, the number of numbers you want to generate
+- `mean`, the mean of the population you want to be drawing from
+- `sd`, the standard deviation of the population you want to be drawing from
 
 ```{r}
-library(tidyverse)
+my_normals <- rnorm(n = 100, mean = 11, sd = 3)
 
-possible_nums <- 1:1000
-
-df <- expand_grid(sample_num = 1:10000, draw_num = 1:100) %>% 
-  group_by(sample_num) %>% 
-  mutate(score = sample(possible_nums, size = n(), replace = T)) %>% 
-  summarise(
-    mean_score = mean(score),
-    standard_dev = sd(score))
-
-ggplot(df, mapping = aes(x = mean_score)) +
-  geom_histogram()
+hist(my_normals)
 ```
-
-
-
+Looking at the graph, we got just about what we would have expected. Will things get even more normal looking with a larger sample size? Definitely.
 
 ```{r}
-my_normal <- rpois(n = 1000, lambda = 10)
+my_normals <- rnorm(n = 10000, mean = 11, sd = 3)
 
-my_binomial <- rbinom(n = 10, size = 100, prob = .60)
-
-hist(my_binomial)
+hist(my_normals)
 ```
+
+## How is this useful?
+
+On their own, random numbers are useless. However, if we use them to make many fake datasets, we can apply the same analysis function to each dataset and keep track of the results. This allows us to ask questions like *how often was an effect significant?* (i.e., power). For example, let's look at the power of a t-test.
+
+R tells us that if we use the formula, the power of a t-test with a true effect size of `d = .30` and a sample size of `n = 150` in each group, we have a power of about .73
 
 ```{r}
 pwr::pwr.t.test(n = 150, d = .30)
 ```
+Let's make our own data and see if that holds when we try to simulate it.
+
+## Re-testing the t-test
+
+To simulate several datasets, we need just a few ingredients. First, we need a dataframe that is set up to represent many datasets. We can use `expand_grid()` for this. With the following commands, it will make 1000 samples, each with two groups (0, 1), and each of those groups will contain 150 people.
 
 ```{r}
-df <- expand_grid(sample = 1:1000, group = 0:1, person_id = 1:150) %>% 
-  group_by(sample) %>% 
+many_datasets <- expand_grid(sample = 1:1000, group = 0:1, person_id = 1:150)
+
+head(many_datasets)
+```
+
+Now, let's put some information in those groups. We'll give group 0 a mean of 0 and group 1 a mean of .30. Assuming they both have a standard deviation of 1.0, this works out to a group difference of Cohen's d = .30.
+
+```{r}
+many_datasets <- many_datasets %>% 
   mutate(
-    bias = if_else(
-      condition = group == 0,
-      true = 0,
-      false = runif(n = n(), min = 0, max = .20)),
-    true_score = if_else(
-      condition = group == 0,
-      true = rnorm(n = n(), mean = 0, sd = 1),
-      false = rnorm(n = n(), mean = .30, sd = 1)),
-    biased_score = true_score + bias) %>% 
+    score = ifelse(
+      test = group == 0,
+      yes = rnorm(n(), mean = 0, sd = 1),
+      no = rnorm(n(), mean = .30, sd = 1)))
+
+head(many_datasets)
+```
+
+Now, let's conduct a t-test on each one and look at the results.
+
+```{r}
+many_datasets %>%
+  group_by(sample) %>% 
   nest() %>% 
   mutate(
-    fit = map(data, ~ t.test(biased_score ~ group, data = .x)),
+    fit = map(data, ~ t.test(score ~ group, data = .x)),
     results = map(fit, ~ broom::tidy(.x))) %>% 
   unnest(results) %>% 
   ungroup() %>% 
-  summarise(
-    mean_bias = mean(estimate - -.30),
-    power = sum(p.value < .05)/length(p.value))
-
-df
+  summarise(power = sum(p.value < .05)/length(p.value))
 ```
 
-
-
+Voila! Without doing any complicated calculus, we were able to calculate the power of a t-test - and pretty accurately too!
 
 
 
