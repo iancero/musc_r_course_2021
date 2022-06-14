@@ -25,7 +25,9 @@ read_abcd_quietly <- function(file_path){
 }
 
 df <- read_abcd_quietly('data/diff_emotion_reg_p01.txt') %>% 
-  mutate(across(.cols = starts_with('ders_'), .fns = ~ ifelse(.x == 7, NA, .x)))
+  mutate(across(
+    .cols = starts_with('ders_'), 
+    .fns = ~ ifelse(.x == 7, NA, .x)))
 ```
 
 ## EFA
@@ -64,13 +66,24 @@ After that, we just send the model to the `cfa()` function, which does the rest 
 library(lavaan)
 
 my_model <- '
-  b =~ ders_attn_awareness_p + ders_clear_feelings_p + ders_emotion_overwhelm_p + ders_feelings_attentive_p + ders_feelings_care_p + ders_feelings_know_p + ders_upset_ack_p
+  b =~ ders_attn_awareness_p + ders_clear_feelings_p + 
+    ders_emotion_overwhelm_p + ders_feelings_attentive_p + 
+    ders_feelings_care_p + ders_feelings_know_p + ders_upset_ack_p
   
-  c =~ ders_upset_angry_p + ders_upset_control_p + ders_upset_difficulty_p + ders_upset_embarrassed_p + ders_upset_focus_p + ders_upset_out_control_p
+  c =~ ders_upset_angry_p + ders_upset_control_p + 
+    ders_upset_difficulty_p + ders_upset_embarrassed_p + 
+    ders_upset_focus_p + ders_upset_out_control_p
   
-  a =~ ders_upset_ashamed_p + ders_upset_behavior_control_p + ders_upset_depressed_p + ders_upset_esteem_p + ders_upset_feel_better_p + ders_upset_guilty_p + ders_upset_irritation_p + ders_upset_time_p + ders_upset_weak_p
+  a =~ ders_upset_ashamed_p + ders_upset_behavior_control_p + 
+    ders_upset_depressed_p + ders_upset_esteem_p + 
+    ders_upset_feel_better_p + ders_upset_guilty_p + 
+    ders_upset_irritation_p + ders_upset_time_p + 
+    ders_upset_weak_p
   
-  d =~ ders_upset_behavior_p + ders_upset_better_p + ders_upset_concentrate_p + ders_upset_emotion_overwhelm_p + ders_upset_fixation_p + ders_upset_long_time_better_p + ders_upset_lose_control_p
+  d =~ ders_upset_behavior_p + ders_upset_better_p + 
+    ders_upset_concentrate_p + ders_upset_emotion_overwhelm_p + 
+    ders_upset_fixation_p + ders_upset_long_time_better_p + 
+    ders_upset_lose_control_p
 '
 
 fit <- cfa(

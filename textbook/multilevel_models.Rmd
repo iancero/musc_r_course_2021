@@ -47,7 +47,10 @@ df <- df %>%
     sex = factor(sex, levels = c('M', 'F')),
     time = row_number(),
     n_timepoints = max(time),
-    grade_drop = factor(grade_drop, levels = c(1, 2), labels = c('yes', 'no'))) %>%
+    grade_drop = factor(
+      x = grade_drop, 
+      levels = c(1, 2), 
+      labels = c('yes', 'no'))) %>%
   ungroup() %>% 
   filter(grades %in% 1:5) %>% 
   select(id, age, sex, grades, grade_drop, time)

@@ -105,7 +105,11 @@ ggplot(data = my_data, mapping = aes(x = AGE, y = WEIGHIN)) +
   geom_point(
     mapping = aes(color = factor(STAGE)), 
     size = 5) +
-  geom_smooth(method = 'lm', se = F, color = 'black', linetype = 2) +
+  geom_smooth(
+    method = 'lm', 
+    se = F, 
+    color = 'black', 
+    linetype = 2) +
   scale_color_grey() +
   theme_bw() +
   labs(

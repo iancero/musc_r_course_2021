@@ -15,6 +15,11 @@ Throughout this exercise, we'll imagine we have an ongoing research study with m
 
 Because each dataset only includes three people, they are easy to take a glance at below.
 
+```{r, echo=FALSE}
+options(show_col_types = FALSE)
+```
+
+
 ```{r}
 library(tidyverse)
 
@@ -127,7 +132,9 @@ contact_df %>%
     tax_date = lubridate::mdy(tax_day),
     days_late = tax_date - as.Date('2022-04-18')) %>% 
   filter(days_late > 0) %>% 
-  mutate(message = glue('Dear Mr. {lname}, your taxes are {days_late} days late.')) %>% 
+  mutate(
+    message = glue(
+      'Mr. {lname}, your taxes are {days_late} days late.')) %>% 
   select(lname, message)
 ```
 

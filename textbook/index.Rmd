@@ -1,7 +1,7 @@
 --- 
 title: "An Organic R Textbook"
 author: "Ian Cero, PhD MStat"
-date: "2021"
+date: "2022"
 site: bookdown::bookdown_site
 documentclass: book
 bibliography: [book.bib, packages.bib]
@@ -9,20 +9,21 @@ biblio-style: apalike
 url: https://iancero.github.io/musc_r_course_2021
 favicon: images/favicon.ico
 description: |
-  This is the organic textbook accompanying Cero's 2021 course on statistical programming with R
+  This is the organic textbook accompanying Cero's 2022 course on statistical programming with R
 link-citations: yes
 github-repo: iancero/musc_r_course_2021
 ---
+
+
+\newpage
 
 # About
 
 This is textbook created during live discussion with the Squeglia Research Group of the Medical University of South Carolina. 
 
-Use the **index on the left** to navigate from topic to topic.
-
-
-
 ```{r include=FALSE}
+options(width = 60)
+
 # automatically create a bib database for R packages
 knitr::write_bib(c(
   .packages(), 'bookdown', 'knitr', 'rmarkdown'

@@ -43,7 +43,10 @@ Let's make our own data and see if that holds when we try to simulate it.
 To simulate several datasets, we need just a few ingredients. First, we need a dataframe that is set up to represent many datasets. We can use `expand_grid()` for this. With the following commands, it will make 1000 samples, each with two groups (0, 1), and each of those groups will contain 150 people.
 
 ```{r}
-many_datasets <- expand_grid(sample = 1:1000, group = 0:1, person_id = 1:150)
+many_datasets <- expand_grid(
+  sample = 1:1000, 
+  group = 0:1, 
+  person_id = 1:150)
 
 head(many_datasets)
 ```

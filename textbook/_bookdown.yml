@@ -17,5 +17,5 @@ rmd_files:
 # - intro_to_machine_learning.Rmd
 # - multilevel_models.Rmd
 # - structural_equation_modeling.Rmd
-- strings.Rmd
-- simulations.Rmd
+# - strings.Rmd
+# - simulations.Rmd

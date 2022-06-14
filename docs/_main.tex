@@ -1,0 +1,494 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{book}
+\usepackage{amsmath,amssymb}
+\usepackage{lmodern}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  pdftitle={An Organic R Textbook},
+  pdfauthor={Ian Cero, PhD MStat},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
+\usepackage{longtable,booktabs,array}
+\usepackage{calc} % for calculating minipage widths
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{5}
+\usepackage{booktabs}
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+\usepackage[]{natbib}
+\bibliographystyle{apalike}
+
+\title{An Organic R Textbook}
+\author{Ian Cero, PhD MStat}
+\date{2021}
+
+\begin{document}
+\maketitle
+
+{
+\setcounter{tocdepth}{1}
+\tableofcontents
+}
+\hypertarget{about}{%
+\chapter{About}\label{about}}
+
+This is textbook created during live discussion with the Squeglia Research Group of the Medical University of South Carolina.
+
+\hypertarget{getting-started}{%
+\chapter{Getting Started}\label{getting-started}}
+
+Placeholder
+
+\hypertarget{overview-of-the-r-ecosystem}{%
+\section{Overview of the R ecosystem}\label{overview-of-the-r-ecosystem}}
+
+\hypertarget{installation}{%
+\section{Installation}\label{installation}}
+
+\hypertarget{step-1---download-and-install-the-r-language}{%
+\subsection{Step 1 - Download and install the R language}\label{step-1---download-and-install-the-r-language}}
+
+\hypertarget{step-2---download-and-install-the-rstudio-ide}{%
+\subsection{Step 2 - Download and install the RStudio IDE}\label{step-2---download-and-install-the-rstudio-ide}}
+
+\hypertarget{step-3---install-the-tidyverse-package-optional}{%
+\subsection{\texorpdfstring{Step 3 - Install the \texttt{tidyverse} package (optional)}{Step 3 - Install the tidyverse package (optional)}}\label{step-3---install-the-tidyverse-package-optional}}
+
+\hypertarget{a-tour-of-rstudio}{%
+\section{A tour of RStudio}\label{a-tour-of-rstudio}}
+
+\hypertarget{the-console}{%
+\subsection{The console}\label{the-console}}
+
+\hypertarget{the-environment}{%
+\subsection{The environment}\label{the-environment}}
+
+\hypertarget{the-lower-right-pane}{%
+\subsection{The lower right pane}\label{the-lower-right-pane}}
+
+\hypertarget{your-very-first-analysis}{%
+\section{Your very first analysis}\label{your-very-first-analysis}}
+
+\hypertarget{step-1---download-the-data}{%
+\subsection{Step 1 - download the data}\label{step-1---download-the-data}}
+
+\hypertarget{step-2---make-an-rstudio-project}{%
+\subsection{Step 2 - Make an RStudio Project}\label{step-2---make-an-rstudio-project}}
+
+\hypertarget{step-3---get-the-data-into-your-project-folder}{%
+\subsection{Step 3 - Get the data into your project folder}\label{step-3---get-the-data-into-your-project-folder}}
+
+\hypertarget{step-4---open-an-rmarkdown-notebook}{%
+\subsection{Step 4 - Open an Rmarkdown Notebook}\label{step-4---open-an-rmarkdown-notebook}}
+
+\hypertarget{step-5---create-a-space-to-code}{%
+\subsection{Step 5 - Create a space to code}\label{step-5---create-a-space-to-code}}
+
+\hypertarget{step-6---write-a-command-to-import-the-data}{%
+\subsection{Step 6 - Write a command to import the data}\label{step-6---write-a-command-to-import-the-data}}
+
+\hypertarget{step-7---look-inside-the-data}{%
+\subsection{Step 7 - Look inside the data}\label{step-7---look-inside-the-data}}
+
+\hypertarget{step-8---make-a-histogram}{%
+\subsection{Step 8 - Make a histogram}\label{step-8---make-a-histogram}}
+
+\hypertarget{step-9---run-a-regression}{%
+\subsection{Step 9 - Run a regression}\label{step-9---run-a-regression}}
+
+\hypertarget{step-10---get-a-summary-of-your-results}{%
+\subsection{Step 10 - Get a summary of your results}\label{step-10---get-a-summary-of-your-results}}
+
+\hypertarget{a-look-forward}{%
+\subsection{A Look forward}\label{a-look-forward}}
+
+\hypertarget{basic-r}{%
+\chapter{Basic R}\label{basic-r}}
+
+Placeholder
+
+\hypertarget{writing-in-r-and-rmarkdown}{%
+\section{Writing in R and Rmarkdown}\label{writing-in-r-and-rmarkdown}}
+
+\hypertarget{chatting-with-r}{%
+\subsection{Chatting with R}\label{chatting-with-r}}
+
+\hypertarget{rmarkdown-tricks}{%
+\subsection{Rmarkdown tricks}\label{rmarkdown-tricks}}
+
+\hypertarget{code-blocks}{%
+\subsection{Code blocks}\label{code-blocks}}
+
+\hypertarget{variables}{%
+\section{Variables}\label{variables}}
+
+\hypertarget{the-assignment-operator}{%
+\subsection{The assignment operator}\label{the-assignment-operator}}
+
+\hypertarget{numerics}{%
+\subsection{Numerics}\label{numerics}}
+
+\hypertarget{characters}{%
+\subsection{Characters}\label{characters}}
+
+\hypertarget{booleans}{%
+\subsection{Booleans}\label{booleans}}
+
+\hypertarget{special-types}{%
+\subsection{Special types}\label{special-types}}
+
+\hypertarget{vectors}{%
+\section{Vectors}\label{vectors}}
+
+\hypertarget{lists}{%
+\section{Lists}\label{lists}}
+
+\hypertarget{dataframes}{%
+\section{Dataframes}\label{dataframes}}
+
+\hypertarget{construction}{%
+\subsection{Construction}\label{construction}}
+
+\hypertarget{built-in-dataframes}{%
+\subsection{Built-in dataframes}\label{built-in-dataframes}}
+
+\hypertarget{functions}{%
+\section{Functions}\label{functions}}
+
+\hypertarget{getting-help}{%
+\subsection{Getting help}\label{getting-help}}
+
+\hypertarget{function-parameters}{%
+\subsection{Function parameters}\label{function-parameters}}
+
+\hypertarget{packages}{%
+\section{Packages}\label{packages}}
+
+\hypertarget{error-messages}{%
+\section{Error messages}\label{error-messages}}
+
+\hypertarget{coding-conventions}{%
+\section{Coding Conventions}\label{coding-conventions}}
+
+\hypertarget{what-should-my-code-look-like}{%
+\subsection{What should my code look like?}\label{what-should-my-code-look-like}}
+
+\hypertarget{common-coding-conventions-in-r}{%
+\subsubsection{Common coding conventions in R}\label{common-coding-conventions-in-r}}
+
+\hypertarget{official-coding-conventions}{%
+\subsection{Official coding conventions}\label{official-coding-conventions}}
+
+\hypertarget{working-with-abcd}{%
+\chapter{Working with ABCD}\label{working-with-abcd}}
+
+Placeholder
+
+\hypertarget{importing-abcd-datafiles}{%
+\section{Importing ABCD datafiles}\label{importing-abcd-datafiles}}
+
+\hypertarget{whats-different-about-abcd}{%
+\subsection{What's different about ABCD?}\label{whats-different-about-abcd}}
+
+\hypertarget{walking-through-abcd-data-importation}{%
+\subsection{Walking through ABCD data importation}\label{walking-through-abcd-data-importation}}
+
+\hypertarget{copypaste-able-code}{%
+\subsection{Copy/paste-able code}\label{copypaste-able-code}}
+
+\hypertarget{a-general-purpose-abcd-dataset-import-function}{%
+\section{A general-purpose ABCD dataset import function}\label{a-general-purpose-abcd-dataset-import-function}}
+
+\hypertarget{getting-rid-of-import-messages}{%
+\subsection{Getting rid of import messages}\label{getting-rid-of-import-messages}}
+
+\hypertarget{importing-a-whole-folder-of-abcd-datasets}{%
+\section{Importing a whole folder of ABCD datasets}\label{importing-a-whole-folder-of-abcd-datasets}}
+
+\hypertarget{as-easy-strategy-that-unfortunately-wont-scale}{%
+\subsection{As easy strategy that unfortunately won't scale}\label{as-easy-strategy-that-unfortunately-wont-scale}}
+
+\hypertarget{visualization}{%
+\chapter{Visualization}\label{visualization}}
+
+Placeholder
+
+\hypertarget{overview}{%
+\section{Overview}\label{overview}}
+
+\hypertarget{ggplot-mappings}{%
+\section{\texorpdfstring{\texttt{ggplot} Mappings}{ggplot Mappings}}\label{ggplot-mappings}}
+
+\hypertarget{adding-geoms-to-the-plot}{%
+\section{Adding geoms to the plot}\label{adding-geoms-to-the-plot}}
+
+\hypertarget{geom-options-and-mappings}{%
+\section{Geom Options and Mappings}\label{geom-options-and-mappings}}
+
+\hypertarget{saving-plots}{%
+\section{Saving plots}\label{saving-plots}}
+
+\hypertarget{other-features-to-look-for}{%
+\section{Other features to look for}\label{other-features-to-look-for}}
+
+\hypertarget{data-wrangling}{%
+\chapter{Data Wrangling}\label{data-wrangling}}
+
+Placeholder
+
+\hypertarget{base-r}{%
+\section{Base R}\label{base-r}}
+
+\hypertarget{the-new-way-dplyr}{%
+\section{\texorpdfstring{The new way: \texttt{dplyr}}{The new way: dplyr}}\label{the-new-way-dplyr}}
+
+\hypertarget{the-only-data-verbs-youll-ever-need}{%
+\section{The only data verbs you'll ever need}\label{the-only-data-verbs-youll-ever-need}}
+
+\hypertarget{rename}{%
+\subsection{\texorpdfstring{\texttt{rename()}}{rename()}}\label{rename}}
+
+\hypertarget{select}{%
+\subsection{\texorpdfstring{\texttt{select()}}{select()}}\label{select}}
+
+\hypertarget{mutate}{%
+\subsection{\texorpdfstring{\texttt{mutate()}}{mutate()}}\label{mutate}}
+
+\hypertarget{group_by-and-summarize}{%
+\subsection{\texorpdfstring{\texttt{group\_by()} and \texttt{summarize()}}{group\_by() and summarize()}}\label{group_by-and-summarize}}
+
+\hypertarget{basic-hypthothesis-tests}{%
+\chapter{Basic hypthothesis tests}\label{basic-hypthothesis-tests}}
+
+Placeholder
+
+\hypertarget{not-your-grandfathers-statistical-tests}{%
+\section{Not your grandfather's statistical tests}\label{not-your-grandfathers-statistical-tests}}
+
+\hypertarget{steps-1-2---load-and-clean-data}{%
+\section{Steps 1 \& 2 - Load and clean data}\label{steps-1-2---load-and-clean-data}}
+
+\hypertarget{steps-3-4---create-and-unpack-analysis-objects}{%
+\section{Steps 3 \& 4 - Create and unpack analysis objects}\label{steps-3-4---create-and-unpack-analysis-objects}}
+
+\hypertarget{independant-samples-t-test}{%
+\subsection{Independant samples t-test}\label{independant-samples-t-test}}
+
+\hypertarget{paired-t-tests}{%
+\subsection{Paired t-tests}\label{paired-t-tests}}
+
+\hypertarget{correlation}{%
+\subsection{Correlation}\label{correlation}}
+
+\hypertarget{linear-regression}{%
+\chapter{Linear Regression}\label{linear-regression}}
+
+Placeholder
+
+\hypertarget{steps-1-2---load-and-clean-the-data}{%
+\section{Steps 1 \& 2 - Load and clean the data}\label{steps-1-2---load-and-clean-the-data}}
+
+\hypertarget{steps-3-4---fit-the-model-and-summarize-it}{%
+\section{Steps 3 \& 4 - Fit the model and summarize it}\label{steps-3-4---fit-the-model-and-summarize-it}}
+
+\hypertarget{broom-can-help-export-the-results}{%
+\subsection{Broom can help export the results}\label{broom-can-help-export-the-results}}
+
+\hypertarget{logistic-regression}{%
+\chapter{Logistic Regression}\label{logistic-regression}}
+
+Placeholder
+
+\hypertarget{steps-1-2---import-and-clean-data}{%
+\section{Steps 1 \& 2 - Import and clean data}\label{steps-1-2---import-and-clean-data}}
+
+\hypertarget{steps-3-4---fit-the-model-and-summarize-it-1}{%
+\section{Steps 3 \& 4 - Fit the model and summarize it}\label{steps-3-4---fit-the-model-and-summarize-it-1}}
+
+\hypertarget{where-are-my-odds-ratios}{%
+\subsection{Where are my odds ratios?}\label{where-are-my-odds-ratios}}
+
+\hypertarget{plotting-predicted-values}{%
+\section{Plotting predicted values}\label{plotting-predicted-values}}
+
+\hypertarget{introduction-to-machine-learning}{%
+\chapter{Introduction to machine learning}\label{introduction-to-machine-learning}}
+
+Placeholder
+
+\hypertarget{wait-arent-those-the-same-thing}{%
+\section{Wait, aren't those the same thing?}\label{wait-arent-those-the-same-thing}}
+
+\hypertarget{the-tidymodels-framework}{%
+\section{\texorpdfstring{The \texttt{tidymodels} framework}{The tidymodels framework}}\label{the-tidymodels-framework}}
+
+\hypertarget{steps-1-2---load-data-and-do-some-very-basic-cleaning}{%
+\section{Steps 1 \& 2 - Load data and do some very basic cleaning}\label{steps-1-2---load-data-and-do-some-very-basic-cleaning}}
+
+\hypertarget{step-3---split-training-and-test-samples}{%
+\section{Step 3 - Split training and test samples}\label{step-3---split-training-and-test-samples}}
+
+\hypertarget{step-4---build-a-data-processing-recipe}{%
+\section{Step 4 - Build a data processing recipe}\label{step-4---build-a-data-processing-recipe}}
+
+\hypertarget{step-5---extract-the-preprocessed-data}{%
+\section{Step 5 - Extract the preprocessed data}\label{step-5---extract-the-preprocessed-data}}
+
+\hypertarget{step-6---fit-a-model}{%
+\section{Step 6 - Fit a model}\label{step-6---fit-a-model}}
+
+\hypertarget{step-7---evaluate-the-model}{%
+\section{Step 7 - Evaluate the model}\label{step-7---evaluate-the-model}}
+
+\hypertarget{step-8---plot-your-data}{%
+\section{Step 8 - Plot your data}\label{step-8---plot-your-data}}
+
+\hypertarget{multilevel-models}{%
+\chapter{Multilevel Models}\label{multilevel-models}}
+
+Placeholder
+
+\hypertarget{steps-1-2---import-and-clean-the-data}{%
+\section{Steps 1 \& 2 - Import and clean the data}\label{steps-1-2---import-and-clean-the-data}}
+
+\hypertarget{steps-3-4---fit-the-model-and-summarize-it-2}{%
+\section{Steps 3 \& 4 - Fit the model and summarize it}\label{steps-3-4---fit-the-model-and-summarize-it-2}}
+
+\hypertarget{where-are-my-p-values}{%
+\subsection{Where are my p-values?}\label{where-are-my-p-values}}
+
+\hypertarget{where-are-my-intraclass-correlations-iccs}{%
+\subsection{Where are my intraclass correlations (ICCs)?}\label{where-are-my-intraclass-correlations-iccs}}
+
+\hypertarget{logistic-multilevel-models}{%
+\section{Logistic multilevel models}\label{logistic-multilevel-models}}
+
+\hypertarget{structural-equation-modeling}{%
+\chapter{Structural Equation Modeling}\label{structural-equation-modeling}}
+
+Placeholder
+
+\hypertarget{step-1-and-2---load-data-and-clean}{%
+\section{Step 1 and 2 - Load data and clean}\label{step-1-and-2---load-data-and-clean}}
+
+\hypertarget{efa}{%
+\section{EFA}\label{efa}}
+
+\hypertarget{steps-3-4}{%
+\subsection{Steps 3 \& 4}\label{steps-3-4}}
+
+\hypertarget{cfa}{%
+\section{CFA}\label{cfa}}
+
+\hypertarget{step-3-4}{%
+\subsection{Step 3 \& 4}\label{step-3-4}}
+
+\hypertarget{sem}{%
+\section{SEM}\label{sem}}
+
+\hypertarget{steps-3-4-1}{%
+\subsection{Steps 3 \& 4}\label{steps-3-4-1}}
+
+\hypertarget{modification-indices}{%
+\subsection{Modification indices}\label{modification-indices}}
+
+\hypertarget{strings-should-you-care}{%
+\chapter{Strings, should you care?}\label{strings-should-you-care}}
+
+Placeholder
+
+\hypertarget{a-recurring-example}{%
+\section{A recurring example}\label{a-recurring-example}}
+
+\hypertarget{join-the-datasets}{%
+\section{Join the datasets}\label{join-the-datasets}}
+
+\hypertarget{direction-order-of-operations}{%
+\subsection{Direction / order of operations}\label{direction-order-of-operations}}
+
+\hypertarget{extract-some-information}{%
+\section{Extract some information}\label{extract-some-information}}
+
+\hypertarget{phone-numbers}{%
+\section{Phone numbers}\label{phone-numbers}}
+
+\hypertarget{what-about-using-str_extract_all}{%
+\subsection{\texorpdfstring{What about using \texttt{str\_extract\_all()}}{What about using str\_extract\_all()}}\label{what-about-using-str_extract_all}}
+
+\hypertarget{string-interpolation}{%
+\section{String interpolation}\label{string-interpolation}}
+
+\hypertarget{simulations}{%
+\chapter{Simulations}\label{simulations}}
+
+Placeholder
+
+\hypertarget{generating-fake-data}{%
+\section{Generating fake data}\label{generating-fake-data}}
+
+\hypertarget{how-is-this-useful}{%
+\section{How is this useful?}\label{how-is-this-useful}}
+
+\hypertarget{re-testing-the-t-test}{%
+\section{Re-testing the t-test}\label{re-testing-the-t-test}}
+
+  \bibliography{book.bib,packages.bib}
+
+\end{document}

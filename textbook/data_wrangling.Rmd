@@ -105,26 +105,3 @@ my_data %>%
 ```
 
 As you can see, we can group by multiple variables at the same time and quickly get the kind of information we would need for a demographics table - in this case, the average weight of subjects by both condition and cancer stage.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

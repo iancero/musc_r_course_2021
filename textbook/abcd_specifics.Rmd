@@ -118,7 +118,8 @@ df3 <- read_abcd('data/abcd_lpsaiq01.txt')
 
 df100 <- read_abcd('data/abcd_lpksad01.txt')
 
-# Imagine how hard it would be to type out 100 dataset names (correctly)!
+# Imagine how hard it would be to type out 
+# 100 dataset names (correctly)!
 ```
 
 Instead, we can simply tell R that we want to import an entire folder of datasets, which in this case we named the `many_datasets` folder. Note, this trick uses functions from the `purrr` package of the `tidyverse`. These functions are a little trick and we cover them at various points later in this textbook. For now, all you need to know is that they take a list of objects (in this case, filenames) and perform the same process for each one.
@@ -126,7 +127,9 @@ Instead, we can simply tell R that we want to import an entire folder of dataset
 The first step is to get a list of files inside your folder of interest. Also, make sure to use `full.names = T` to get the file **path** in addition to each file's name.
 
 ```{r}
-files_to_import <- list.files('data/many_datasets', full.names = T)
+files_to_import <- list.files(
+  path = 'data/many_datasets', 
+  full.names = T)
 
 files_to_import
 ```
@@ -134,7 +137,9 @@ files_to_import
 The second step is to get the names we want to assign to each dataset, once it is imported into R. We use a few tricks here, including the `map_chr()` function from `purrr` and the `str_extract()` function from the `stringr` package. Both of these functions are again covered later in the textbook, but are mentioned here in case you simply want to copy/paste code in a hurry and explore the details later.
 
 ```{r}
-df_names <- map_chr(files_to_import, ~ str_extract(.x, 'abcd_[\\w|\\d]*'))
+df_names <- map_chr(
+  .x = files_to_import, 
+  .f = ~ str_extract(.x, 'abcd_[\\w|\\d]*'))
 
 df_names
 ```
